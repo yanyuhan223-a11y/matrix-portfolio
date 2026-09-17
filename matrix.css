@@ -223,3 +223,47 @@ a:focus-visible{outline-color:#b5edc2}
 @keyframes aura-drift{0%,100%{transform:scale(1.2,.65);opacity:.76}50%{transform:scale(1.3,.6);opacity:.96}}
 .pill-choice:hover .pill-aura,.pill-choice:focus-visible .pill-aura{animation:none}
 @media(prefers-reduced-motion:reduce){.pill-capsule,.pill-aura{animation:none}}
+
+/* ===== BONDEE unified stage =================================================
+   One integrated scene replaces the three separate cover tiles: a flowing
+   code-rain canvas behind the three cut-out figures, each figure a link to its
+   project with a green hover bloom and a caption on a shared baseline. */
+.bondee-stage{position:relative;margin:30px 0 6px;padding:0 0 76px;border:1px solid rgba(37,255,89,.15);border-radius:3px;background:radial-gradient(130% 105% at 50% 0,rgba(9,30,15,.72),rgba(1,6,3,.94) 68%);overflow:hidden;isolation:isolate}
+.bd-rain{position:absolute;left:0;top:0;pointer-events:none;opacity:.62;mix-blend-mode:screen;-webkit-mask-image:linear-gradient(#000,#000 68%,transparent);mask-image:linear-gradient(#000,#000 68%,transparent)}
+.bd-cast{position:relative;width:100%;aspect-ratio:1223/823;z-index:1}
+.bd-head{position:absolute;left:18px;top:14px;z-index:4;font:600 9px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.24em;color:rgba(150,255,180,.62);text-transform:uppercase;pointer-events:none}
+.bd-head b{color:rgba(214,255,224,.9);font-weight:700}
+.bd-fig{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);pointer-events:none;text-decoration:none;outline:0}
+.bd-fig img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 5px rgba(37,255,89,.16));transition:filter .32s,opacity .32s,transform .5s cubic-bezier(.2,.7,.2,1)}
+.bd-fig.on{z-index:3}
+.bd-fig.on img{filter:drop-shadow(0 0 7px rgba(74,255,132,.42)) drop-shadow(0 0 20px rgba(37,255,89,.24)) brightness(1.05);transform:translateY(-5px)}
+.bondee-stage.busy .bd-fig:not(.on) img{opacity:.72;filter:brightness(.96) drop-shadow(0 0 4px rgba(37,255,89,.12))}
+.bd-tags{position:absolute;left:0;right:0;bottom:20px;height:44px;z-index:4;pointer-events:none}
+.bd-tag{position:absolute;left:var(--cx);bottom:0;transform:translate(-50%,10px);width:max-content;max-width:44%;opacity:0;transition:opacity .28s,transform .28s;text-align:center}
+.bd-tag.on{opacity:1;transform:translate(-50%,0)}
+.bd-tag small{display:block;font:700 8px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.3em;color:rgba(74,255,132,.72)}
+.bd-tag strong{display:block;margin-top:5px;font:600 12.5px/1.35 var(--sans,inherit);color:#eafff0;text-shadow:0 0 12px rgba(37,255,89,.5)}
+.bd-tag em{display:block;margin-top:3px;font:400 8px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.2em;color:rgba(150,255,180,.5);font-style:normal;text-transform:uppercase}
+.bd-hint{position:absolute;right:18px;bottom:22px;z-index:4;font:600 8.5px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.24em;color:rgba(150,255,180,.45);text-transform:uppercase;pointer-events:none;transition:opacity .3s}
+.bondee-stage.busy .bd-hint{opacity:0}
+.bd-fig:focus-visible img{filter:drop-shadow(0 0 8px rgba(74,255,132,.5)) drop-shadow(0 0 22px rgba(37,255,89,.3)) brightness(1.07)}
+@media(max-width:820px){
+  .bondee-stage{margin:22px 0 4px;padding-bottom:14px}
+  .bd-head{left:12px;top:10px;font-size:8px;letter-spacing:.18em}
+  .bd-tags{position:static;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;height:auto;padding:14px 10px 4px;border-top:1px solid rgba(37,255,89,.12)}
+  .bd-tag{position:static;left:auto;bottom:auto;transform:none;max-width:none;width:auto;opacity:1}
+  .bd-tag strong{margin-top:4px;font-size:10px;line-height:1.3}
+  .bd-tag small{font-size:7.5px;letter-spacing:.2em}
+  .bd-tag em{display:none}
+  .bd-hint{display:none}
+}
+/* touch: there is no hover, so keep every caption visible and never dim */
+@media(hover:none){
+  .bd-tag{opacity:1;transform:translate(-50%,0)}
+  .bondee-stage.busy .bd-fig:not(.on) img{opacity:1;filter:drop-shadow(0 0 5px rgba(37,255,89,.16))}
+  .bd-fig img{filter:drop-shadow(0 0 7px rgba(37,255,89,.3))}
+}
+@media(prefers-reduced-motion:reduce){
+  .bd-fig img,.bd-tag{transition:none}
+  .bd-fig.on img{transform:none}
+}

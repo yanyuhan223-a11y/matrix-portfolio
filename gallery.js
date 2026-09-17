@@ -91,6 +91,38 @@
   nav.innerHTML='<a href="#home" class="app-brand">Vivienne<span> / PORTFOLIO</span></a><a class="app-back" href="#work/bytedance">返回项目</a><a href="#about">About</a><a href="mailto:798287301@qq.com">Contact</a>';
   document.body.prepend(nav);
   const grid=gallery.querySelector('.project-grid');
+  // --- BONDEE unified stage -------------------------------------------------
+  // The three cover tiles are replaced by one integrated scene: figures cut out
+  // of the original artwork, composited at their source positions over a live
+  // code-rain canvas. Percentages come from the cut-out bounding boxes.
+  const bondeeFigures=[
+    {i:1,id:'bondee-1',title:'\u4e2a\u4eba\u7a7a\u95f4 \u00b7 \u5f62\u8c61\u8d44\u4ea7\u4f53\u7cfb',en:'PERSONAL SPACE / AVATAR SYSTEM',x:0,y:0,w:33.688,h:72.904},
+    {i:2,id:'bondee-2',title:'\u521b\u4f5c\u8005\u5e73\u53f0 \u00b7 UGC \u5185\u5bb9\u4f9b\u7ed9',en:'CREATOR PLATFORM / UGC SUPPLY',x:22.731,y:6.926,w:55.192,h:93.074},
+    {i:3,id:'bondee-3',title:'\u4ea7\u54c1\u89c6\u89c9\u54c1\u724c\u5851\u9020',en:'PRODUCT BRAND VISUAL',x:56.582,y:6.561,w:43.418,h:60.510}
+  ];
+  const bondeeStage=document.createElement('section');
+  bondeeStage.className='bondee-stage';bondeeStage.hidden=true;
+  bondeeStage.setAttribute('aria-label','BONDEE \u4e09\u4e2a\u9879\u76ee\u5165\u53e3');
+  const bdRain=document.createElement('canvas');bdRain.className='bd-rain';bdRain.setAttribute('aria-hidden','true');
+  const bdCast=document.createElement('div');bdCast.className='bd-cast';
+  const bdTags=document.createElement('div');bdTags.className='bd-tags';
+  bondeeFigures.forEach(f=>{
+    const a=document.createElement('a');a.className='bd-fig';a.href='#project/'+f.id;a.dataset.i=f.i;
+    a.setAttribute('aria-label',f.title);
+    a.style.cssText='--x:'+f.x+'%;--y:'+f.y+'%;--w:'+f.w+'%;--h:'+f.h+'%';
+    const img=document.createElement('img');img.src=freshAsset('assets/bondee/figure-'+f.i+'.png');
+    img.alt='';img.draggable=false;a.append(img);bdCast.append(a);
+    const tag=document.createElement('span');tag.className='bd-tag';tag.dataset.i=f.i;
+    tag.style.cssText='--cx:'+(f.x+f.w/2).toFixed(2)+'%';
+    tag.innerHTML='<small>'+String(f.i).padStart(2,'0')+'</small><strong>'+f.title+'</strong><em>'+f.en+'</em>';
+    bdTags.append(tag);
+  });
+  const bdHead=document.createElement('div');bdHead.className='bd-head';
+  bdHead.innerHTML='<b>BONDEE</b> / 2022 \u2014 2023 / 3 PROJECTS';
+  const bdHint=document.createElement('div');bdHint.className='bd-hint';
+  bdHint.textContent='hover a figure_';
+  bondeeStage.append(bdRain,bdCast,bdTags,bdHead,bdHint);
+  grid.before(bondeeStage);
   function layoutArchive(){
     if(!grid.clientWidth)return;
     const mobile=innerWidth<=700,w=grid.clientWidth;
@@ -122,8 +154,22 @@
     collectionIntro.querySelector('.collection-description').textContent=personal?'个人项目 / 产品、影像与艺术实验':'商业项目 / 工作中的设计与实践';
     const portalContent=makePortal(personal);galleryPortal.className=portalContent.className;galleryPortal.href=portalContent.href;galleryPortal.innerHTML=portalContent.innerHTML;
     grid.replaceChildren();
-    projects.filter(p=>personal?p.company==='other'&&(id==='other'||personalType(p)===id):allCommercial?p.company!=='other':p.company===c.id).forEach((p,i)=>{
-      const a=document.createElement('a');a.className='project-tile';a.href='#project/'+p.id;a.style.setProperty('--delay',i*55+'ms');
+    const bondeeTab=!personal&&!allCommercial&&c.id==='bondee';
+    bondeeStage.hidden=!bondeeTab;
+    let list=projects.filter(p=>personal?p.company==='other'&&(id==='other'||personalType(p)===id):allCommercial?p.company!=='other':p.company===c.id);
+    if(bondeeTab)list=[];                      // the stage IS the BONDEE page
+    else if(allCommercial){
+      // collapse BONDEE's three entries into one group tile, keeping archive order
+      const at=list.findIndex(p=>p.company==='bondee');
+      if(at>=0){
+        list=list.filter(p=>p.company!=='bondee');
+        list.splice(at,0,{id:'bondee',title:'BONDEE',
+          summary:'\u4e2a\u4eba\u7a7a\u95f4 / \u521b\u4f5c\u8005\u5e73\u53f0 / \u54c1\u724c\u89c6\u89c9 \u00b7 \u4e09\u4e2a\u9879\u76ee',
+          displayCover:'assets/display-bondee-2.png',href:'#work/bondee'});
+      }
+    }
+    list.forEach((p,i)=>{
+      const a=document.createElement('a');a.className='project-tile';a.href=p.href||'#project/'+p.id;a.style.setProperty('--delay',i*55+'ms');
       a.setAttribute('aria-label',p.title);a.addEventListener('click',()=>{sessionStorage.setItem('portfolio-collection',lastCollection);});
       const media=document.createElement('div');media.className='tile-media';
       const img=document.createElement('img');img.src=freshAsset(p.displayCover||p.image||'assets/interactive-cover.png');img.alt=p.title;img.loading='lazy';media.append(img);
@@ -168,5 +214,6 @@
   window.addEventListener('hashchange',route);
   route();
   const capsulesScript=document.createElement('script');capsulesScript.src='matrix-capsules.js?v=pill-float-1';document.body.append(capsulesScript);
+  const bondeeScript=document.createElement('script');bondeeScript.src='bondee-scene.js?v=pill-float-1';document.body.append(bondeeScript);
   const transitScript=document.createElement('script');transitScript.src='matrix-transit.js?v=pill-float-1';document.body.append(transitScript);
 })();
