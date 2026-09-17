@@ -1,0 +1,30 @@
+@font-face{font-family:CoverScript;src:url('assets/cover-lobster.ttf') format('truetype');font-display:swap}
+/* The cover is isolated from the original project presentation. */
+.entry-cover{position:relative;z-index:90;isolation:isolate;min-height:520px;height:calc(100svh - 24px);background:#000;color:#f12b24;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;text-align:center;padding:28px 32px 18px}
+.entry-cover *{letter-spacing:0;box-sizing:border-box}
+.entry-cover::before,.entry-cover::after{content:'';position:absolute;z-index:-1;pointer-events:none;width:850px;height:850px;background:url('assets/v3-ornament.jpg') center/contain no-repeat;filter:grayscale(1) brightness(3);opacity:.52;animation:entry-turn 70s linear infinite}
+.entry-cover::before{left:-480px;top:-390px}
+.entry-cover::after{right:-480px;bottom:-390px;animation-direction:reverse}
+@keyframes entry-turn{to{transform:rotate(360deg)}}
+.entry-cover h1{font:400 112px/1.25 CoverScript,cursive;margin:0 auto;max-width:100%;color:#f12b24;transform:rotate(-2deg);text-shadow:1px 0 #d71916,-1px 1px #b71612}
+.entry-cover h1 span{white-space:nowrap}
+.entry-portal{align-self:center;justify-self:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:150px;min-height:128px;transform:translateY(-45px);color:#ef514a;font:12px/1.6 Georgia,'PingFang SC',serif}
+.entry-portal img{width:66px;height:66px;object-fit:contain;filter:grayscale(1) brightness(2.2) drop-shadow(0 0 5px #fff);animation:entry-float 6s ease-in-out infinite;transition:filter .3s}
+.entry-portal span{display:block}
+.entry-portal small{display:block;font-size:11px}
+.entry-portal:hover img{filter:grayscale(1) brightness(2.5) drop-shadow(0 0 10px #fff)}
+.entry-portal:hover{color:#fff}
+.entry-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;margin:auto;font:400 26px/1.4 var(--sans);color:#ed3830}
+.entry-nav a{justify-self:center;padding:10px 16px;transition:color .2s}
+.entry-nav a:hover{color:#fff}
+.entry-cover a:focus-visible{outline:1px solid #fff;outline-offset:8px}
+body.at-entry .mini,body.at-entry .imode{visibility:hidden;pointer-events:none}
+body.at-entry .cursor-glow{display:none}
+@keyframes entry-float{0%,100%{transform:translateY(0) rotate(25deg)}50%{transform:translateY(-7px) rotate(31deg)}}
+@media(min-width:1500px){.entry-cover h1{font-size:144px}}
+@media(max-width:1050px){.entry-cover h1{font-size:86px}}
+@media(max-width:760px){.entry-cover{padding:38px 16px 16px}.entry-cover h1{font-size:62px}.entry-nav{font-size:21px}.entry-portal{transform:translateY(-25px)}}
+@media(max-width:520px){.entry-cover h1{font-size:46px}.entry-portal img{width:60px;height:60px}.entry-nav{font-size:18px}.entry-nav a{padding:12px 8px}}
+@media(max-width:360px){.entry-cover h1{font-size:39px}}
+@media(max-width:760px){.entry-cover::before{left:-660px;top:-400px}.entry-cover::after{right:-660px;bottom:-400px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.entry-portal img,.entry-cover::before,.entry-cover::after{animation:none}}

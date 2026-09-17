@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIVIENNE 颜于涵 — AI Designer / Portfolio 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050506;
+  --red:#ff1414;
+  --red-2:#ff5548;
+  --txt:#eae7e2;
+  --mut:#918d87;
+  --faint:#5d5a56;
+  --hair:rgba(255,255,255,.085);
+  --serif:'Playfair Display','PingFang SC',serif;
+  --serif2:'Cormorant Garamond','PingFang SC',serif;
+  --sans:'Jost','PingFang SC','Helvetica Neue',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-variant-emoji:text;
+  background:var(--bg);color:var(--txt);font-family:var(--sans);font-weight:300;
+  line-height:1.9;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--red);color:#fff}
+body::-webkit-scrollbar{width:8px}
+body::-webkit-scrollbar-track{background:#000}
+body::-webkit-scrollbar-thumb{background:#232326}
+body::-webkit-scrollbar-thumb:hover{background:var(--red)}
+
+/* ---------- background stack ---------- */
+.bg-tex{position:fixed;inset:0;z-index:-4;background:url("assets/v3-bg.jpg") center/cover no-repeat;opacity:.9}
+.bg-orn{position:fixed;left:50%;translate:-50% 0;width:min(1500px,135vw);z-index:-3;pointer-events:none;mix-blend-mode:screen;opacity:.62}
+.bg-orn.o1{top:-14vh}
+.bg-orn.o2{bottom:-22vh;rotate:180deg;opacity:.3;width:min(1100px,110vw)}
+.bg-veil{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(58% 46% at 50% 2%,rgba(255,20,20,.11),transparent 72%),
+             linear-gradient(180deg,rgba(5,5,6,.30),rgba(5,5,6,.72) 42%,rgba(5,5,6,.92));}
+.grain{position:fixed;inset:-150%;z-index:-1;pointer-events:none;opacity:.09;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+  animation:grain 7s steps(5) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-2%)}100%{transform:translate(0,0)}}
+.cursor-glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(255,20,20,.13),transparent 62%);filter:blur(20px);
+  translate:-50% -50%;opacity:0;transition:opacity .6s}
+
+/* ---------- shell ---------- */
+.wide{max-width:1440px;margin:0 auto;padding:0 44px;position:relative;z-index:2}
+
+/* ---------- top header ---------- */
+.top{position:relative;padding:34px 44px 0;text-align:center}
+.fish{width:104px;margin:0 auto;filter:drop-shadow(0 8px 26px rgba(120,170,255,.28));animation:sway 8s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(-3deg)}}
+.top .rline{margin-top:14px;color:var(--red);font-size:13px;letter-spacing:3px}
+.top .pill{display:inline-block;margin-top:16px;padding:11px 32px;border-radius:999px;background:var(--red);color:#fff;
+  font-size:13.5px;letter-spacing:4px;box-shadow:0 0 34px rgba(255,20,20,.5),0 0 90px rgba(255,20,20,.22);transition:.35s}
+.top .pill:hover{background:#fff;color:var(--red);box-shadow:0 0 40px rgba(255,255,255,.35)}
+.menu{display:flex;justify-content:space-between;gap:18px;margin:46px auto 0;max-width:1300px;flex-wrap:wrap}
+.menu a{font-size:15px;letter-spacing:4px;color:#cfccc7;transition:.3s;position:relative;padding:4px 2px;white-space:nowrap}
+.menu a:hover{color:#fff}
+.menu a.on{color:var(--red)}
+.menu a.on::before{content:'◉';font-size:9px;margin-right:8px;vertical-align:2px}
+
+/* ---------- sticky mini bar ---------- */
+.mini{position:fixed;top:0;left:0;right:0;z-index:80;display:flex;align-items:center;gap:8px;
+  padding:0 26px;height:54px;background:rgba(5,5,6,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--hair);transform:translateY(-100%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.mini.show{transform:none}
+.mini .nm{font-family:var(--serif);font-size:15px;letter-spacing:1px;margin-right:auto}
+.mini a.ml{font-size:11.5px;letter-spacing:2.5px;color:var(--mut);padding:6px 11px;transition:.25s}
+.mini a.ml:hover,.mini a.ml.on{color:var(--red)}
+.mini .bar{position:absolute;left:0;bottom:-1px;height:1px;background:var(--red);width:0}
+
+/* ---------- hero ---------- */
+.hero{position:relative;z-index:2;text-align:center;padding:96px 32px 110px}
+.hero .kick{font-size:11.5px;letter-spacing:7px;text-transform:uppercase;color:var(--red)}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(58px,11.5vw,172px);line-height:.92;letter-spacing:3px;margin-top:20px}
+.hero h1 i{font-style:italic;color:var(--red)}
+.hero .zh{margin-top:16px;font-size:clamp(19px,2.3vw,28px);font-weight:200;letter-spacing:16px;text-indent:16px;color:#dcd8d3}
+.hero .sub{margin-top:14px;font-family:var(--serif2);font-size:15px;letter-spacing:5px;color:#77736e}
+.hero .lead{max-width:640px;margin:38px auto 0;font-size:13.6px;line-height:2.15;color:var(--mut)}
+.hero .lead b{color:#fff;font-weight:400}
+.hero .marks{display:flex;justify-content:center;flex-wrap:wrap;gap:26px;margin-top:30px;font-size:12.5px;letter-spacing:2px;color:#cfccc7}
+.hero .marks i{color:var(--red);font-style:normal;margin-right:8px}
+.hero .meta{display:flex;justify-content:center;flex-wrap:wrap;gap:26px;margin-top:34px;font-size:11.5px;letter-spacing:2.5px;color:var(--faint)}
+.hero .meta a:hover{color:var(--red)}
+.scroll{margin-top:64px;font-size:10px;letter-spacing:5px;color:var(--faint);text-transform:uppercase}
+.scroll i{display:block;width:1px;height:52px;margin:14px auto 0;background:linear-gradient(var(--red),transparent);animation:drop 2s infinite}
+@keyframes drop{0%{opacity:0;transform:scaleY(.2)}45%{opacity:1}100%{opacity:0;transform:scaleY(1)}}
+
+/* ---------- stats ---------- */
+.stats{position:relative;z-index:2;max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);
+  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.st{padding:36px 16px;text-align:center;border-left:1px solid rgba(255,255,255,.05);transition:background .4s}
+.st:first-child{border-left:none}
+.st:hover{background:rgba(255,20,20,.05)}
+.st b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.3vw,44px);line-height:1;letter-spacing:1px}
+.st:hover b{color:var(--red)}
+.st span{display:block;margin-top:10px;font-size:10.5px;letter-spacing:2px;color:var(--faint);line-height:1.7}
+
+/* ---------- chapter ---------- */
+.chapter{position:relative;z-index:2;max-width:1440px;margin:0 auto;padding:132px 44px 34px;scroll-margin-top:60px}
+.chapter .idx{font-family:var(--serif2);font-size:13px;letter-spacing:4px;color:var(--red)}
+.chapter .hl{display:flex;align-items:flex-end;gap:26px;margin-top:12px}
+.chapter h2{font-family:var(--serif);font-weight:400;font-size:clamp(44px,7.2vw,110px);line-height:.86;letter-spacing:1px}
+.chapter .rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,20,20,.65),rgba(255,255,255,.06));margin-bottom:16px}
+.chapter .rl{display:flex;flex-wrap:wrap;gap:8px 30px;margin-top:22px;font-size:12px;letter-spacing:3px;color:#cfccc7}
+.chapter .rl em{font-style:normal;color:var(--faint)}
+.chapter p.sm{max-width:560px;margin-top:18px;font-size:13px;line-height:2.05;color:var(--mut)}
+
+/* ---------- project row ---------- */
+.row{position:relative;z-index:2;max-width:1440px;margin:0 auto;padding:62px 44px;
+  display:grid;grid-template-columns:118px minmax(0,1fr) 330px;gap:50px;align-items:start;border-top:1px solid rgba(255,255,255,.05)}
+.row.first{border-top:none}
+.row.txt{grid-template-columns:150px minmax(0,1fr)}
+.row.txt .yr{white-space:normal;font-size:22px;line-height:1.35}
+.row.txt .side{max-width:900px}
+.row.tkonly{grid-template-columns:minmax(0,1fr);padding:34px 44px 74px}
+.row.tkonly .side{max-width:none;text-align:center}
+.yr{font-family:var(--serif2);font-size:25px;color:var(--faint);letter-spacing:.5px;padding-top:2px;white-space:nowrap}
+.yr .tg{display:block;margin-top:16px;font-family:var(--sans);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);line-height:1.8}
+.side h3{font-family:var(--serif);font-weight:400;font-size:clamp(23px,2.1vw,31px);line-height:1.3;letter-spacing:.4px}
+.side h3 .arw{color:var(--red);display:inline-block;transition:transform .35s cubic-bezier(.2,.8,.2,1);margin-left:4px}
+.row:hover .arw{transform:translate(5px,-5px)}
+.kx{display:block;margin:20px 0 7px;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:var(--red)}
+.tx{font-size:12.9px;line-height:2.05;color:var(--mut)}
+.tx b{color:#f0eeea;font-weight:400}
+.n{color:var(--red);font-family:var(--serif);font-size:1.2em;letter-spacing:.5px}
+.n.g{color:#e8c37a}
+ul.li{list-style:none;margin-top:8px}
+ul.li li{position:relative;padding-left:16px;font-size:12.6px;line-height:1.95;color:var(--mut);margin-bottom:9px}
+ul.li li::before{content:'—';position:absolute;left:0;color:var(--faint)}
+ul.li li b{color:#f0eeea;font-weight:400}
+.qt{margin-top:18px;padding:14px 0 14px 18px;border-left:1px solid rgba(255,20,20,.55);font-size:12.6px;line-height:2;color:var(--mut);font-style:italic}
+.qt b{color:#f0eeea;font-style:normal;font-weight:400}
+.pt{margin-top:20px;padding-top:18px;border-top:1px dashed rgba(255,255,255,.12)}
+.pt h5{font-family:var(--serif);font-size:15px;font-weight:400;color:#e8c37a;letter-spacing:.5px;margin-bottom:8px}
+.pt p{font-size:12.4px;line-height:2;color:var(--mut)}
+
+/* ---------- media ---------- */
+.stack{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+/* 暗色装裱：白底素材不再直接贴在页面上，而是像画廊装裱一样嵌进暗色卡纸 */
+.ph{position:relative;overflow:hidden;isolation:isolate;cursor:zoom-in;
+  background:linear-gradient(180deg,#131317,#0b0b0e);
+  padding:13px;border-radius:3px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 18px 44px rgba(0,0,0,.45);
+  transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .55s}
+.ph img{width:100%;border-radius:2px;
+  transition:transform .9s cubic-bezier(.2,.8,.2,1),filter .6s;
+  /* 象牙化：把刺眼的纯白压成与页面纸张肌理同色温的暖灰 */
+  filter:brightness(.82) contrast(1.05) saturate(.9) sepia(.13)}
+/* 边缘晕影：让白底四周向暗处过渡，不再是硬邦邦的白方块 */
+.ph::after{content:'';position:absolute;inset:13px;border-radius:2px;pointer-events:none;
+  background:radial-gradient(115% 100% at 50% 45%,rgba(0,0,0,0) 52%,rgba(6,6,8,.55) 100%);
+  mix-blend-mode:multiply;transition:opacity .6s}
+/* 内框细线，强化"装裱"感 */
+.ph::before{content:'';position:absolute;inset:13px;border-radius:2px;pointer-events:none;z-index:2;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}
+.ph:hover{transform:translateY(-5px);box-shadow:inset 0 0 0 1px rgba(255,20,20,.45),0 30px 66px rgba(0,0,0,.62)}
+.ph:hover img{transform:scale(1.02);filter:none}
+.ph:hover::after{opacity:0}
+/* 纯图表 / 流程图：直接反相成暗色模式，与页面完全同调 */
+.ph.neg img{filter:invert(1) hue-rotate(180deg) brightness(.94) contrast(1.06) saturate(.82)}
+.ph.neg:hover img{filter:invert(1) hue-rotate(180deg) brightness(1.04) contrast(1.06) saturate(.95)}
+.ph.neg::after{background:radial-gradient(115% 100% at 50% 45%,rgba(0,0,0,0) 60%,rgba(6,6,8,.45) 100%)}
+/* 原图模式 */
+body.raw .ph{padding:0;background:#0a0a0c}
+body.raw .ph::after{display:none}
+body.raw .ph::before{inset:0}
+body.raw .ph img,body.raw .ph.neg img{filter:none}
+/* 视觉模式切换按钮 */
+.imode{position:fixed;right:22px;bottom:22px;z-index:95;display:flex;align-items:center;gap:10px;
+  padding:9px 16px;border-radius:999px;cursor:pointer;user-select:none;
+  background:rgba(10,10,12,.82);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.14);
+  font-size:10.5px;letter-spacing:2.5px;color:var(--mut);transition:.3s}
+.imode:hover{border-color:rgba(255,20,20,.55);color:#fff}
+.imode i{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);font-style:normal;transition:.3s}
+body.raw .imode i{background:#6f6c68;box-shadow:none}
+.imode b{font-weight:400;color:#e6e3de}
+.ph.v{cursor:default}
+.ph.v video{width:100%;max-height:430px;object-fit:contain;background:#000}
+.cap{margin-top:9px;font-size:9.5px;letter-spacing:2.6px;text-transform:uppercase;color:var(--faint)}
+.cap i{color:var(--red);font-style:normal;margin-right:7px}
+.mcap{margin-top:-4px}
+
+/* ---------- other / gallery ---------- */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px}
+.gal .ph{padding:9px}.gal .ph::after,.gal .ph::before{inset:9px}.gal .ph img{height:215px;width:100%;object-fit:cover}
+
+/* ---------- footer ---------- */
+.foot{position:relative;margin-top:120px;padding:110px 44px 60px;text-align:center;border-top:1px solid var(--hair)}
+.foot .kick{font-size:10.5px;letter-spacing:6px;text-transform:uppercase;color:var(--red)}
+.foot h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,5.4vw,74px);margin:22px 0 6px;letter-spacing:1px;word-break:break-all}
+.foot h2 a:hover{color:var(--red)}
+.foot .fm{display:flex;justify-content:center;flex-wrap:wrap;gap:28px;margin-top:26px;font-size:11.5px;letter-spacing:2.5px;color:var(--faint)}
+.foot .pill2{display:inline-block;margin-top:34px;padding:12px 34px;border-radius:999px;border:1px solid rgba(255,20,20,.6);
+  color:var(--red);font-size:12px;letter-spacing:4px;transition:.35s}
+.foot .pill2:hover{background:var(--red);color:#fff;box-shadow:0 0 34px rgba(255,20,20,.45)}
+.foot .cp{margin-top:56px;font-size:10.5px;letter-spacing:2px;color:#3c3a38}
+.foot .ffish{width:70px;margin:0 auto 26px;opacity:.85}
+
+
+/* ================= FEATURED CASE ================= */
+.fx{position:relative;z-index:2;max-width:1440px;margin:0 auto;padding:120px 44px 40px;scroll-margin-top:60px}
+.bcr{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.18em;color:var(--mut);margin-bottom:6px}
+.bcr b{color:var(--red);font-weight:500}
+.bcr i{opacity:.4;font-style:normal}
+.fx .idx{font-family:var(--serif2);font-size:13px;letter-spacing:4px;color:var(--red)}
+.fx h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.6vw,52px);line-height:1.05;letter-spacing:1px;margin-top:6px}
+.fx .idx{font-size:11px;letter-spacing:3.4px}
+.fx .one{max-width:720px;margin-top:18px;font-size:16px;line-height:1.95;color:#dcd8d3;font-weight:200;letter-spacing:.5px}
+.fx-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:34px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07)}
+.fx-meta div{background:#0a0a0c;padding:16px 18px}
+.fx-meta span{display:block;font-size:9.5px;letter-spacing:3px;color:var(--red);margin-bottom:6px}
+.fx-meta b{font-weight:300;font-size:12.5px;color:#e2dfda;line-height:1.7}
+.fx-kv{position:relative;margin-top:26px;overflow:hidden}
+.fx-kv img{width:100%;display:block}
+.fx-kv::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(5,5,6,.35),transparent 32%,transparent 66%,rgba(5,5,6,.85))}
+.fx-kv .tagline{position:absolute;left:34px;bottom:28px;z-index:2;font-family:var(--serif);font-size:clamp(18px,2.2vw,30px);letter-spacing:1px}
+.fx-kv .tagline em{font-style:italic;color:var(--red)}
+.fx-3{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:44px}
+.fx-3 p{font-size:13px;line-height:2.05;color:var(--mut)}
+.fx-3 p b{color:#f0eeea;font-weight:400}
+.fx-t{display:flex;align-items:center;gap:16px;margin:70px 0 26px}
+.fx-t h3{font-family:var(--serif);font-weight:400;font-size:26px;letter-spacing:.5px;white-space:nowrap}
+.fx-t span{font-size:9.5px;letter-spacing:3px;color:var(--red)}
+.fx-t::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.09)}
+/* 链路图 */
+.flow{display:grid;grid-template-columns:1fr 54px 1fr 54px 1fr;align-items:stretch}
+.stg{border:1px solid rgba(255,255,255,.09);padding:26px 24px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.008));transition:.4s}
+.stg:hover{border-color:rgba(255,20,20,.45);background:linear-gradient(180deg,rgba(255,20,20,.07),rgba(255,255,255,.01))}
+.stg .no{font-family:var(--serif2);font-size:12px;letter-spacing:3px;color:var(--red)}
+.stg h4{font-family:var(--serif);font-weight:400;font-size:22px;margin:8px 0 4px}
+.stg .en{font-size:9.5px;letter-spacing:2.5px;color:var(--faint);text-transform:uppercase}
+.stg ul{list-style:none;margin-top:16px}
+.stg li{position:relative;padding-left:15px;font-size:12.4px;line-height:1.95;color:var(--mut);margin-bottom:7px}
+.stg li::before{content:'';position:absolute;left:0;top:10px;width:5px;height:5px;background:var(--red);opacity:.65}
+.arw2{display:flex;align-items:center;justify-content:center;color:var(--red);font-size:15px}
+/* Agent 架构 */
+.arch{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.nd{border:1px dashed rgba(255,255,255,.2);padding:20px 16px;text-align:center;position:relative;transition:.4s}
+.nd:hover{border-color:var(--red);background:rgba(255,20,20,.05)}
+.nd b{display:block;font-family:var(--serif);font-weight:400;font-size:17px;margin-bottom:8px}
+.nd p{font-size:11.5px;line-height:1.85;color:var(--mut)}
+.nd .dot{position:absolute;top:-5px;left:50%;translate:-50% 0;width:7px;height:7px;background:var(--red);rotate:45deg}
+.skills{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.sk{border:1px solid rgba(255,20,20,.34);color:#ff8478;padding:6px 14px;font-size:10.5px;letter-spacing:2px}
+.sk.g{border-color:rgba(255,255,255,.16);color:var(--mut)}
+/* 贡献四块 */
+.cds{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.cd{border-top:1px solid var(--red);padding:22px 22px 24px;background:rgba(255,255,255,.025);transition:.4s}
+.cd:hover{background:rgba(255,255,255,.05)}
+.cd .n2{font-family:var(--serif2);font-size:12px;letter-spacing:3px;color:var(--red)}
+.cd h5{font-family:var(--serif);font-weight:400;font-size:20px;margin:6px 0 10px}
+.cd p{font-size:12.6px;line-height:2;color:var(--mut)}
+/* 分段展示 */
+.gr2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.gr3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.gr4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.gr6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.gr2 .cap,.gr3 .cap,.gr4 .cap,.gr6 .cap{margin-top:8px}
+.gr6 .ph{padding:8px}
+
+/* ===== 深度展开块（模型评测） ===== */
+.deep{max-width:1440px;margin:20px auto 10px;padding:30px 32px 34px;border:1px solid var(--hair);
+  background:radial-gradient(120% 130% at 50% -20%,rgba(255,20,20,.06),transparent 62%),rgba(255,255,255,.016)}
+.deep .fh{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.deep .fh b{font-family:var(--serif2);font-size:20px;font-weight:400;letter-spacing:2px}
+.deep .fh s{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,20,20,.5),rgba(255,255,255,.05));text-decoration:none}
+.deep .fh i{font-style:normal;color:var(--red);font-size:10px;letter-spacing:2px}
+
+.mx{border:1px solid var(--hair);background:rgba(255,255,255,.022);padding:16px 16px 14px}
+.mx .kx{display:block;font-size:10.5px;letter-spacing:3px;color:var(--red);margin-bottom:12px}
+.mxr{display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--hair)}
+.mxr em{font-style:normal;flex:none;width:38px;font-size:11px;letter-spacing:1.5px;color:var(--mut)}
+.mxr b{font-size:11.5px;line-height:1.8;font-weight:300;color:#c9c4be;letter-spacing:.3px}
+.dp2{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.dp2.tight{gap:40px;align-items:start}
+.deep .kx{display:block;font-size:10.5px;letter-spacing:3px;color:var(--red);margin-bottom:8px}
+.deep .tx{font-size:13px;line-height:2.05;color:#c4bfb9;font-weight:200}
+.ecds{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 6px}
+.ecd{border:1px solid var(--hair);border-top:2px solid rgba(255,20,20,.45);background:rgba(255,255,255,.026);padding:16px 15px 18px}
+.ecd .n2{font-family:var(--serif2);font-size:22px;color:var(--red);line-height:1}
+.ecd h5{margin:8px 0 8px;font-size:13.5px;font-weight:400;letter-spacing:1.4px;color:var(--txt)}
+.ecd p{font-size:11.5px;line-height:1.95;color:#aba6a0;font-weight:200}
+.deep .skills{display:flex;flex-wrap:wrap;gap:7px}
+.deep .skills span{font-size:10.5px;letter-spacing:1px;color:#e7ddd9;padding:4px 10px;border:1px solid rgba(255,20,20,.26);background:rgba(255,20,20,.05);border-radius:20px}
+table.mos{width:100%;border-collapse:collapse}
+table.mos td{border-top:1px solid var(--hair);padding:11px 8px;vertical-align:top}
+table.mos tr:last-child td{border-bottom:1px solid var(--hair)}
+td.mv{width:34px;font-family:var(--serif2);font-size:20px;color:var(--red);line-height:1.1}
+td.mn{width:150px;font-size:12px;letter-spacing:.8px;color:var(--txt)}
+td.md{font-size:11.5px;line-height:1.85;color:#a29d97;font-weight:200}
+
+
+
+/* article 右侧配图，左边渐变虚化融进页面 */
+.row.hasimg{position:relative;overflow:hidden}
+.row.hasimg>*:not(.rimg){position:relative;z-index:1}
+.row.hasimg .side{max-width:620px}
+.row.hasimg{min-height:430px}
+.row .rimg{position:absolute;right:0;top:0;bottom:0;width:auto;z-index:0;pointer-events:none}
+.row .rimg img{height:100%;width:auto;display:block;opacity:.95;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 18%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.92) 70%,#000 100%);
+  mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 18%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.92) 70%,#000 100%)}
+.row .rimg.soft{width:42%;max-width:none;top:62px;bottom:62px;display:flex;align-items:flex-start;justify-content:flex-end;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%)}
+.row .rimg.soft img{width:100%;height:auto;max-height:100%;object-fit:contain;
+  filter:brightness(.82) contrast(1.05) saturate(.95);opacity:.96;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.22) 26%,rgba(0,0,0,.72) 58%,#000 88%);
+  mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.22) 26%,rgba(0,0,0,.72) 58%,#000 88%)}
+@media (max-width:1100px){.row .rimg{opacity:.45}.row.hasimg .side{max-width:none}}
+@media (max-width:760px){.row .rimg{opacity:.4}}
+
+/* AI 风格化头图：原图不裁切，同图模糊延展补宽 */
+.shero{position:relative;overflow:hidden;border:1px solid var(--hair);display:grid;
+  grid-template-columns:minmax(0,460px) minmax(0,1fr);gap:34px;align-items:center;padding:26px 34px 26px 26px;margin-bottom:6px}
+.shero::before{content:"";position:absolute;inset:-60px;background:url("assets/style-hero.jpg") center/cover no-repeat;
+  filter:blur(46px) brightness(.5) saturate(.8);opacity:.9;z-index:0}
+.shero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,6,.55),rgba(5,5,6,.82));z-index:0}
+.sh-img,.sh-txt{position:relative;z-index:1}
+.sh-img img{width:100%;height:auto;display:block;border:1px solid rgba(255,255,255,.14)}
+.sh-txt em{font-style:normal;font-family:var(--serif2);font-size:12px;letter-spacing:4px;color:var(--red)}
+.sh-txt h4{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,46px);line-height:1.15;margin:10px 0 12px}
+.sh-txt p{font-size:13.5px;line-height:2;color:#ded9d3;font-weight:200;max-width:520px}
+.sh-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.sh-tags span{font-size:10.5px;letter-spacing:1.4px;color:#ffe0da;padding:5px 12px;border:1px solid rgba(255,20,20,.4);background:rgba(255,20,20,.08);border-radius:20px}
+.one-up{max-width:1000px;margin:0 auto}
+.gr3.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:900px){.shero{grid-template-columns:1fr;padding:18px}.gr3.wall{grid-template-columns:repeat(2,1fr)}}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.met{border:1px solid var(--hair);background:rgba(255,255,255,.024);padding:18px 16px}
+.met b{display:block;font-family:var(--serif);font-size:30px;font-weight:400;color:var(--red);line-height:1}
+.met span{display:block;margin-top:8px;font-size:11px;letter-spacing:.8px;color:var(--mut)}
+@media (max-width:1000px){.mets{grid-template-columns:repeat(2,1fr)}}
+.dons{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.dcard{border:1px solid var(--hair);background:rgba(255,255,255,.022);padding:16px 14px 14px;text-align:center}
+.dcard h6{font-size:12px;font-weight:400;letter-spacing:2px;color:var(--txt);margin:0 0 10px}
+svg.dn{width:100%;max-width:170px;height:auto}
+svg.dn .dnn{fill:var(--txt);font-size:17px;text-anchor:middle;font-family:var(--serif2)}
+svg.dn .dnl{fill:var(--faint);font-size:6px;letter-spacing:1.6px;text-anchor:middle}
+svg.dn .sl{transition:opacity .25s}
+.dcard:hover svg.dn .sl{opacity:.55}
+.dcard:hover svg.dn .sl:hover{opacity:1}
+ul.dlg{margin-top:12px;text-align:left}
+ul.dlg li{list-style:none;display:flex;align-items:center;gap:7px;font-size:10.5px;line-height:1.9;color:#b3aea8}
+ul.dlg li em{width:7px;height:7px;flex:none;border-radius:1px}
+ul.dlg li span{flex:1;letter-spacing:.4px}
+ul.dlg li b{color:var(--mut);font-weight:400}
+@media (max-width:1000px){.ecds{grid-template-columns:repeat(2,1fr)}.dons{grid-template-columns:repeat(2,1fr)}.dp2{grid-template-columns:1fr;gap:22px}}
+@media (max-width:640px){.deep{padding:20px 16px 24px}.ecds,.dons{grid-template-columns:1fr}}
+
+/* ===== 原生流程图（作品集配色） ===== */
+.fdg{margin:26px 0 6px;padding:26px 24px 24px;border:1px solid var(--hair);background:
+  radial-gradient(120% 140% at 50% -20%,rgba(255,20,20,.07),transparent 60%),rgba(255,255,255,.018)}
+.fdg .fh{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.fdg .fh b{font-family:var(--serif2);font-size:19px;font-weight:400;letter-spacing:2px;color:var(--txt)}
+.fdg .fh s{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,20,20,.5),rgba(255,255,255,.05));text-decoration:none}
+.fdg .fh i{font-style:normal;color:var(--red);font-size:10px}
+.frow{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.fnode{min-width:190px;padding:12px 18px;border:1px solid var(--hair);background:rgba(255,255,255,.03);text-align:center}
+.fnode b{display:block;font-size:13px;letter-spacing:1.6px;color:var(--txt);font-weight:400}
+.fnode span{display:block;margin-top:5px;font-size:11px;color:var(--faint);letter-spacing:.6px}
+.farr{color:var(--red);font-size:13px;opacity:.75}
+.fvline{width:1px;height:26px;margin:0 auto;background:linear-gradient(180deg,rgba(255,20,20,.55),rgba(255,255,255,.06))}
+.fdir{border:1px solid rgba(255,20,20,.35);background:linear-gradient(180deg,rgba(255,20,20,.09),rgba(255,20,20,.02));padding:16px 20px;text-align:center}
+.fdir b{font-family:var(--serif2);font-size:17px;letter-spacing:2.5px;color:#ffd9d3;font-weight:400}
+.fdir b em{font-style:normal;color:var(--red)}
+.fchips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:12px}
+.fchips span{font-size:10.5px;letter-spacing:1px;color:#e7ddd9;padding:4px 10px;border:1px solid rgba(255,20,20,.28);background:rgba(255,20,20,.05);border-radius:20px}
+.fsub{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.fcard{border:1px solid var(--hair);border-top:2px solid rgba(255,20,20,.5);background:rgba(255,255,255,.028);padding:14px 13px 15px}
+.fcard h6{font-size:12.5px;font-weight:400;letter-spacing:1.4px;color:var(--txt);margin:0 0 9px}
+.fcard .ft{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.fcard .ft span{font-size:10px;letter-spacing:.6px;color:var(--mut);border:1px solid var(--hair);padding:2px 7px;border-radius:14px}
+.fcard li{list-style:none;font-size:11px;line-height:1.95;color:#b9b4ae;letter-spacing:.4px}
+.fcard li i{font-style:normal;color:var(--red);margin-right:6px;font-size:9px}
+.fman{border:1px solid var(--hair);background:rgba(255,255,255,.025);padding:14px 18px;text-align:center}
+.fman b{font-size:12.5px;letter-spacing:2px;color:var(--txt);font-weight:400}
+.fman .fchips span{border-color:var(--hair);background:rgba(255,255,255,.03);color:#c8c3bd}
+.fout{display:inline-block;padding:11px 30px;border:1px solid rgba(255,20,20,.55);background:rgba(255,20,20,.1);font-size:12.5px;letter-spacing:3px;color:#ffe2dc}
+@media (max-width:1000px){.fsub{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.fsub{grid-template-columns:repeat(2,1fr)}.fdg{padding:18px 14px}}
+/* 同一行内比例不一时，按长边适配统一高度 */
+.fx .gr3 .ph,.fx .gr4 .ph{height:320px}
+.fx .gr6 .ph{height:260px}
+.fx .gr3 .ph img,.fx .gr4 .ph img,.fx .gr6 .ph img{height:100%;object-fit:contain}
+.fx .gr3 .ph.v video,.fx .gr4 .ph.v video,.fx .gr6 .ph.v video{height:100%;max-height:none;object-fit:contain}
+.gr6 .ph::after,.gr6 .ph::before{inset:8px}
+.note{max-width:760px;font-size:13px;line-height:2.05;color:var(--mut);margin:-8px 0 22px}
+.note b{color:#f0eeea;font-weight:400}
+.note .n{font-size:1.1em}
+.sub-t{display:flex;align-items:baseline;gap:12px;margin:34px 0 14px}
+.sub-t h4{font-family:var(--serif);font-weight:400;font-size:19px;letter-spacing:.4px}
+.sub-t em{font-style:normal;font-size:9.5px;letter-spacing:2.5px;color:var(--red)}
+.sub-t s{flex:1;height:1px;background:rgba(255,255,255,.07);text-decoration:none}
+.step{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+.step span{font-size:11px;letter-spacing:1.5px;color:var(--mut);border:1px solid rgba(255,255,255,.12);padding:6px 13px}
+.step span.on{border-color:rgba(255,20,20,.5);color:#ff8478}
+.step i{color:var(--red);font-style:normal;align-self:center;font-size:11px}
+
+/* ===== StockPulse：暗色 App 截图装裱 + 可交互原型 ===== */
+.ph.app{background:linear-gradient(180deg,#0e1017,#08090d);padding:10px}
+.ph.app::after{display:none}
+.ph.app::before{inset:10px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.055)}
+.ph.app img{filter:none}
+.ph.app:hover img{transform:scale(1.015);filter:none}
+body.raw .ph.app{padding:0;background:#08090d}
+.gr5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.gr5 .cap{margin-top:8px}
+.fx .gr5 .ph img{height:100%;object-fit:contain}
+.fx .gr3 .ph.app,.fx .gr4 .ph.app,.fx .gr5 .ph.app{height:560px}
+.lproto{display:grid;grid-template-columns:376px 1fr;gap:48px;align-items:center;padding:34px;
+  border:1px solid var(--hair);
+  background:radial-gradient(120% 130% at 10% -12%,rgba(255,20,20,.06),transparent 60%),rgba(255,255,255,.016)}
+.lpph{position:relative;width:376px;height:786px;border-radius:52px;padding:10px;flex:0 0 auto;
+  background:linear-gradient(160deg,#31384a,#0d1017 42%,#262c3b);
+  box-shadow:0 36px 76px rgba(0,0,0,.66),0 0 0 1px rgba(255,255,255,.06)}
+.lpph iframe{width:100%;height:100%;border:0;border-radius:43px;background:#0A0C13;display:block}
+.lpph .isl{position:absolute;top:11px;left:50%;translate:-50% 0;width:96px;height:27px;border-radius:15px;background:#000;z-index:3;pointer-events:none}
+.lpx .kx{display:block;font-size:10.5px;letter-spacing:3px;color:var(--red);margin-bottom:10px}
+.lpx h4{font-family:var(--serif);font-weight:400;font-size:27px;letter-spacing:.5px;margin-bottom:16px}
+.lpx p{font-size:13px;line-height:2.05;color:var(--mut);margin-bottom:16px;max-width:640px}
+.lpx p b{color:#f0eeea;font-weight:400}
+.lpbtn{display:inline-flex;align-items:center;gap:10px;padding:11px 22px;border:1px solid rgba(255,20,20,.45);
+  color:#ff8478;font-size:11px;letter-spacing:2.5px;transition:.35s}
+.lpbtn:hover{background:rgba(255,20,20,.12);color:#fff}
+@media (max-width:1080px){
+  .lproto{grid-template-columns:1fr;gap:30px;justify-items:center}
+  .fx .gr5{grid-template-columns:repeat(3,1fr)}
+  .fx .gr3 .ph.app,.fx .gr4 .ph.app,.fx .gr5 .ph.app{height:440px}
+}
+@media (max-width:640px){
+  .lpph{width:100%;max-width:330px;height:auto;aspect-ratio:376/786;border-radius:44px}
+  .lpph iframe{border-radius:36px}
+  .fx .gr5{grid-template-columns:repeat(2,1fr)}
+  .fx .gr3 .ph.app,.fx .gr4 .ph.app,.fx .gr5 .ph.app{height:380px}
+}
+@media(max-width:1120px){
+  .fx-meta{grid-template-columns:repeat(2,1fr)}
+  .fx-3{grid-template-columns:1fr;gap:22px}
+  .flow{grid-template-columns:1fr;gap:0}
+  .arw2{height:44px;rotate:90deg}
+  .arch{grid-template-columns:repeat(2,1fr)}
+  .gr3,.gr4{grid-template-columns:repeat(2,1fr)}
+  .gr6{grid-template-columns:repeat(3,1fr)}
+  .fx .gr3 .ph,.fx .gr4 .ph{height:270px}
+  .fx .gr6 .ph{height:230px}
+}
+@media(max-width:720px){
+  .fx{padding:80px 20px 30px}
+  .fx-meta{grid-template-columns:1fr}
+  .cds{grid-template-columns:1fr}
+  .arch{grid-template-columns:1fr}
+  .gr2,.gr3,.gr4{grid-template-columns:1fr}
+  .gr6{grid-template-columns:repeat(2,1fr)}
+  .fx .gr3 .ph,.fx .gr4 .ph{height:230px}
+  .fx .gr6 .ph{height:200px}
+  .fx-kv .tagline{left:16px;bottom:14px}
+  .fx-t{margin:48px 0 20px}
+}
+
+/* ===== ARCANA 塔罗：riso 荧光牌面直出，不走白底象牙化那套压色 ===== */
+.ph.riso{background:#07070a;padding:10px}
+.ph.riso::after{display:none}
+.ph.riso::before{inset:10px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.ph.riso img{filter:none}
+.ph.riso:hover img{filter:none}
+.fx .gr2 .ph.band,.fx .gr3 .ph.band,.fx .gr4 .ph.band{height:240px}
+.fx .gr2 .ph.band img{height:100%;object-fit:contain}
+@media(max-width:720px){.fx .gr3 .ph.band,.fx .gr4 .ph.band{height:190px}}
+
+/* ---------- lightbox ---------- */
+.lbx{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:44px;
+  background:rgba(3,3,4,.95);backdrop-filter:blur(6px)}
+.lbx.on{display:flex;animation:fd .25s ease}
+@keyframes fd{from{opacity:0}to{opacity:1}}
+.lbx img{max-width:94vw;max-height:90vh;box-shadow:0 30px 90px rgba(0,0,0,.8);border-radius:2px}
+.lbx img.neg{filter:invert(1) hue-rotate(180deg) brightness(.96) contrast(1.05) saturate(.85)}
+body.raw .lbx img.neg{filter:none}
+.lbx-x{position:absolute;top:22px;right:28px;width:42px;height:42px;border:1px solid rgba(255,255,255,.25);
+  background:transparent;color:#fff;font-size:16px;cursor:pointer;transition:.25s}
+.lbx-x:hover{background:var(--red);border-color:var(--red)}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media(max-width:1120px){
+  .row{grid-template-columns:96px minmax(0,1fr);gap:30px 26px}
+  .side{grid-column:1/-1}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .st:nth-child(4){border-left:none}
+  .g3{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  .wide,.chapter,.row{padding-left:20px;padding-right:20px}
+  .top{padding:26px 20px 0}
+  .menu{gap:14px 22px;justify-content:center;margin-top:34px}
+  .menu a{font-size:12.5px;letter-spacing:2.5px}
+  .hero{padding:60px 18px 80px}
+  .hero .zh{letter-spacing:8px;text-indent:8px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .st{border-left:none;border-top:1px solid rgba(255,255,255,.05);padding:24px 12px}
+  .chapter{padding-top:86px}
+  .row{grid-template-columns:1fr;padding-top:44px;padding-bottom:44px}
+  .yr{font-size:20px;display:flex;align-items:baseline;gap:16px}
+  .yr .tg{margin-top:0}
+  .g2,.g3{grid-template-columns:1fr}
+  .gal{grid-template-columns:1fr 1fr;gap:10px}
+  .gal .ph{padding:7px}
+  .gal .ph::after,.gal .ph::before{inset:7px}
+  .gal .ph img{height:145px}
+  .bg-orn.o1{top:-4vh;width:170vw}
+  .foot{padding:70px 20px 40px;margin-top:70px}
+  .mini{padding:0 12px;height:48px;overflow-x:auto;scrollbar-width:none}
+  .mini::-webkit-scrollbar{display:none}
+  .mini .nm{font-size:13px}
+  .mini a.ml{font-size:10.5px;letter-spacing:1.2px;padding:6px 7px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}.rv{opacity:1;transform:none}}
+
+.mtb{margin-bottom:26px}
+.mtb .mtt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:#e0533c;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.mtb .mtt:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(224,83,60,.4),transparent)}
+.mtb .mtn{font-size:12.5px;line-height:1.85;color:#8d8781;margin-top:11px;max-width:660px}
+.mtb .mtn b{color:#cfc9c2;font-weight:500}
+.mt4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mtile{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);padding:7px 7px 0;transition:.35s}
+.mtile:hover{border-color:rgba(224,83,60,.45);transform:translateY(-3px)}
+.mtile .mimg{overflow:hidden;background:#100e0e}
+.mtile img{width:100%;display:block;filter:saturate(.96) brightness(.97)}
+.mtile b{display:block;text-align:center;font-size:11.5px;letter-spacing:.1em;color:#a9a29b;font-weight:500;padding:9px 0 10px}
+.mtile.on b{color:#e0533c}
+.cmp{position:relative;max-width:470px;--p:50%;border:1px solid rgba(255,255,255,.09);
+  overflow:hidden;cursor:ew-resize;user-select:none;background:#0d0b0b;touch-action:none}
+.cmp>img{width:100%;display:block}
+.cmp .caft{position:absolute;inset:0;clip-path:inset(0 0 0 var(--p))}
+.cmp .caft img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cmp .cbar{position:absolute;top:0;bottom:0;left:var(--p);width:1px;background:#e0533c;box-shadow:0 0 14px rgba(224,83,60,.7)}
+.cmp .cbar:after{content:'';position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;
+  border:1px solid rgba(224,83,60,.9);border-radius:50%;background:rgba(12,10,10,.55);backdrop-filter:blur(3px)}
+.cmp .cbar:before{content:'\2039\00a0\203a';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:13px;color:#e0533c;z-index:2;letter-spacing:1px}
+.cmp .clb{position:absolute;bottom:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+  color:#e8e4de;background:rgba(10,8,8,.62);border:1px solid rgba(255,255,255,.14);padding:4px 9px;backdrop-filter:blur(4px)}
+.cmp .clb.l{left:12px}
+.cmp .clb.r{right:12px}
+@media (max-width:760px){.mt4{grid-template-columns:repeat(2,1fr)}}
+
+
+.tks{margin:6px 0 4px;display:flex;flex-direction:column;gap:18px}
+.tks.big{gap:34px;align-items:center;margin:0}
+.tks.big .tkg{width:100%}
+.tks.big .tkg em{font-size:11px;letter-spacing:.32em;margin-bottom:18px}
+.tks.big .tkr{justify-content:center;gap:14px}
+.tks.big .tk{padding:16px 26px;font-size:16px;letter-spacing:.08em;gap:11px}
+.tks.big .tk i{width:7px;height:7px}
+.tks.big .tk b{font-size:11px;margin-left:4px}
+@media (max-width:640px){
+  .tks.big .tk{padding:12px 16px;font-size:13.5px}
+  .row.tkonly{padding:24px 20px 54px}
+}
+.tkg em{display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.24em;
+  color:var(--faint);font-style:normal;margin-bottom:9px}
+.tkr{display:flex;flex-wrap:wrap;gap:8px}
+.tk{position:relative;display:inline-flex;align-items:center;gap:8px;
+  padding:8px 13px;font-size:12.5px;letter-spacing:.06em;color:#a49d96;
+  border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.022);
+  overflow:hidden;cursor:default;transition:color .3s,border-color .3s,transform .3s,background .3s}
+.tk i{width:5px;height:5px;background:#4a4441;border-radius:50%;transition:.3s;flex:none}
+.tk b{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:#5f5852;
+  font-weight:400;margin-left:2px;transition:.3s}
+.tk:after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.14),transparent);
+  transform:skewX(-18deg);opacity:0;transition:opacity .3s}
+.tk:hover{color:#f3efe9;border-color:rgba(224,83,60,.6);background:rgba(224,83,60,.07);
+  transform:translateY(-2px);box-shadow:0 6px 20px rgba(224,83,60,.14)}
+.tk:hover i{background:var(--red);box-shadow:0 0 10px rgba(224,83,60,.9);transform:scale(1.3)}
+.tk:hover b{color:#c9a89f}
+.tk:hover:after{opacity:1;animation:tkshine .62s ease-out}
+@keyframes tkshine{from{left:-60%}to{left:120%}}
+@media (max-width:640px){.tk{font-size:11.5px;padding:7px 10px}}
+
+.astage{position:relative;z-index:2;max-width:1180px;margin:26px auto 8px;min-height:620px;
+  display:flex;align-items:center;justify-content:center;isolation:isolate}
+.astage .ahint{position:absolute;left:50%;top:8px;transform:translateX(-50%);z-index:6;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;color:#8d8781;
+  display:flex;align-items:center;gap:9px;transition:.45s;white-space:nowrap}
+.astage .ahint i{width:6px;height:6px;border-radius:50%;background:var(--red);
+  box-shadow:0 0 12px rgba(224,83,60,.9);animation:apulse 1.7s ease-in-out infinite}
+@keyframes apulse{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.25)}}
+.astage:hover .ahint,.astage.on .ahint{opacity:0;transform:translateX(-50%) translateY(-8px)}
+.acen{position:relative;z-index:4;height:540px;display:flex;align-items:flex-end;justify-content:center}
+.acen .achar{height:100%;width:auto;display:block;transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .6s;
+  filter:drop-shadow(0 26px 46px rgba(0,0,0,.65))}
+.astage:hover .achar,.astage.on .achar{transform:scale(1.035) translateY(-6px)}
+.aglow{position:absolute;left:50%;top:50%;width:520px;height:520px;transform:translate(-50%,-50%) scale(.7);
+  background:radial-gradient(circle,rgba(224,83,60,.2),rgba(224,83,60,.05) 45%,transparent 70%);
+  opacity:0;transition:.8s;pointer-events:none}
+.astage:hover .aglow,.astage.on .aglow{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.aname{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);text-align:center;
+  transition:.5s;pointer-events:none}
+.aname b{display:block;font-size:12.5px;letter-spacing:.1em;color:#cfc9c2;font-weight:500}
+.aname span{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.24em;color:var(--red);opacity:.85}
+.astage:hover .aname,.astage.on .aname{opacity:0;transform:translateX(-50%) translateY(10px)}
+.acard{position:absolute;z-index:5;opacity:0;pointer-events:none;
+  transition:opacity .5s ease,transform .68s cubic-bezier(.18,.85,.24,1),filter .5s;filter:blur(3px)}
+.acard .am{border:1px solid rgba(255,255,255,.12);background:rgba(16,13,13,.82);padding:6px;
+  box-shadow:0 22px 50px rgba(0,0,0,.6);backdrop-filter:blur(6px)}
+.acard .am img,.acard .am video{width:100%;display:block}
+.acard b{display:block;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9.5px;
+  letter-spacing:.16em;color:#a9a29b;font-weight:400}
+.acard.c1{width:296px;left:6%;top:8%;transform:translate(70px,52px) scale(.86)}
+.acard.c2{width:168px;right:13%;top:9%;transform:translate(-64px,48px) scale(.86)}
+.acard.c3{width:250px;left:2%;bottom:12%;transform:translate(78px,-44px) scale(.86)}
+.acard.c4{width:132px;right:8%;bottom:4%;transform:translate(-58px,-40px) scale(.86)}
+.acard.c5{width:136px;right:26%;bottom:2%;transform:translate(-40px,-40px) scale(.86)}
+.astage:hover .acard,.astage.on .acard{opacity:1;filter:blur(0);transform:translate(0,0) scale(1)}
+.astage:hover .acard.c1,.astage.on .acard.c1{transition-delay:.02s}
+.astage:hover .acard.c2,.astage.on .acard.c2{transition-delay:.08s}
+.astage:hover .acard.c3,.astage.on .acard.c3{transition-delay:.14s}
+.astage:hover .acard.c4,.astage.on .acard.c4{transition-delay:.2s}
+.alines{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:0;transition:.6s}
+.alines path{fill:none;stroke:rgba(224,83,60,.42);stroke-width:1;stroke-dasharray:4 6}
+.astage:hover .alines,.astage.on .alines{opacity:1}
+
+.acard.c2 .am{border:none;background:none;padding:0;box-shadow:none;backdrop-filter:none}
+.acard.c2 .am img{filter:drop-shadow(0 18px 32px rgba(0,0,0,.6))}
+.acard.c2 b{text-align:center}
+
+.proto2{position:relative;z-index:2;max-width:1500px;margin:0 auto;padding:6px 44px 10px;
+  display:grid;grid-template-columns:548px minmax(0,1fr);
+  column-gap:30px;row-gap:0;align-items:start}
+.proto2 .mtt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:#e0533c;display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.proto2 .mtt:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(224,83,60,.4),transparent)}
+.proto2 .mtn{font-size:12px;line-height:1.85;color:#8d8781;letter-spacing:.02em;margin-top:14px}
+.proto2 .mtn b{color:#cfc9c2;font-weight:500}
+.proto2 .mtt.a1{grid-column:1;grid-row:1}
+.proto2 .mtt.a2{grid-column:2;grid-row:1}
+.proto2 .pgrp{grid-column:1;grid-row:2}
+.proto2 .qbox{grid-column:2;grid-row:2;min-width:0}
+.pwrap{display:flex;gap:26px;align-items:flex-start}
+.pside{flex:1;min-width:0}
+.pm{width:268px;flex:none;border:1px solid rgba(255,255,255,.16);border-radius:30px;background:#0f0d0d;
+  padding:9px;box-shadow:0 26px 60px rgba(0,0,0,.6)}
+.pm-bar{display:flex;justify-content:space-between;align-items:center;padding:2px 12px 7px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;color:#6d6660}
+.pm-bar i{width:34px;height:4px;border-radius:3px;background:#2a2523}
+.pm-body{background:#faf9f7;border-radius:23px;padding:14px 13px 15px}
+.pm-bub{background:#efedea;color:#2a2724;font-size:11.5px;line-height:1.6;padding:9px 11px;
+  border-radius:12px 12px 12px 3px;margin-bottom:11px}
+.pm-stage{position:relative;height:196px;border-radius:12px;overflow:hidden;background:#e9e6e2}
+.pbig{position:absolute;inset:0;opacity:0;transition:.45s}
+.pbig.on{opacity:1}
+.pbig img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
+.pbig .pri{position:absolute;left:8px;top:8px;font-family:'JetBrains Mono',monospace;font-size:8.5px;
+  letter-spacing:.1em;padding:3px 6px;border-radius:3px;color:#231f1d;background:#ffe608}
+.pbig .pri.p0{background:#ffc46b}.pbig .pri.p1{background:#a8c7f0}
+.pm-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.pth{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;background:none;
+  cursor:pointer;line-height:0;transition:.25s}
+.pth img{width:100%;height:42px;object-fit:cover;display:block;opacity:.72;transition:.25s}
+.pth:hover img,.pth.on img{opacity:1}
+.pth.on{border-color:#231f1d}
+.pm-act{display:flex;gap:8px;margin-top:12px}
+.pm-act span{flex:1;text-align:center;font-size:11px;padding:9px 0;border-radius:20px}
+.pm-act .gh{border:1px solid #d9d5d0;color:#6e6862}
+.pm-act .pr{background:#231f1d;color:#fff}
+.pside{flex:1;min-width:0}
+.pmeta{display:none}
+.pmeta.on{display:block;padding:0 0 16px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:16px}
+.pmeta b{display:block;font-size:17px;color:#efeae4;letter-spacing:.04em}
+.pmeta em{display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;
+  color:var(--red);font-style:normal;margin:5px 0 8px}
+.pmeta span{font-size:12px;color:#8d8781;letter-spacing:.05em}
+.pflow{display:flex;flex-direction:column;gap:9px}
+.pf{display:flex;align-items:baseline;gap:10px;font-size:12.5px;color:#7d7873;transition:.3s}
+.pf b{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#4e4844}
+.pf.on{color:#d9d3cc}.pf.on b{color:var(--red)}
+.quad{position:relative;width:100%;padding-top:86%;border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.015);overflow:hidden}
+.qi{position:absolute;width:50%;height:50%;display:flex;align-items:flex-start;justify-content:flex-start}
+.qi em{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#6c6560;
+  font-style:normal;padding:8px 10px}
+.q1{left:0;top:0;background:rgba(80,152,99,.06)}
+.q2{right:0;top:0;background:rgba(215,131,32,.06)}
+.q2 em{margin-left:auto;text-align:right}
+.q3{left:0;bottom:0;background:rgba(82,99,165,.06)}
+.q4{right:0;bottom:0;background:rgba(133,105,203,.06)}
+.q4 em{margin-left:auto;text-align:right}
+.qax{position:absolute;background:rgba(255,255,255,.14)}
+.qax.qx{left:4%;right:4%;top:50%;height:1px}
+.qax.qy{top:4%;bottom:4%;left:50%;width:1px}
+.qlb{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;
+  color:#a9a29b;background:rgba(12,10,10,.8);border:1px solid rgba(255,255,255,.12);padding:3px 7px}
+.qlb.t{left:50%;top:6px;transform:translateX(-50%)}
+.qlb.b{left:50%;bottom:6px;transform:translateX(-50%)}
+.qlb.l{left:6px;top:50%;transform:translateY(-50%)}
+.qlb.r{right:6px;top:50%;transform:translateY(-50%)}
+.qd{position:absolute;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%);
+  transition:.25s;cursor:default}
+.qd.\32 d{background:#8569cb}.qd.indie{background:#d25d5a}.qd.dark{background:#5263a5}
+.qd.\33 d{background:#509863}.qd.goods{background:#d78320}
+.qd.oc{box-shadow:0 0 0 3px rgba(255,230,8,.55)}
+.qd:hover{transform:translate(-50%,-50%) scale(1.5);z-index:4}
+.qd:after{content:attr(data-n);position:absolute;left:50%;top:-24px;transform:translateX(-50%) scale(.9);
+  white-space:nowrap;font-family:var(--sans);font-size:10px;letter-spacing:.05em;color:#f0ece6;
+  background:rgba(12,10,10,.92);border:1px solid rgba(255,255,255,.16);padding:3px 7px;
+  opacity:0;pointer-events:none;transition:.2s}
+.qd:hover:after{opacity:1}
+.qlg{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px}
+.qlg span{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;color:#8d8781;letter-spacing:.06em}
+.qlg .qd{position:static;transform:none;width:8px;height:8px}
+.qlg .qd.ring{background:none;border:1.5px solid #ffe608;box-shadow:none}
+.qsteps{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:20px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07)}
+.qs{background:#0c0a0a;padding:14px 15px;transition:.3s}
+.qs:hover{background:rgba(224,83,60,.05)}
+.qs b{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--red);letter-spacing:.14em}
+.qs h6{font-size:13px;color:#e5e0da;margin:6px 0 6px;font-weight:500;letter-spacing:.04em}
+.qs p{font-size:11.5px;line-height:1.75;color:#8a847e}
+.qs p .n{color:#e5e0da}
+@media (max-width:1080px){
+  .proto2{grid-template-columns:1fr;padding:6px 22px}
+  .proto2>*{grid-column:1!important}
+  .proto2 .pgrp{grid-row:2}
+  .proto2 .mtt.a2{grid-row:3;margin-top:34px}
+  .proto2 .qbox{grid-row:4}
+}
+
+
+.plist{margin-top:18px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.012)}
+.pli{display:grid;grid-template-columns:26px minmax(0,1fr) 44px;gap:10px 12px;align-items:center;
+  padding:11px 14px;border-top:1px solid rgba(255,255,255,.06);transition:.3s;cursor:default}
+.pli:first-child{border-top:none}
+.pli:hover,.pli.on{background:rgba(224,83,60,.06)}
+.pli b{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#5c5551;font-weight:400}
+.pli:hover b,.pli.on b{color:var(--red)}
+.plt span{font-size:13px;color:#e3ded8;letter-spacing:.04em;margin-right:9px}
+.plt em{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;color:#6d6660;font-style:normal}
+.pli .pp{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.06em;text-align:center;
+  padding:3px 0;border-radius:3px;color:#231f1d;background:#ffe608;font-style:normal}
+.pli .pp.p0{background:#ffc46b}.pli .pp.p1{background:#a8c7f0}
+.pli p{grid-column:2/4;font-size:11px;color:#837d77;letter-spacing:.04em;margin-top:-4px}
+
+.pm{width:272px;flex:none;border:1px solid rgba(255,255,255,.16);border-radius:34px;background:#0f0d0d;
+  padding:8px;box-shadow:0 26px 60px rgba(0,0,0,.62)}
+.pm-scr{position:relative;border-radius:28px;overflow:hidden;background:#f2f1ef;
+  height:578px;display:flex;flex-direction:column}
+.pm-bar{display:flex;justify-content:space-between;align-items:center;padding:9px 16px 2px;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#2c2926;font-weight:600}
+.pm-bar em{width:26px;height:5px;border-radius:3px;background:#2c2926;opacity:.5}
+.pm-nav{display:flex;justify-content:space-between;padding:6px 14px 4px;color:#3a3633;font-size:13px}
+.pm-chat{flex:1;padding:6px 12px 0;overflow:hidden}
+.pm-bub{background:#fff;color:#2a2724;font-size:11px;line-height:1.6;padding:9px 11px;
+  border-radius:12px 12px 12px 3px;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:9px}
+.pm-card{background:#fff;border-radius:14px;padding:10px 10px 11px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pm-ct{font-size:10.5px;color:#6f6a65;margin-bottom:8px;letter-spacing:.04em}
+.pm-stage{position:relative;width:100%;padding-top:106%;border-radius:10px;overflow:hidden;background:#e9e6e2}
+.pbig{position:absolute;inset:0;opacity:0;transition:.4s}
+.pbig.on{opacity:1}
+.pbig img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
+.pm-btns{display:flex;align-items:center;gap:9px;margin-top:10px}
+.pm-btns .use{flex:1;text-align:center;background:#ffe608;color:#231f1d;font-size:11.5px;
+  font-weight:600;padding:9px 0;border-radius:20px}
+.pm-btns .more{font-size:10px;color:#8a8580;white-space:nowrap}
+.pm-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:9px}
+.pth{width:100%;padding:0;border:2px solid transparent;border-radius:7px;overflow:hidden;
+  background:none;cursor:pointer;line-height:0;transition:.25s}
+.pth img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;opacity:.7;transition:.25s}
+.pth:hover img,.pth.on img{opacity:1}
+.pth.on{border-color:#231f1d}
+.pm-input{display:flex;align-items:center;gap:9px;margin:8px 10px 10px;background:#fff;
+  border-radius:20px;padding:9px 13px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.pm-input span{flex:1;font-size:10.5px;color:#a8a29c}
+.pm-input i{font-size:12px;color:#5d5853;font-style:normal}
+.qimg{position:relative;border:1px solid rgba(255,255,255,.1);background:#fff;padding:6px;
+  cursor:zoom-in;transition:.3s}
+.qimg:hover{border-color:rgba(224,83,60,.45);box-shadow:0 18px 44px rgba(0,0,0,.45)}
+.qimg:after{content:'\2295 \00a0 \70b9\51fb\770b\5927\56fe';position:absolute;right:12px;bottom:12px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#fff;
+  background:rgba(12,10,10,.72);border:1px solid rgba(255,255,255,.2);padding:4px 8px;
+  opacity:0;transition:.3s;pointer-events:none}
+.qimg:hover:after{opacity:1}
+.qimg img{width:100%;display:block}
+
+.pside .pmeta.on{padding-bottom:13px;margin-bottom:13px}
+
+/* native style switcher */
+.pswt{margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,.07)}
+.pswh{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.2em;color:#5f5854;
+  display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pswh:after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+.psw{display:flex;align-items:center;gap:10px;width:100%;padding:6px 9px 6px 7px;margin-bottom:6px;
+  background:rgba(255,255,255,.014);border:1px solid rgba(255,255,255,.06);
+  border-left:2px solid rgba(255,255,255,.06);cursor:pointer;text-align:left;
+  font-family:inherit;transition:.28s}
+.psw i{flex:none;width:28px;height:38px;border-radius:4px;overflow:hidden;line-height:0;
+  filter:grayscale(.6);opacity:.55;transition:.28s}
+.psw i img{width:100%;height:100%;object-fit:cover;object-position:50% 16%;display:block}
+.psw span{flex:1;min-width:0;font-size:12px;color:#8b857f;letter-spacing:.04em;transition:.28s}
+.psw span em{display:block;font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.14em;
+  color:#5b5450;font-style:normal;margin-top:3px}
+.psw s{flex:none;font-family:'JetBrains Mono',monospace;font-size:8px;color:#4e4844;
+  text-decoration:none;transition:.28s}
+.psw:hover,.psw.on{background:rgba(224,83,60,.07);border-color:rgba(224,83,60,.26);border-left-color:var(--red)}
+.psw:hover i,.psw.on i{filter:none;opacity:1}
+.psw:hover span,.psw.on span{color:#efeae4}
+.psw.on span em,.psw.on s{color:var(--red)}
+.proto2 .qs{padding:11px 13px}
+.proto2 .qs h6{font-size:12.5px;margin:5px 0 5px}
+.proto2 .qs p{font-size:10.5px;line-height:1.68}
+
+/* ===================== 移动端适配 ===================== */
+@media (max-width:820px){
+  html,body{overflow-x:hidden}
+  img,video,svg{max-width:100%}
+
+  /* --- 容器留白 --- */
+  .wide{padding:0 13px}
+  .chapter{padding:74px 13px 20px;scroll-margin-top:52px}
+  .row{padding:36px 13px;gap:22px}
+  .row,.row.txt,.row.hasimg{grid-template-columns:minmax(0,1fr)!important}
+  .row.tkonly{padding:24px 13px 52px}
+  .fx{padding:64px 13px 26px;scroll-margin-top:52px}
+  .proto2{padding:6px 13px 10px}
+  .stats{padding-left:13px;padding-right:13px}
+
+  /* --- 能力标签不挤压 --- */
+  .skills{gap:8px}
+  .sk{padding:6px 10px;font-size:10px;letter-spacing:1.1px}
+  .ft{gap:6px;flex-wrap:wrap}
+  .ft span{letter-spacing:.8px}
+  .fnode{min-width:0}
+
+  /* --- 顶部 header --- */
+  .top{padding:22px 18px 0}
+  .fish{width:74px}
+  .top .rline{font-size:11px;letter-spacing:2px}
+  .top .pill{margin-top:13px;padding:9px 22px;font-size:12px;letter-spacing:2.5px}
+  .menu{margin-top:24px;gap:10px 16px;justify-content:center}
+  .menu a{font-size:11.5px;letter-spacing:1.6px;padding:2px}
+
+  /* --- 吸顶导航：横向可滑动 --- */
+  .mini{height:48px;padding:0 12px;gap:2px;overflow-x:auto;overflow-y:hidden;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .mini::-webkit-scrollbar{display:none}
+  .mini .nm{flex:none;font-size:13px;margin-right:6px;white-space:nowrap}
+  .mini .nm span{display:none}
+  .mini a.ml{flex:none;font-size:10.5px;letter-spacing:1.3px;padding:6px 7px;white-space:nowrap}
+  .mini .bar{display:none}
+
+  /* --- Hero --- */
+  .hero{padding:56px 20px 66px}
+  .hero .kick{font-size:10px;letter-spacing:4px}
+  .hero h1{font-size:clamp(40px,13.5vw,64px);letter-spacing:1px;margin-top:14px}
+  .hero .zh{font-size:17px;letter-spacing:7px;text-indent:7px;margin-top:12px}
+  .hero .sub{font-size:12px;letter-spacing:3px}
+  .hero .lead{font-size:13px;line-height:2.05;margin-top:24px}
+  .hero .marks{gap:10px 18px;font-size:11.5px;margin-top:22px}
+
+  /* --- 数据条 --- */
+  .stats{grid-template-columns:repeat(2,1fr)!important}
+
+  /* --- 标题 --- */
+  .hl h2{font-size:clamp(30px,9vw,44px)}
+  .rl{flex-wrap:wrap;gap:6px 14px}
+  .fx-t{flex-wrap:wrap;align-items:center;gap:6px 12px;margin:46px 0 18px}
+  .fx-t h3{white-space:normal;font-size:20px;line-height:1.4;flex:1 1 100%;order:2}
+  .fx-t span{order:1}
+  .fx-t::after{display:none}
+  .fx .one{font-size:15px;line-height:1.85}
+  .bcr{flex-wrap:wrap;gap:4px 8px}
+
+  /* --- 文字为主的多列 → 单列 --- */
+  .cds,.fx-3,.fx-meta,.ecds,.dp2,.qsteps,.flow,.lproto,
+  .fx-kv{grid-template-columns:minmax(0,1fr)!important}
+  /* 短卡片保持两列：一屏看到的信息更多 */
+  .arch,.dons,.fsub{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .fsub[style*="repeat(3"]{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+  .fsub[style*="repeat(3"]>*{grid-column:auto!important}
+  .fsub[style*="repeat(3"] .fcard{padding:9px 7px 10px}
+  .fsub[style*="repeat(3"] .fcard h6{font-size:10.5px;letter-spacing:.2px;margin:0 0 5px}
+  .fsub[style*="repeat(3"] .fcard .ft{gap:3px;margin-bottom:6px}
+  .fsub[style*="repeat(3"] .fcard .ft span{font-size:8.5px;padding:1px 5px;letter-spacing:0}
+  .fsub[style*="repeat(3"] .fcard li{font-size:9.8px;line-height:1.65;letter-spacing:0}
+  .fsub[style*="repeat(3"] .fcard li i{margin-right:3px;font-size:7px}
+  .arch>*:last-child:nth-child(odd),
+  .dons>*:last-child:nth-child(odd),.fsub>*:last-child:nth-child(odd){grid-column:1/-1}
+  .mets{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px!important}
+  .met{padding:11px 5px 12px;text-align:center}
+  .met b{font-size:16.5px;letter-spacing:0}
+  .met span{margin-top:5px;font-size:9px;letter-spacing:0;line-height:1.45}
+  .arw2{display:none}
+
+  /* --- 图片/素材网格 → 保留 web 端的多列关系，只缩间距与尺寸 --- */
+  .gr2,.gr3,.gr4,.gr3.wall,.mt4,.gal{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .gr6{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+  .gr5{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .stack.g2,.stack.g3{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  /* 视频要宽度，单列 */
+  .stack.g2:has(.ph.v),.stack.g3:has(.ph.v),.gr2:has(.ph.v){grid-template-columns:minmax(0,1fr)!important}
+  .gr3:has(.ph.v),.gr4:has(.ph.v),.gr6:has(.ph.v){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .fx .gr6 .ph.v{height:150px}
+
+  /* 装裱卡纸内缩，把宽度让给图 */
+  .ph{padding:6px}
+  .ph::after,.ph::before{inset:6px}
+  .gr6 .ph{padding:4px}
+  .gr6 .ph::after,.gr6 .ph::before{inset:4px}
+
+  /* 固定高度盒等比降低，object-fit:contain 不变 */
+  .fx .gr2 .ph,.fx .gr3 .ph,.fx .gr4 .ph,.fx .gr5 .ph{height:170px}
+  .fx .gr6 .ph{height:120px}
+  .fx .gr3 .ph.band,.fx .gr4 .ph.band{height:135px}
+  .fx .gr3 .ph.app,.fx .gr4 .ph.app,.fx .gr5 .ph.app{height:300px}
+
+  /* 图注字号跟着缩 */
+  .cap{font-size:8.5px;letter-spacing:1.6px;margin-top:6px}
+  .gr2 .cap,.gr3 .cap,.gr4 .cap,.gr6 .cap{margin-top:6px}
+  .mt4 .mtile b{font-size:10.5px}
+  .cmp{max-width:100%}
+  .lproto img{max-width:100%}
+
+  /* --- 正文与卡片 --- */
+  .side h3{font-size:20px}
+  .yr,.row.txt .yr{font-size:19px;white-space:normal}
+  .deep{padding:20px 14px 24px}
+  .tks.big{gap:26px}
+  .tks.big .tkg em{font-size:10px;margin-bottom:12px}
+  .tks.big .tk{padding:12px 16px;font-size:14px}
+  .tks.big .tkr{gap:10px}
+
+  /* --- 流程 / 阶段卡紧凑化：标题行内联，正文收紧 --- */
+  .flow{gap:0}
+  .stg{padding:13px 14px 15px}
+  .stg .no{display:inline;font-size:10px;letter-spacing:2px}
+  .stg h4{display:inline;font-size:17px;margin:0 0 0 9px}
+  .stg .en{display:inline;font-size:9px;letter-spacing:1.4px;margin-left:8px;color:var(--mut)}
+  .stg ul{margin-top:9px}
+  .stg li{font-size:11.5px;line-height:1.7;margin-bottom:4px;padding-left:12px}
+  .stg li::before{top:8px;width:4px;height:4px}
+  .nd{padding:12px 11px}
+  .nd b{font-size:14px;margin-bottom:5px}
+  .nd p{font-size:10.5px;line-height:1.7}
+
+  /* --- 原生流程图：横排节点改成两列，去掉箭头，整体高度砍半 --- */
+  .fdg{margin:18px 0 4px;padding:16px 12px 18px}
+  .fdg .fh{gap:8px;margin-bottom:14px}
+  .fdg .fh b{font-size:15px;letter-spacing:1.2px}
+  .fdg .fh i{font-size:8.5px;letter-spacing:1.2px}
+  .frow{gap:8px}
+  .frow .farr{display:none}
+  .frow .fnode{flex:1 1 42%;padding:9px 11px;text-align:left;
+    border-left:2px solid rgba(255,20,20,.4)}
+  .fnode b{font-size:11.5px;letter-spacing:.8px}
+  .fnode span{font-size:9.5px;line-height:1.5;margin-top:3px}
+  .fvline{height:14px}
+  .fdir{padding:11px 12px}
+  .fdir b{font-size:14px;letter-spacing:1.2px}
+  .fchips{gap:5px;margin-top:9px}
+  .fchips span{font-size:9px;padding:3px 8px;letter-spacing:.4px}
+  .fcard{padding:10px 10px 11px}
+  .fcard h6{font-size:12px;letter-spacing:.8px;margin:0 0 6px}
+  .fcard .ft{gap:4px;margin-bottom:7px}
+  .fcard .ft span{font-size:9px;padding:1px 6px}
+  .fcard li{font-size:11px;line-height:1.8}
+  .fman{padding:11px 12px}
+  .fman b{font-size:11.5px;letter-spacing:1.2px}
+  .fout{padding:9px 20px;font-size:11px;letter-spacing:2px}
+  .step{gap:6px;margin-bottom:14px}
+  .step span{font-size:10px;letter-spacing:.9px;padding:4px 9px}
+  .step i{font-size:9px}
+
+  /* --- 正文密度：字号与行距略收，段间距压紧 --- */
+  .fx-t{margin:38px 0 15px}
+  .note{font-size:12.2px;line-height:1.9;margin:-4px 0 16px}
+  .fx-3{gap:18px;margin-top:26px}
+  .fx-3 p{font-size:12.2px;line-height:1.9}
+  .cds{gap:10px}
+  .cd{padding:15px 15px 17px}
+  .cd h5{font-size:17px;margin:4px 0 7px}
+  .cd p{font-size:12px;line-height:1.85}
+  .sub-t{margin:24px 0 10px}
+  .sub-t h4{font-size:16px}
+  .qt{font-size:12px;line-height:1.85;padding:11px 0 11px 14px}
+  .deep .fh b{font-size:16px;letter-spacing:1.2px}
+  .deep .tx{font-size:12.2px;line-height:1.9}
+  .ecd{padding:13px 13px 15px}
+  .ecd p{font-size:11.5px;line-height:1.8}
+  .skills{margin-top:14px}
+
+  /* --- 图片高度收紧：缩略图为主，细节交给点击放大 --- */
+  .fx .gr3 .ph.app,.fx .gr4 .ph.app,.fx .gr5 .ph.app{height:270px!important}
+  .fx .gr2 .ph.band,.fx .gr3 .ph.band,.fx .gr4 .ph.band{height:112px!important}
+  .ph.v video{max-height:240px}
+  .gal .ph img{height:128px}
+  .fx-kv img{max-height:210px;object-fit:cover}
+
+  /* --- 可交互原型：手机壳缩小，文字收紧 --- */
+  .lproto{padding:16px 13px 20px;gap:18px}
+  .lpph{max-width:288px}
+  .lpx h4{font-size:20px;margin-bottom:10px}
+  .lpx p{font-size:12px;line-height:1.9;margin-bottom:12px}
+  .lpbtn{padding:9px 16px;font-size:10px;letter-spacing:1.6px}
+
+  /* --- 角色创建原型：保持与 web 一致，整体等比缩放 --- */
+  .qimg:after{opacity:1}
+}
+
+@media (max-width:480px){
+  .hero h1{font-size:40px;letter-spacing:0}
+  .hero .zh{font-size:15.5px;letter-spacing:5px;text-indent:5px}
+  .gr3.wall{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .menu a{font-size:11px;letter-spacing:1.1px}
+  .lbx{padding:12px}
+  .lbx-x{top:10px;right:12px;width:36px;height:36px;font-size:14px}
+  .foot-in,.foot{padding-left:18px;padding-right:18px}
+}
+
+/* --- 无 hover 的触摸设备 --- */
+@media (hover:none){
+  .cursor-glow{display:none}
+  .astage .acard{opacity:1!important}
+  .qimg:after{opacity:1}
+}
+
+/* --- 等比缩放容器（窄屏下保持桌面版版式） --- */
+.fitw{position:relative;width:100%;max-width:100%;min-width:0;overflow:hidden}
+.fitw>*{transform-origin:top left}
+.proto2>*,.proto2 .pgrp,.fx>*{min-width:0}
+.proto2 .pgrp{overflow:hidden}
+@media (max-width:1080px),(hover:none){
+  .astage .ahint{opacity:0}
+  .astage .aname{opacity:0}
+  .astage .acard{opacity:1!important;filter:none!important;
+    transform:translate(0,0) scale(1)!important;pointer-events:auto}
+  .astage .alines{opacity:1}
+  .astage .aglow{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+/* --- 移动端头图：与 web 端一致，图仍在文字旁并向左渐变融合 --- */
+@media (max-width:820px){
+  .row.hasimg{min-height:360px}
+  .row.hasimg .rimg{display:block!important;opacity:.32}
+  .row.hasimg .rimg img{
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.1) 22%,rgba(0,0,0,.5) 52%,#000 100%);
+    mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.1) 22%,rgba(0,0,0,.5) 52%,#000 100%)}
+  .row.hasimg .rimg.soft{width:62%;top:34px;bottom:34px;opacity:.5}
+  .row.hasimg .side{position:relative;z-index:2}
+}
+
+</style>
+<link rel="stylesheet" href="cover.css">
+<link rel="stylesheet" href="gallery.css">
+<link rel="stylesheet" href="matrix.css?v=pill-float-1">
+</head>
+<body class="at-entry">
+<div class="bg-tex"></div>
+<img class="bg-orn o1" src="assets/v3-ornament.jpg" alt="">
+<img class="bg-orn o2" src="assets/v3-ornament.jpg" alt="">
+<div class="bg-veil"></div>
+<div class="grain"></div>
+<div class="cursor-glow" id="cg"></div>
+
+<!-- ============ sticky mini nav ============ -->
+<div class="mini" id="mini">
+  <span class="nm">Vivienne <span style="font-family:var(--sans);font-size:11px;letter-spacing:2px;color:var(--faint)">颜于涵</span></span>
+  <a class="ml" href="#bytedance">ByteDance</a>
+  <a class="ml" href="#bondee">BONDEE</a>
+  <a class="ml" href="#meitu">Meitu</a>
+  <a class="ml" href="#other">Coding &amp; Art</a>
+  <a class="ml" href="#profile">Profile</a>
+  <a class="ml" style="color:var(--red)" href="mailto:798287301@qq.com">Contact</a>
+  <div class="bar" id="bar"></div>
+</div>
+
+<!-- ============ header ============ -->
+<header class="entry-cover" id="home">
+  <h1><span>Vivienne</span> <span>Portfolio</span></h1>
+  <a class="entry-portal" href="#bytedance" aria-label="查看项目作品">
+    <img src="assets/v3-fish-cut.png" alt="" width="66" height="66">
+    <span>进入作品集<small>Selected projects</small></span>
+  </a>
+  <nav class="entry-nav" aria-label="作品集导航">
+    <a href="#profile">About</a>
+    <a href="#bytedance">Artwork</a>
+    <a href="mailto:798287301@qq.com">Contact</a>
+  </nav>
+</header>
+
+<!-- ============ hero ============ -->
+<section class="hero">
+  <div class="kick">Portfolio 2026</div>
+  <h1>VIV<i>i</i>ENNE</h1>
+  <div class="zh">颜于涵</div>
+  <div class="sub">盐盐 · 1999.04 · AI DESIGNER</div>
+  <p class="lead">
+    我在想，要怎么跟你讲述那些还不存在的画面。<br>
+    五年时间，我从 <b>Meitu</b> 的 AR 妆容，走到 <b>BONDEE</b> 的 0-1 社交小世界，再到 <b>ByteDance</b> 的 AI 生成链路。
+    我的工作是把模型能力翻译成用户能感知的<b>爆款效果</b>。
+  </p>
+  <div class="marks">
+    <span><i>✦</i>AI 技术 × 设计融合</span>
+    <span><i>✦</i>爆款制造能力</span>
+    <span><i>✦</i>全链路搭建经验</span>
+  </div>
+  <div class="meta">
+    <a href="mailto:798287301@qq.com">✉︎ 798287301@qq.com</a>
+    <span>@ 秋刀想吃鱼</span>
+    <span>PS / AI / PR · AE / C4D / CODING</span>
+  </div>
+  <div class="scroll">Scroll<i></i></div>
+</section>
+
+<!-- ============ stats ============ -->
+<section class="stats rv">
+  <div class="st"><b data-to="900" data-suf="%">0%</b><span>轻颜 AI 写真<br>端内拉新完成度</span></div>
+  <div class="st"><b data-to="3.1" data-dec="1" data-suf="亿">0亿</b><span>主话题<br>累计 VV</span></div>
+  <div class="st"><b data-to="1500" data-suf="万+">0万+</b><span>累计<br>拉新拉活用户</span></div>
+  <div class="st"><b data-raw="73→17">73→17</b><span>App Store<br>免费榜跃升</span></div>
+  <div class="st"><b data-to="98.1" data-dec="1" data-suf="w">0w</b><span>笑眼妆<br>3 天下载量</span></div>
+  <div class="st"><b data-to="2" data-suf="项">0项</b><span>发明专利<br>（参与）</span></div>
+</section>
+
+
+
+
+<!-- ============ 01 BYTEDANCE ============ -->
+<section class="chapter" id="bytedance">
+  <div class="idx rv">01 — EXPERIENCE</div>
+  <div class="hl rv"><h2>ByteDance</h2><div class="rule"></div></div>
+  <div class="rl rv"><span>AI DESIGNER</span><em>2023 — 2026</em><em>AI 生成内容 / 特效玩法 / Agent</em></div>
+  <p class="sm rv">聚焦 AI 生成内容与特效玩法，主导从效果定义、链路搭建到上线打磨的全流程，产出多个大盘 S 级爆款，并沉淀可复用 SOP 与 2 项发明专利。</p>
+</section>
+
+<!-- ============ FEATURED CASE · 随变 AI ============ -->
+<section class="fx" id="featured">
+  <div class="idx rv">BYTEDANCE · FEATURED PROJECT — 2026</div>
+  <div class="bcr rv"><span>ByteDance</span><i>/</i><span>AI Designer</span><i>/</i><b>重点项目</b></div>
+  <h2 class="rv">随变 AI</h2>
+  <p class="one rv">让每个人都能拥有一个属于自己的「OC 原创角色」，并且持续和它一起创作下去。</p>
+
+  <div class="fx-meta rv">
+    <div><span>ROLE</span><b>AI Designer · 效果定义与链路负责人</b></div>
+    <div><span>TIMELINE</span><b>2026 · 0-1 创新项目</b></div>
+    <div><span>SCOPE</span><b>效果标准 / Agent 共建 / Skill 编排 / Coding 提效</b></div>
+    <div><span>COLLAB</span><b>算法 · 研发 · 产品 跨职能共建</b></div>
+  </div>
+
+  <div class="fx-kv rv">
+    <img src="assets/v3-kv-suibian.jpg" alt="随变 AI 主视觉">
+    <div class="tagline">Create your <em>OC</em>. Keep it alive.</div>
+  </div>
+
+  <div class="fx-3 rv">
+    <div>
+      <span class="kx">挑战</span>
+      <p>AI 生成的角色是「一次性」的——每次生成都是一个陌生人，形象不可复用、不可延续，用户既建立不起情感，也没有持续创作的理由。<b>角色留不住，内容就长不出来。</b></p>
+    </div>
+    <div>
+      <span class="kx">解法</span>
+      <p>把角色当作<b>可经营的资产</b>：端到端打通 <b>角色创建 → 资产沉淀 → 角色创作</b> 三段链路，让同一个 OC 形象可复用、可监修、可在不同题材里持续产出内容。</p>
+    </div>
+    <div>
+      <span class="kx">我做了什么</span>
+      <p>定义效果标准与验收线，与算法/研发共建 Agent 的意图识别与上下文记忆，用 Skill 体系把能力封装成可自动路由的模块，并用脚本把效果验证的效率提上来。</p>
+    </div>
+  </div>
+
+  <div class="fx-t rv"><span>01</span><h3>核心链路</h3></div>
+  <div class="flow rv">
+    <div class="stg">
+      <div class="no">STAGE 01</div>
+      <h4>角色创建</h4>
+      <div class="en">Character Creation</div>
+      <ul>
+        <li>对话式引导完成角色设定：外观、性格、世界观</li>
+        <li>图像能力生成形象，建立 OC 的第一印象</li>
+        <li>制定 Onepage 效果标准，统一「什么才算好看」</li>
+      </ul>
+    </div>
+    <div class="arw2">→</div>
+    <div class="stg">
+      <div class="no">STAGE 02</div>
+      <h4>资产沉淀</h4>
+      <div class="en">Asset Retention</div>
+      <ul>
+        <li>角色形象、设定与偏好沉淀为可复用资产</li>
+        <li>上下文记忆模块保证跨会话的一致性</li>
+        <li>监修机制约束 ID 与风格不跑偏</li>
+      </ul>
+    </div>
+    <div class="arw2">→</div>
+    <div class="stg">
+      <div class="no">STAGE 03</div>
+      <h4>角色创作</h4>
+      <div class="en">Content Creation</div>
+      <ul>
+        <li>图像 + 视频能力结合，产出多题材内容</li>
+        <li>持续挖掘高消费表达，沉淀爆款玩法</li>
+        <li>创作结果再回流为角色资产，形成闭环</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fx-t rv"><span>02</span><h3>Agent 与 Skill 编排</h3></div>
+  <div class="arch rv">
+    <div class="nd"><div class="dot"></div><b>意图识别</b><p>定义触发时机与意图分流，判断用户此刻是在建角色、改设定还是要出图</p></div>
+    <div class="nd"><div class="dot"></div><b>Skill 路由</b><p>按触发规则自动调起对应能力模块，多场景任务稳定分发</p></div>
+    <div class="nd"><div class="dot"></div><b>生成执行</b><p>约定上下游 Agent 的输入输出格式，保证效果可控可验收</p></div>
+    <div class="nd"><div class="dot"></div><b>记忆存储</b><p>上下文与角色资产写回记忆，让下一次创作延续同一个 OC</p></div>
+  </div>
+  <div class="skills rv">
+    <span class="sk">角色创建 Skill</span><span class="sk">资产管理 Skill</span><span class="sk">创作生图 Skill</span>
+    <span class="sk g">Prompt 工程化</span><span class="sk g">触发规则设计</span><span class="sk g">上下游格式约定</span><span class="sk g">意图分流</span>
+  </div>
+
+  <div class="fx-t rv"><span>03</span><h3>我的四块贡献</h3></div>
+  <div class="cds rv">
+    <div class="cd"><div class="n2">01</div><h5>效果定义</h5><p>完成 OC 创作 Onepage 效果标准，把角色设定与监修注入创作流程；结合图像与视频能力，持续挖掘高消费的表达内容，打造爆款玩法。</p></div>
+    <div class="cd"><div class="n2">02</div><h5>Agent 共建</h5><p>基于对话式交互定义触发时机与意图分流，约定上下游 Agent 输入与输出格式，参与全链路意图识别与上下文记忆存储模块的方案设计与联调。</p></div>
+    <div class="cd"><div class="n2">03</div><h5>Skill 编排</h5><p>基于 Skill 体系封装角色创建、资产管理、创作生图等能力模块，通过 Prompt 工程化 + 触发规则设计，实现 Agent 对多场景任务的自动路由与稳定调用。</p></div>
+    <div class="cd"><div class="n2">04</div><h5>Coding 提效</h5><p>编写 Python / 前端脚本完成数据处理、批量生图调试、效果 Prompt 自动化验证与链路联调，显著提升迭代效率，降低对研发排期的依赖。</p></div>
+  </div>
+
+  <div class="fx-t rv"><span>04</span><h3>角色创建</h3></div>
+  <p class="note rv">对话式引导用户完成设定：外观、性格、世界观一步步收敛，最终生成属于用户自己的 OC 形象。我负责这一段的<b>效果标准与 Onepage 验收线</b>——什么样的脸算「有设计感」、什么程度的还原算「是我的角色」，都需要先被定义出来，链路才有优化方向。</p>
+  <div class="step rv"><span class="on">设定输入</span><i>→</i><span class="on">形象生成</span><i>→</i><span class="on">监修确认</span><i>→</i><span class="on">角色成立</span></div>
+  <div class="proto2 rv">
+  <div class="mtt a1">产品原型 · 预设风格选择</div>
+  <div class="mtt a2">风格四象限 · 候选风格判定</div>
+
+  <div class="pgrp">
+    <div data-fit="548" class="pwrap">
+  <div class="pm">
+    <div class="pm-scr">
+      <div class="pm-bar"><span>8:00</span><em></em></div>
+      <div class="pm-nav"><i>✕</i><i>≡</i></div>
+      <div class="pm-chat">
+        <div class="pm-bub">想好你的角色长什么样了吗？先选个画风吧～</div>
+        <div class="pm-card">
+          <div class="pm-ct">画风推荐</div>
+          <div class="pm-stage"><div class="pbig on" data-i="0"><img src="assets/oc/style-1.jpg" alt="可爱 Q 版"></div><div class="pbig" data-i="1"><img src="assets/oc/style-2.jpg" alt="治愈插画"></div><div class="pbig" data-i="2"><img src="assets/oc/style-3.jpg" alt="三渲二"></div><div class="pbig" data-i="3"><img src="assets/oc/style-4.jpg" alt="超级 Q 版"></div><div class="pbig" data-i="4"><img src="assets/oc/style-5.jpg" alt="卡通风"></div></div>
+          <div class="pm-btns"><span class="use">使用</span><span class="more">更多风格 ›</span></div>
+          <div class="pm-thumbs"><button class="pth on" data-i="0"><img src="assets/oc/style-1.jpg" alt="可爱 Q 版"></button><button class="pth" data-i="1"><img src="assets/oc/style-2.jpg" alt="治愈插画"></button><button class="pth" data-i="2"><img src="assets/oc/style-3.jpg" alt="三渲二"></button><button class="pth" data-i="3"><img src="assets/oc/style-4.jpg" alt="超级 Q 版"></button><button class="pth" data-i="4"><img src="assets/oc/style-5.jpg" alt="卡通风"></button></div>
+        </div>
+      </div>
+      <div class="pm-input"><span>描述你的角色特征</span><i>◎</i><i>＋</i></div>
+    </div>
+  </div>
+
+  <div class="pside">
+    <div class="pmeta on" data-i="0"><b>可爱 Q 版</b><em>CUTE CHIBI</em><span>2-4 头身 · 轮廓圆润</span></div><div class="pmeta" data-i="1"><b>治愈插画</b><em>HEALING ILLUST</em><span>柔光 · 手绘质感</span></div><div class="pmeta" data-i="2"><b>三渲二</b><em>3D TO 2D</em><span>三维建模 · 二次元渲染</span></div><div class="pmeta" data-i="3"><b>超级 Q 版</b><em>SUPER CHIBI</em><span>大头小身 · 强萌点</span></div><div class="pmeta" data-i="4"><b>卡通风</b><em>CARTOON</em><span>高饱和 · 平润色彩</span></div>
+    <div class="pflow">
+      <div class="pf on"><b>01</b><span>对话引导 · 画风推荐</span></div>
+      <div class="pf"><b>02</b><span>画风轮播 · 选定使用</span></div>
+      <div class="pf"><b>03</b><span>补充角色设定</span></div>
+      <div class="pf"><b>04</b><span>形象生成 · 监修</span></div>
+    </div>
+    <div class="pswt">
+      <div class="pswh">风格切换 · 5 PRESETS</div>
+      <button class="psw on" data-i="0"><i><img loading="lazy" src="assets/oc/style-1.jpg" alt="可爱 Q 版"></i><span>可爱 Q 版<em>CUTE CHIBI</em></span></button>
+          <button class="psw" data-i="1"><i><img loading="lazy" src="assets/oc/style-2.jpg" alt="治愈插画"></i><span>治愈插画<em>HEALING ILLUST</em></span></button>
+          <button class="psw" data-i="2"><i><img loading="lazy" src="assets/oc/style-3.jpg" alt="三渲二"></i><span>三渲二<em>3D TO 2D</em></span></button>
+          <button class="psw" data-i="3"><i><img loading="lazy" src="assets/oc/style-4.jpg" alt="超级 Q 版"></i><span>超级 Q 版<em>SUPER CHIBI</em></span></button>
+          <button class="psw" data-i="4"><i><img loading="lazy" src="assets/oc/style-5.jpg" alt="卡通风"></i><span>卡通风<em>CARTOON</em></span></button>
+    </div>
+  </div>
+    </div>
+  </div>
+
+  <div class="qbox">
+    <div class="qimg"><img loading="lazy" src="assets/oc/style-quadrant.jpg" alt="OC 风格四象限图"></div>
+  </div>
+
+
+</div>
+
+<div class="fx-t rv"><span>05</span><h3>角色资产</h3></div>
+  <p class="note rv">角色不能是一次性的。创建完成后，形象、设定与偏好被沉淀成<b>可复用的角色档案</b>：Web 端与移动端都有独立的档案页，角色主图作为身份锚点，配合上下文记忆，保证下一次创作还是同一个「他」。同时把角色做成了<b>移动端桌宠</b>——它会在主页待机、会回应，让用户对 OC 产生日常陪伴感，这是「资产」变成「情感」的关键一步。</p>
+  <div data-fit="1180" class="astage rv" id="astage">
+    <div class="ahint"><i></i>HOVER 角色立绘 · 展开背后沉淀的角色资产</div>
+    <div class="acen">
+      <div class="aglow"></div>
+      <img class="achar" src="assets/oc/char-main.png" alt="角色立绘">
+      <div class="aname"><b>OC 角色立绘</b><span>IDENTITY ANCHOR</span></div>
+    </div>
+    <div class="acard c1"><div class="am"><img loading="lazy" src="assets/oc/char-4view.jpg" alt="角色四视图"></div><b>四视图 · 形象规范</b></div>
+    <div class="acard c2"><div class="am"><img loading="lazy" src="assets/oc/pet-charm.webp" alt="桌宠挂件"></div><b>桌宠挂件 · 日常陪伴</b></div>
+    <div class="acard c3"><div class="am"><img loading="lazy" src="assets/oc/asset-web2.jpg" alt="Web 端角色档案页"></div><b>Web 端角色档案页</b></div>
+    <div class="acard c4"><div class="am"><img loading="lazy" src="assets/oc/asset-mobile2.jpg" alt="移动端角色档案页"></div><b>移动端档案页</b></div>
+    <svg class="alines" viewBox="0 0 1000 620" preserveAspectRatio="none">
+      <path d="M500 300 L215 130"/><path d="M500 300 L800 150"/><path d="M500 300 L175 415"/>
+      <path d="M500 300 L830 400"/>
+    </svg>
+  </div>
+  <div class="fx-t rv"><span>06</span><h3>视频分镜设计 · 输入模式对照实验</h3></div>
+  <p class="note rv">视频生成最大的问题是「同一个角色，一镜一个样」。我把同一段镜头分别做成<b>参考图 / 线稿 / 白模 / 彩图</b>四种分镜形态，作为输入喂给视频生成，横向比较它们对<b>最终生成质量</b>与<b>角色一致性</b>的影响——不同题材、不同镜头该用哪一种分镜投喂，由此沉淀成可复用的规范。</p>
+  <div class="step rv"><span class="on">参考图</span><i>/</i><span class="on">线稿</span><i>/</i><span class="on">白模</span><i>/</i><span class="on">彩图</span><i>→</i><span>视频生成</span><i>→</i><span>质量 &amp; 角色一致性对比</span></div>
+  <div class="gr4 rv">
+    <div><div class="ph"><img loading="lazy" src="assets/oc/board-ref.jpg" alt="分镜参考"></div><div class="cap"><i>◆</i>模式 A · 参考图分镜 · 给构图与镜头位</div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/oc/board-line.jpg" alt="线稿洗图"></div><div class="cap"><i>◆</i>模式 B · 线稿分镜 · 强约束动作与镜头</div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/oc/board-white.jpg" alt="白模洗图"></div><div class="cap"><i>◆</i>模式 C · 白模分镜 · 约束体积与光影关系</div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/oc/board-color.jpg" alt="彩图洗图"></div><div class="cap"><i>◆</i>模式 D · 彩图分镜 · 锁定质感与配色</div></div>
+  </div>
+
+  <div class="fx-t rv"><span>07</span><h3>角色创作</h3></div>
+  <div class="fdg rv" id="flowdg">
+    <div class="fh"><i>◆</i><b>Agent 创作流程图</b><s></s><i>DIRECTOR × 5 SUB-AGENTS</i></div>
+    <div class="frow">
+      <div class="fnode"><b>角色 / 场景资产</b><span>包含角色设定与场景</span></div>
+      <div class="farr">→</div>
+      <div class="fnode"><b>用户输入</b><span>创作意图及参考素材</span></div>
+    </div>
+    <div class="fvline"></div>
+    <div class="fdir"><b><em>◆</em> 导演 Agent（主）</b><div class="fchips"><span>多模态理解</span><span>任务规划</span><span>子 Agent 调度</span><span>Plan Execute</span><span>参数调优</span><span>错误重试</span><span>状态管理</span><span>流程编排</span><span>质检</span></div></div>
+    <div class="fvline"></div>
+    <div class="fsub"><div class="fcard"><h6>编剧 Agent</h6><div class="ft"><span>多模态理解</span><span>长脚本记忆</span></div><ul><li><i>◆</i>1a 剧情模板</li><li><i>◆</i>1b 角色塑造</li><li><i>◆</i>1c 场景描述</li><li><i>◆</i>1d 对话编写</li></ul></div><div class="fcard"><h6>概念设计 Agent</h6><div class="ft"><span>风格把控</span><span>构图设计</span></div><ul><li><i>◆</i>2a 角色设计</li><li><i>◆</i>2b 场景设计</li><li><i>◆</i>2c 色彩方案</li><li><i>◆</i>2d 参考图生成</li></ul></div><div class="fcard"><h6>分镜设计 Agent</h6><div class="ft"><span>镜头语言</span><span>节奏把控</span></div><ul><li><i>◆</i>3a 分镜脚本</li><li><i>◆</i>3b 画面构图</li><li><i>◆</i>3c 镜头类型</li><li><i>◆</i>3d 时长规划</li></ul></div><div class="fcard"><h6>音画设计 Agent</h6><div class="ft"><span>音频合成</span><span>画面匹配</span></div><ul><li><i>◆</i>4a 背景音乐</li><li><i>◆</i>4b 音效设计</li><li><i>◆</i>4c 配音合成</li></ul></div><div class="fcard"><h6>渲染合成 Agent</h6><div class="ft"><span>视频渲染</span><span>后期合成</span></div><ul><li><i>◆</i>5a 画面渲染</li><li><i>◆</i>5b 特效合成</li><li><i>◆</i>5c 字幕添加</li></ul></div></div>
+    <div class="fvline"></div>
+    <div class="fman"><b>人工编辑</b><div class="fchips"><span>画面修改</span><span>字幕调整</span><span>音频替换</span><span>节奏调整</span><span>风格统一</span><span>细节优化</span></div></div>
+    <div class="fvline"></div>
+    <div class="frow"><div class="fout">视频合成导出</div></div>
+  </div>
+  <p class="note rv">角色成立、资产沉淀、分镜投喂规范就位之后，创作才真正开始：同一个 OC 可以在不同题材、不同体裁里持续产出内容，创作结果又回流为角色资产，形成闭环。</p>
+  <div class="sub-t rv"><em>IMAGE</em><h4>图像玩法</h4><s></s></div>
+  <div class="gr6 rv">
+    <div><div class="ph"><img loading="lazy" src="assets/oc/play-1.jpg" alt="图像玩法"></div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/oc/play-2.jpg" alt="图像玩法"></div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/oc/play-3.jpg" alt="图像玩法"></div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/oc/play-4.jpg" alt="图像玩法"></div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/oc/play-5.jpg" alt="图像玩法"></div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/oc/play-6.jpg" alt="图像玩法"></div></div>
+  </div>
+  <div class="cap rv" style="margin-top:10px"><i>◆</i>同一角色的多题材图像玩法</div>
+  <div class="sub-t rv"><em>VIDEO</em><h4>视频玩法</h4><s></s></div>
+  <div class="gr6 rv">
+    <div><div class="ph v"><video preload="none" poster="assets/oc/mv-1-poster.jpg" controls playsinline><source src="assets/oc/mv-1.mp4" type="video/mp4"></video></div></div>
+    <div><div class="ph v"><video preload="none" poster="assets/oc/mv-2-poster.jpg" controls playsinline><source src="assets/oc/mv-2.mp4" type="video/mp4"></video></div></div>
+    <div><div class="ph v"><video preload="none" poster="assets/oc/mv-3-poster.jpg" controls playsinline><source src="assets/oc/mv-3.mp4" type="video/mp4"></video></div></div>
+    <div><div class="ph v"><video preload="none" poster="assets/oc/mv-4-poster.jpg" controls playsinline><source src="assets/oc/mv-4.mp4" type="video/mp4"></video></div></div>
+    <div><div class="ph v"><video preload="none" poster="assets/oc/mv-5-poster.jpg" controls playsinline><source src="assets/oc/mv-5.mp4" type="video/mp4"></video></div></div>
+    <div><div class="ph v"><video preload="none" poster="assets/oc/mv-6-poster.jpg" controls playsinline><source src="assets/oc/mv-6.mp4" type="video/mp4"></video></div></div>
+  </div>
+  <div class="cap rv" style="margin-top:10px"><i>▶︎</i>基于分镜链路产出的视频作品</div>
+  <div class="fx-t rv" id="chroma"><span>08</span><h3>OC 互动游戏</h3></div>
+  <p class="note rv">以我自己的 OC <b>Salt</b> 为示例，把她放进马克所在的《灵笼》世界里：验证一个原创角色进入成熟 IP 之后能长出什么剧情，以及这些剧情<b>如何顺手变成能分享、能投稿的二创内容</b>。落地成一部竖屏可玩到结局的 Demo——7 天、6,338 行手写代码、零游戏引擎、零第三方素材库。</p>
+  <div class="mets rv" style="margin-top:20px">
+    <div class="met"><b>6,338</b><span>手写代码行 · 零框架</span></div>
+    <div class="met"><b>3</b><span>结局 · 双变量结算</span></div>
+    <div class="met"><b>5</b><span>处抉择 · 移动端竖屏</span></div>
+    <div class="met"><b>7 天</b><span>空仓库到可玩上线</span></div>
+  </div>
+  <div class="step rv" style="margin-top:22px"><span class="on">开场视频</span><i>→</i><span class="on">白光 · 眩晕</span><i>→</i><span class="on">第一视角摇杆探索</span><i>→</i><span class="on">遭遇与抉择</span><i>→</i><span class="on">结局与档案</span></div>
+  <div class="cds rv">
+    <div class="cd"><div class="n2">01</div><h5>素材全部自产</h5><p>立绘、六张表情头、场景与世界设定图全部 AI 生成后手动精修，用同一把风格锁保证跨图一致。</p></div>
+    <div class="cd"><div class="n2">02</div><h5>伪 Live2D 替身</h5><p>立绘拆成身体 + 六张表情头，JS 做呼吸、眨眼、视差与受击反馈，省掉一整个动画工种。</p></div>
+    <div class="cd"><div class="n2">03</div><h5>音乐用代码写</h5><p>BGM 由 Web Audio 实时合成，五层按场景切 7 组 preset；旁白走 TTS。零版权、零体积。</p></div>
+    <div class="cd"><div class="n2">04</div><h5>剧本即数据</h5><p>引擎只认 16 种节点，剧情是一个数组；最终选择 × 信任 × 关注度交叉结算出三个结局。</p></div>
+  </div>
+  <div class="sub-t rv" style="margin-top:44px"><em>IN GAME</em><h4>竖屏实机 · 从睁眼到抉择</h4><s></s></div>
+  <div class="gr4 rv">
+    <div><div class="ph app"><img loading="lazy" src="assets/galgame/shots/fpv.jpg" alt="第一视角睁眼看手"></div><div class="cap"><i>◆</i>睁眼 · 先看见自己的手</div></div>
+    <div><div class="ph app"><img loading="lazy" src="assets/galgame/shots/walk.jpg" alt="摇杆推进长廊"></div><div class="cap"><i>◆</i>推进 · 尽头站着一个人</div></div>
+    <div><div class="ph app"><img loading="lazy" src="assets/galgame/shots/mark.jpg" alt="马克由远及近登场"></div><div class="cap"><i>◆</i>登场 · 伪 Live2D 呼吸与眨眼</div></div>
+    <div><div class="ph app"><img loading="lazy" src="assets/galgame/shots/choice.jpg" alt="抉择分支"></div><div class="cap"><i>◆</i>抉择 · 选项即后果</div></div>
+  </div>
+  <div class="gr2 rv" style="margin-top:20px">
+    <div><div class="ph v"><video preload="none" controls playsinline poster="assets/galgame/intro-poster.jpg"><source src="assets/galgame/intro.mp4" type="video/mp4"></video></div><div class="cap"><i>▶︎</i>开场 · 画室最后一笔到坠入灯塔</div></div>
+    <div><div class="ph v"><video preload="none" controls playsinline poster="assets/galgame/cut01-poster.jpg"><source src="assets/galgame/cut01.mp4" type="video/mp4"></video></div><div class="cap"><i>▶︎</i>抉择后的情景过场</div></div>
+  </div>
+  <div class="sub-t rv" style="margin-top:44px"><em>SHARE</em><h4>二创怎么被分享投稿出去</h4><s></s></div>
+  <p class="note rv">重点不在「做出一个游戏」，而在<b>每一段独有剧情结束时，手里刚好多出一件能发出去的东西</b>。以 Salt 走进马克的世界为例，一次奇遇会顺着这条路走完：</p>
+  <div class="step rv" style="margin-top:2px"><span class="on">奇遇触发</span><i>→</i><span class="on">生成奇遇卡</span><i>→</i><span class="on">与角色合拍</span><i>→</i><span class="on">续写我的支线</span><i>→</i><span class="on">一键投稿</span></div>
+  <div class="rv" style="margin-top:4px"><div class="qimg" style="background:#0a0a0e;padding:0;border-color:rgba(255,255,255,.14)"><img loading="lazy" src="assets/galgame/share-path-salt.jpg" alt="OC 互动游戏 · Salt × 马克 分享投稿路径产品流程"></div></div>
+  <div class="cap rv" style="margin-bottom:22px"><i>◆</i>分享路径产品流程 · 以 Salt 进入马克的世界为例，五屏走完：奇遇触发 → 自动生成奇遇卡 → 与角色合拍 → 玩家续写支线 → 一键投稿</div>
+  <div class="fsub rv" style="grid-template-columns:repeat(3,1fr)"><div class="fcard"><h6>剧情即物料</h6><div class="ft"><span>零额外操作</span></div><ul><li><i>◆</i>奇遇结束自动排出竖版奇遇卡</li><li><i>◆</i>台词 / 地点 / 参与角色自动带上</li><li><i>◆</i>卡片带回流二维码，看到的人能进来玩</li></ul></div><div class="fcard"><h6>合拍即社交</h6><div class="ft"><span>OC × IP</span></div><ul><li><i>◆</i>Salt 与马克同框，生成纪念画面</li><li><i>◆</i>合拍收进相册，也是短片封面</li><li><i>◆</i>「我们的第一支短片」直接分享出去</li></ul></div><div class="fcard"><h6>支线可续写</h6><div class="ft"><span>UGC 回流</span></div><ul><li><i>◆</i>玩家写的支线进入「角色故事」页</li><li><i>◆</i>一段文字可转视频创作 / 漫画创作</li><li><i>◆</i>产出再回流成角色资产，滚下一轮</li></ul></div></div>
+  <p class="note rv" style="margin-top:20px">举个具体的：Salt 在灯塔长廊撞见马克，选了「说实话——我不属于这个世界」；这一刻的立绘、台词与场景被自动排成一张奇遇卡，旁边是两人同框的合拍纪念；她把这段续写成自己的支线，系统再把支线转成一条竖版短片草稿——从<b>玩</b>到<b>发出去</b>，中间不需要她打开任何一个剪辑软件。</p>
+  <div class="sub-t rv" style="margin-top:40px"><em>WORLD</em><h4>先把世界画出来，再写词条</h4><s></s></div>
+  <div class="gr4 rv">
+    <div><div class="ph"><img loading="lazy" src="assets/galgame/world-01.jpg" alt="地表玛娜生态与浮空灯塔"></div><div class="cap"><i>◆</i>地表玛娜生态与浮空灯塔</div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/galgame/world-05.jpg" alt="灯塔内部结构"></div><div class="cap"><i>◆</i>灯塔内部结构</div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/galgame/world-03.jpg" alt="成群小型变异兽"></div><div class="cap"><i>◆</i>成群小型变异兽</div></div>
+    <div><div class="ph"><img loading="lazy" src="assets/galgame/world-06.jpg" alt="废弃秘密观测站"></div><div class="cap"><i>◆</i>废弃秘密观测站</div></div>
+  </div>
+  <div class="skills rv" style="margin-top:26px">
+    <span class="sk">原生 HTML / CSS / JS</span><span class="sk">16 种剧本节点</span><span class="sk">第一视角虚拟摇杆</span>
+    <span class="sk g">6 种情绪状态机</span><span class="sk g">7 组 BGM preset</span><span class="sk g">19 段 TTS 旁白</span><span class="sk g">竖屏视频模糊补底</span><span class="sk g">iOS 符号 VS15</span>
+  </div>
+  <div class="lproto rv">
+    <div class="lpph">
+      <div class="isl"></div>
+      <iframe src="https://yanyuhan223-a11y.github.io/linglong-galgame/" title="笼中异色 · 可玩 Demo" loading="lazy" allow="autoplay; fullscreen"></iframe>
+    </div>
+    <div class="lpx">
+      <span class="kx">PLAY IT</span>
+      <h4>这台手机里是完整的第一章《笼中异色》</h4>
+      <p>点<b>「进入马克的世界」</b>就会从开场视频一路跑到结局，第一视角探索、五次抉择、三个结局与结局档案都是活的。右上角 <b>SOUND</b> 开声音更好——BGM 是运行时合成的，不是音频文件。</p>
+      <a class="lpbtn" href="https://yanyuhan223-a11y.github.io/linglong-galgame/" target="_blank" rel="noopener">在新窗口打开完整 Demo ↗︎</a>
+    </div>
+  </div>
+  <p class="note rv" style="margin-top:20px">→ <a href="https://github.com/yanyuhan223-a11y/linglong-galgame" target="_blank" rel="noopener" style="color:#ff3b3b;border-bottom:1px solid rgba(255,59,59,.5)">GitHub 源码仓库</a>　（非商业同人练习作品，《灵笼》世界观与角色版权归原作方所有）</p>
+</section>
+
+
+<article class="row first rv">
+  <div class="yr">2025.12<span class="tg">策略研究</span></div>
+  <div class="stack">
+    <div>
+      <div class="mx"><span class="kx">评测矩阵</span>
+        <div class="mxr"><em>场景</em><b>OC 角色生成 / 二次元风格化 / 单人人像 / 合照</b></div>
+        <div class="mxr"><em>题材</em><b>二次元 / OC 虚拟角色 / 人像 / 动物 / 亲子 / 摄影摄像</b></div>
+        <div class="mxr"><em>主体</em><b>virtual_character / female / male / multi_person / pet</b></div>
+        <div class="mxr"><em>年龄</em><b>child / youth / adult / middle_aged / mixed</b></div>
+      </div>
+      <div class="cap"><i>◆</i>四轴评测矩阵 · 覆盖率而非单点 demo</div>
+    </div>
+  </div>
+  <div class="side">
+    <h3>模型评测 · 技术选型与效果基准<span class="arw">↗︎</span></h3>
+    <span class="kx">概述</span>
+    <p class="tx">横向对比测评市面上多款模型与自研模型，输出可决策的<b>测评报告与技术选型建议</b>；建立多维评测标准与 MOS 打分示例。通过扩充样本总量并提升<b>线上真实数据占比</b>，深度支撑各场景业务效果精准评估。</p>
+  </div>
+</article>
+
+<div class="deep rv" id="eval">
+  <div class="fh"><i>◆</i><b>模型评测体系 · 效果基准怎么定</b><s></s><i>EVALUATION FRAMEWORK</i></div>
+  <div class="dp2">
+    <div><span class="kx">挑战</span><p class="tx">模型迭代太快，而“好看”是主观的。没有统一基准时，选型靠拍脑袋、效果回归靠人脑记忆，上线后才发现问题的代价极高。</p></div>
+    <div><span class="kx">我的解法</span><p class="tx">把主观体验翻译成可度量的指标：<b>多维评测矩阵 + MOS 主观打分标准 + 真实分布样本集</b>，让每一次选型与每一版效果都有同一把尺子。</p></div>
+  </div>
+  <div class="ecds"><div class="ecd"><div class="n2">01</div><h5>能力边界拆解</h5><p>先把「一个模型好不好」拆成可验证的问题：擅长什么题材、在什么输入下会崩、崩在哪一类细节上。按场景 × 题材 × 主体三个轴建立评测矩阵，而不是只看几张 demo。</p></div><div class="ecd"><div class="n2">02</div><h5>样本体系建设</h5><p>持续扩充样本总量，并刻意提升<b>线上真实数据占比</b>——用户真实上传的图分布和精修测试集完全不同，只有真实分布才能预测上线后的口碑。</p></div><div class="ecd"><div class="n2">03</div><h5>MOS 主观打分</h5><p>制定 5 分制 MOS 评分标准与打分示例集，统一多人打分的尺度；每个分档都配正负样例，把「我觉得好看」变成可复现的判断。</p></div><div class="ecd"><div class="n2">04</div><h5>结论与选型</h5><p>输出横向对比结论与<b>技术选型建议</b>，明确各场景该用哪个模型、哪些能力需要自研补齐，作为效果基准反向驱动模型迭代。</p></div></div>
+
+  <div class="sub-t rv"><em>MOS</em><h4>MOS 打分标准（5 分制）</h4><s></s></div>
+  <div class="dp2 tight">
+    <table class="mos"><tbody><tr><td class="mv">5</td><td class="mn">优秀 · 可直接上线</td><td class="md">无瑕疵，主体结构与质感均达商用标准，角色特征完全保持</td></tr><tr><td class="mv">4</td><td class="mn">良好 · 轻微可接受</td><td class="md">存在不影响观感的细微问题，无需返工即可使用</td></tr><tr><td class="mv">3</td><td class="mn">合格 · 需局部修复</td><td class="md">可用但有明显短板（局部结构 / 光影 / 细节），需人工修一道</td></tr><tr><td class="mv">2</td><td class="mn">较差 · 不可直接用</td><td class="md">主体崩坏、五官或肢体失真，或与输入指令偏差较大</td></tr><tr><td class="mv">1</td><td class="mn">不可用</td><td class="md">严重畸变、内容错误或角色完全不一致，直接淘汰</td></tr></tbody></table>
+    <div><span class="kx">评分维度</span><div class="skills" style="margin-top:10px"><span>画质清晰度</span><span>主体结构合理性</span><span>角色一致性</span><span>审美质感</span><span>指令跟随度</span><span>手部 / 五官细节</span><span>光影合理性</span><span>风格稳定性</span></div>
+    <p class="tx" style="margin-top:14px">每个维度独立打分后加权汇总，并附分档样例图统一尺度；同一批样本多人盲打，剥离个人偏好。最终输出不只是一个分数，而是“哪类输入下会失败”的能力地图。</p></div>
+  </div>
+
+
+  <div class="sub-t rv"><em>FOCUS</em><h4>重点场景 · OC 与二次元</h4><s></s></div>
+  <div class="ecds" style="margin-top:0">
+    <div class="ecd"><div class="n2">◆</div><h5>为什么特别测它们</h5><p>真实人像的好坏有共识，但 OC 与二次元是<b>“无真值”场景</b>：没有参考照片可对齐，只能对齐“设定”。它们也是增长最快的内容需求，模型却最容易在这里翻车。</p></div>
+    <div class="ecd"><div class="n2">◆</div><h5>多加的评分维度</h5><p><b>角色一致性</b>（发型 / 瞳色 / 服饰 / 特征物件跨镜头保持）、<b>画风稳定性</b>（不漂回写实、不中途变线条）、<b>设定遵循度</b>（文本设定到画面的还原率）、<b>多姿态 / 多表情下的身份保持</b>。</p></div>
+    <div class="ecd"><div class="n2">◆</div><h5>怎么造样本</h5><p>每个 OC 构造一组<b>同一角色 × 多镜头 × 多题材</b>的平行样本，强制模型在同一身份下反复作答；二次元则覆盖多种画风与线条粗细，看风格迁移的边界在哪里。</p></div>
+    <div class="ecd"><div class="n2">◆</div><h5>结论的去向</h5><p>这一块的评测结论直接喂给了<b>随变 AI</b>：哪个模型做 OC 一致性最稳、哪类分镜输入能把一致性拉回来，都是从这套基准里读出来的，而不是拍脑袋定的。</p></div>
+  </div>
+
+  <div class="sub-t rv"><em>DATASET</em><h4>评测样本构成</h4><s></s></div>
+  <p class="tx" style="max-width:760px;margin-bottom:18px">样本不是随便攒的：按<b>细分场景 × 题材 × 主体类型 × 年龄</b>四个维度配比，尽量向线上真实分布对齐，避开“测评很好看、上线就翻车”。其中 <b>OC 角色</b>与<b>二次元</b>是刻意加重的两块——它们既是增长最快的内容需求，也是后来 <b>随变 AI</b> 最吃模型能力的地方。</p>
+  <div class="dons"><div class="dcard"><h6>细分场景</h6><svg viewBox="0 0 124 124" class="dn"><circle cx="62" cy="62" r="54" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="15"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff1414" stroke-width="15" stroke-dasharray="112.497 226.795" stroke-dashoffset="-0.000" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff5548" stroke-width="15" stroke-dasharray="80.184 259.108" stroke-dashoffset="-113.097" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff8b6b" stroke-width="15" stroke-dasharray="80.184 259.108" stroke-dashoffset="-193.881" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#f0c9a8" stroke-width="15" stroke-dasharray="64.027 275.265" stroke-dashoffset="-274.665" transform="rotate(-90 62 62)"/><text x="62" y="60" class="dnn">126</text><text x="62" y="74" class="dnl">SAMPLES</text></svg><ul class="dlg"><li><em style="background:#ff1414"></em><span>OC 角色生成</span><b>33.3%</b></li><li><em style="background:#ff5548"></em><span>二次元风格化</span><b>23.8%</b></li><li><em style="background:#ff8b6b"></em><span>单人人像</span><b>23.8%</b></li><li><em style="background:#f0c9a8"></em><span>合照</span><b>19.0%</b></li></ul></div><div class="dcard"><h6>题材分布</h6><svg viewBox="0 0 124 124" class="dn"><circle cx="62" cy="62" r="54" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="15"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff1414" stroke-width="15" stroke-dasharray="83.176 256.116" stroke-dashoffset="-0.000" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff5548" stroke-width="15" stroke-dasharray="66.421 272.871" stroke-dashoffset="-83.776" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff8b6b" stroke-width="15" stroke-dasharray="62.232 277.060" stroke-dashoffset="-150.796" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#f0c9a8" stroke-width="15" stroke-dasharray="41.288 298.004" stroke-dashoffset="-213.628" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#e6ddd4" stroke-width="15" stroke-dasharray="28.722 310.570" stroke-dashoffset="-255.516" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#a9a29a" stroke-width="15" stroke-dasharray="24.533 314.759" stroke-dashoffset="-284.838" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#726c66" stroke-width="15" stroke-dasharray="28.722 310.570" stroke-dashoffset="-309.970" transform="rotate(-90 62 62)"/><text x="62" y="60" class="dnn">162</text><text x="62" y="74" class="dnl">SAMPLES</text></svg><ul class="dlg"><li><em style="background:#ff1414"></em><span>二次元</span><b>24.7%</b></li><li><em style="background:#ff5548"></em><span>OC / 虚拟角色</span><b>19.8%</b></li><li><em style="background:#ff8b6b"></em><span>人像</span><b>18.5%</b></li><li><em style="background:#f0c9a8"></em><span>动物</span><b>12.3%</b></li><li><em style="background:#e6ddd4"></em><span>亲子</span><b>8.6%</b></li><li><em style="background:#a9a29a"></em><span>摄影摄像</span><b>7.4%</b></li><li><em style="background:#726c66"></em><span>其他</span><b>8.6%</b></li></ul></div><div class="dcard"><h6>主体类型</h6><svg viewBox="0 0 124 124" class="dn"><circle cx="62" cy="62" r="54" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="15"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff1414" stroke-width="15" stroke-dasharray="83.176 256.116" stroke-dashoffset="-0.000" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff5548" stroke-width="15" stroke-dasharray="108.309 230.983" stroke-dashoffset="-83.776" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff8b6b" stroke-width="15" stroke-dasharray="53.854 285.438" stroke-dashoffset="-192.684" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#f0c9a8" stroke-width="15" stroke-dasharray="41.288 298.004" stroke-dashoffset="-247.139" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#e6ddd4" stroke-width="15" stroke-dasharray="32.910 306.382" stroke-dashoffset="-289.027" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#a9a29a" stroke-width="15" stroke-dasharray="16.155 323.137" stroke-dashoffset="-322.537" transform="rotate(-90 62 62)"/><text x="62" y="60" class="dnn">162</text><text x="62" y="74" class="dnl">SAMPLES</text></svg><ul class="dlg"><li><em style="background:#ff1414"></em><span>virtual_char</span><b>24.7%</b></li><li><em style="background:#ff5548"></em><span>female</span><b>32.1%</b></li><li><em style="background:#ff8b6b"></em><span>male</span><b>16.0%</b></li><li><em style="background:#f0c9a8"></em><span>multi_person</span><b>12.3%</b></li><li><em style="background:#e6ddd4"></em><span>other</span><b>9.9%</b></li><li><em style="background:#a9a29a"></em><span>pet</span><b>4.9%</b></li></ul></div><div class="dcard"><h6>年龄分布</h6><svg viewBox="0 0 124 124" class="dn"><circle cx="62" cy="62" r="54" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="15"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff1414" stroke-width="15" stroke-dasharray="211.458 127.835" stroke-dashoffset="-0.000" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff5548" stroke-width="15" stroke-dasharray="84.223 255.069" stroke-dashoffset="-212.058" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#ff8b6b" stroke-width="15" stroke-dasharray="13.537 325.755" stroke-dashoffset="-296.881" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#f0c9a8" stroke-width="15" stroke-dasharray="13.537 325.755" stroke-dashoffset="-311.018" transform="rotate(-90 62 62)"/><circle class="sl" cx="62" cy="62" r="54" fill="none" stroke="#e6ddd4" stroke-width="15" stroke-dasharray="13.537 325.755" stroke-dashoffset="-325.155" transform="rotate(-90 62 62)"/><text x="62" y="60" class="dnn">144</text><text x="62" y="74" class="dnl">SAMPLES</text></svg><ul class="dlg"><li><em style="background:#ff1414"></em><span>adult</span><b>62.5%</b></li><li><em style="background:#ff5548"></em><span>youth</span><b>25.0%</b></li><li><em style="background:#ff8b6b"></em><span>child</span><b>4.2%</b></li><li><em style="background:#f0c9a8"></em><span>middle_aged</span><b>4.2%</b></li><li><em style="background:#e6ddd4"></em><span>mixed</span><b>4.2%</b></li></ul></div></div>
+</div>
+
+
+<article class="row txt rv">
+  <div class="yr">2024 — 2025<span class="tg">探索项目 · 2 项专利</span></div>
+  <div class="side">
+    <h3>成片 Agent · 叙事型内容自动创作<span class="arw">↗︎</span></h3>
+    <span class="kx">背景</span>
+    <p class="tx">用 AI 把相册里的照片做成有叙事感的作品，两个效果突破：</p>
+    <ul class="li">
+      <li>相册理解与聚合：反推主题，按叙事合集组织内容</li>
+      <li>图集 / 视频双体裁，视频首创动态模板覆盖主要叙事结构</li>
+    </ul>
+    <span class="kx">主要职责</span>
+    <p class="tx">落地 <b>基础策略、用户画像、AI 端到端</b> 三种聚合策略，搭建<b>素材编排 → 文案生成 → 本地成片</b>完整链路，定义故事线文案效果标准，并构建文风观点库。</p>
+    <p class="tx" style="color:var(--red);font-size:12px;letter-spacing:1px">◆ 两项发明专利的机制拆解见下方</p>
+  </div>
+</article>
+
+<div class="deep rv" id="filmagent">
+  <div class="fh"><i>◆</i><b>成片 Agent · 从一堆照片到一段叙事</b><s></s><i>NARRATIVE AUTO-CREATION</i></div>
+  <div class="dp2">
+    <div><span class="kx">挑战</span><p class="tx">用户相册里有几千张照片，却永远不知道“可以做成什么”。传统一键成片只是堆素材 + 套模板，没有叙事，也没有“这是我的故事”的感觉；文案还容易千篇一律。</p></div>
+    <div><span class="kx">我的解法</span><p class="tx">把“成片”当作<b>叙事问题</b>而不是剪辑问题：先用内容理解把相册读成事件，再用三套聚合策略造出主题，最后用<b>观点库</b>解决文案同质、用<b>动态模板</b>解决结构单一。</p></div>
+  </div>
+
+  <div class="fdg" style="margin-top:26px">
+    <div class="fh"><i>◆</i><b>产品链路</b><s></s><i>ALBUM → STORY → FILM</i></div>
+    <div class="frow">
+      <div class="fnode"><b>相册输入</b><span>用户本地素材</span></div>
+      <div class="farr">→</div>
+      <div class="fnode"><b>内容理解</b><span>人物 / 场景 / 时间 / 事件</span></div>
+      <div class="farr">→</div>
+      <div class="fnode"><b>主题反推与聚合</b><span>叙事合集成型</span></div>
+    </div>
+    <div class="fvline"></div>
+    <div class="fsub" style="grid-template-columns:repeat(3,1fr)"><div class="fcard"><h6>基础策略</h6><div class="ft"><span>规则驱动</span><span>高召回</span></div><ul><li><i>◆</i>时间 / 地点 / 人物聚类</li><li><i>◆</i>节日与事件模板</li><li><i>◆</i>保底供给，不空窗</li></ul></div><div class="fcard"><h6>用户画像策略</h6><div class="ft"><span>兴趣匹配</span><span>个体差异</span></div><ul><li><i>◆</i>常拍题材与风格偏好</li><li><i>◆</i>亲子 / 宠物 / 旅拍人群</li><li><i>◆</i>按人给不同叙事角度</li></ul></div><div class="fcard"><h6>AI 端到端策略</h6><div class="ft"><span>内容理解</span><span>主题反推</span></div><ul><li><i>◆</i>相册多模态理解</li><li><i>◆</i>无主题时自动反推主题</li><li><i>◆</i>叙事合集自由度最高</li></ul></div></div>
+    <div class="fvline"></div>
+    <div class="frow">
+      <div class="fnode"><b>素材编排</b><span>选图 / 排序 / 节奏</span></div>
+      <div class="farr">→</div>
+      <div class="fnode"><b>文案生成</b><span>故事线 + 观点库</span></div>
+      <div class="farr">→</div>
+      <div class="fnode"><b>本地成片</b><span>动态模板 / 配乐 / 旁白</span></div>
+      <div class="farr">→</div>
+      <div class="fnode"><b>图集 / 视频</b><span>双体裁产出</span></div>
+    </div>
+  </div>
+
+  <div class="sub-t rv"><em>PATENTS</em><h4>两项发明专利的机制</h4><s></s></div>
+  <div class="fsub" style="grid-template-columns:repeat(2,1fr)"><div class="fcard"><h6>专利一 · 观点库 RAG</h6><div class="ft"><span>去同质化</span><span>文风可控</span></div><ul><li><i>◆</i>主题匹配：定住该说什么</li><li><i>◆</i>关键词检索：拉出候选观点</li><li><i>◆</i>多模态语义解析：对上画面</li><li><i>◆</i>动态注入：写进文案而不生硬</li><li><i>◆</i>成效：同一相册不再反复同一句话</li></ul></div><div class="fcard"><h6>专利二 · 动态模板系统</h6><div class="ft"><span>首创</span><span>自适应</span></div><ul><li><i>◆</i>素材特征理解：数量 / 质量 / 内容</li><li><i>◆</i>大模型 PE 编排故事线</li><li><i>◆</i>素材数量 ↔︎ 模板自动匹配</li><li><i>◆</i>自动旁白 + 智能配乐</li><li><i>◆</i>多维兜底，不出现空帧</li></ul></div></div>
+
+  <div class="sub-t rv"><em>RESULT</em><h4>成果</h4><s></s></div>
+  <div class="mets" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="met"><b>× 2</b><span>参与发明专利</span></div><div class="met"><b>2 种体裁</b><span>图集 / 视频双供给</span></div><div class="met"><b>3 套策略</b><span>基础 / 画像 / 端到端</span></div></div>
+  <p class="tx" style="max-width:820px;margin-top:16px">我在这个项目里负责<b>效果定义与链路搭建</b>：从文案效果标准、故事线结构，到聚合策略的供给边界与兜底规则，再到文风观点库的搭建——这些方法后来直接长成了<b>随变 AI</b> 里的 Agent 编排思路。</p>
+  <div class="sub-t rv"><em>SHOWREEL</em><h4>成片效果展示</h4><s></s></div>
+  <div class="stack g3"><div class="ph v"><video preload="metadata" controls playsinline><source src="assets/飞书20250926-114530.mp4" type="video/mp4"></video></div><div class="ph v"><video preload="metadata" controls playsinline><source src="assets/飞书20250924-011645.mp4" type="video/mp4"></video></div><div class="ph v"><video preload="metadata" controls playsinline><source src="assets/飞书20250924-011528.mp4" type="video/mp4"></video></div></div>
+</div>
+
+
+<article class="row hasimg txt rv">
+  <div class="rimg" aria-hidden="true"><img src="assets/style-hero.jpg" alt=""></div>
+  <div class="yr">2024 — 2025<span class="tg">特效玩法 · S- 爆款</span></div>
+  <div class="side">
+    <h3>AI 风格化 · 「彩铅风」投稿爆款<span class="arw">↗︎</span></h3>
+    <span class="kx">背景</span>
+    <p class="tx">丰富抖音特效生态，产出高质量风格化特效带动投稿。</p>
+    <span class="kx">成果</span>
+    <p class="tx">「彩铅风」达成大盘 <span class="n">A 级</span> 投稿爆款、消费 <span class="n">S- 级爆款</span>。</p>
+    <span class="kx">主要职责</span>
+    <p class="tx">完成风格目标效果定义，<b>独立搭建效果生成链路</b>，LoRA 数据优化，分场景精细调参，高效高标准把控效果上线。</p>
+  </div>
+</article>
+
+<div class="deep rv" id="stylize">
+  <div class="fh"><i>◆</i><b>AI 风格化 · 效果生成链路怎么搭</b><s></s><i>STYLE PIPELINE</i></div>
+  <div class="dp2">
+    <div><span class="kx">挑战</span><p class="tx">特效生态里“风格好看”不等于“能带投稿”：风格要让人一眼认得出、拍什么都不崩、而且得在手机上稳定跑得动。</p></div>
+    <div><span class="kx">我的解法</span><p class="tx">从<b>风格目标定义</b>开始倒推整条链路，自己<b>独立搭建效果生成链路</b>，用 LoRA 数据优化把风格语言固定下来，再分场景细调参数兜底长尾 case。</p></div>
+  </div>
+  <div class="fdg" style="margin-top:26px">
+    <div class="fh"><i>◆</i><b>效果生成链路</b><s></s><i>DEFINE → TRAIN → TUNE → SHIP</i></div>
+    <div class="frow"><div class="fnode"><b>风格目标定义</b><span>笔触 / 色感 / 纸纹基准</span></div><div class="farr">→</div><div class="fnode"><b>训练数据优化</b><span>LoRA 数据清洗与配比</span></div><div class="farr">→</div><div class="fnode"><b>生成链路搭建</b><span>单人搭建全链路</span></div><div class="farr">→</div><div class="fnode"><b>分场景调参</b><span>人像 / 合照 / 弱光</span></div><div class="farr">→</div><div class="fnode"><b>效果验收上线</b><span>逐版对比把关</span></div></div>
+    <div class="fvline"></div>
+    <div class="fsub" style="grid-template-columns:repeat(4,1fr)"><div class="fcard"><h6>风格定义</h6><div class="ft"><span>可评判</span></div><ul><li><i>◆</i>拆解“彩铅感”到笔触 / 色阶 / 留白</li><li><i>◆</i>给出正反例作为验收基准</li><li><i>◆</i>避开“像滤镜”的廉价感</li></ul></div><div class="fcard"><h6>LoRA 数据优化</h6><div class="ft"><span>风格收敛</span></div><ul><li><i>◆</i>筛除风格不纯的脏数据</li><li><i>◆</i>按题材补均衡样本</li><li><i>◆</i>控住过拟合与崩脸</li></ul></div><div class="fcard"><h6>分场景调参</h6><div class="ft"><span>鲁棒性</span></div><ul><li><i>◆</i>单人 / 多人 / 弱光分开调</li><li><i>◆</i>五官与手部专项兜底</li><li><i>◆</i>保证普通用户随手拍也能出片</li></ul></div><div class="fcard"><h6>上线把关</h6><div class="ft"><span>高标准</span></div><ul><li><i>◆</i>逐版回归对比</li><li><i>◆</i>定义不可上线的红线 case</li><li><i>◆</i>上线后跟投稿与消费反馈迭代</li></ul></div></div>
+  </div>
+  <div class="mets"><div class="met"><b>A 级</b><span>大盘投稿爆款</span></div><div class="met"><b>S- 级</b><span>消费爆款</span></div><div class="met"><b>1 人</b><span>独立搭建生成链路</span></div><div class="met"><b>全链路</b><span>定义 → 训练 → 调参 → 上线</span></div></div>
+
+  <div class="sub-t rv"><em>SHOWREEL</em><h4>「彩铅风」效果展示</h4><s></s></div>
+  <div class="stack g2"><div class="ph v"><video preload="metadata" controls playsinline><source src="assets/7月22日(8).mp4" type="video/mp4"></video></div><div class="ph v"><video preload="metadata" controls playsinline><source src="assets/7月22日(7).mp4" type="video/mp4"></video></div></div>
+
+</div>
+
+
+<article class="row txt rv">
+  <div class="yr">2024 — 2025<span class="tg">特效玩法 · S- 爆款</span></div>
+  <div class="side">
+    <h3>AI 音乐 · 「AI 我的新年单曲」<span class="arw">↗︎</span></h3>
+    <span class="kx">背景</span>
+    <p class="tx">用 AI 音乐生成拓展 AI 特效品类，以新交互降低创作门槛，带动投稿与消费。</p>
+    <span class="kx">成果</span>
+    <p class="tx">跑通 AI 音乐生成全链路，「AI 我的新年单曲」达成年轻 <span class="n">S-</span>、消费 <span class="n">S- 爆款</span>。</p>
+    <span class="kx">主要职责</span>
+    <ul class="li">
+      <li><b>降低门槛：</b>图片投稿切入 + 命题式引导，绕开文本创作</li>
+      <li><b>歌词要素：</b>场景 / 主题 / 事件 / 情感 / 人物 五类，用内容识别替代输入</li>
+      <li><b>玩法包装：</b>多图上传 + 黑胶专辑形式，突出原创感</li>
+    </ul>
+    <div class="qt">同年 AI 歌曲「还我妈生鼻」爆火，我们把 <b>「音」</b> 加进「文 / 图 / 视频」生成链路，从<b>歌曲创作</b>与<b>音色克隆</b>两个方向拓品类。</div>
+  </div>
+</article>
+
+<div class="deep rv" id="aimusic">
+  <div class="fh"><i>◆</i><b>AI 音乐 · 把“听”加进生成链路</b><s></s><i>PHOTO → LYRICS → SONG</i></div>
+  <div class="dp2">
+    <div><span class="kx">挑战</span><p class="tx">音乐创作的门槛比图像高得多——要用户自己写歌词、选曲风，绝大多数人会直接放弃。但 AI 歌曲已经是热点（同年「还我妈生鼻」爆火），必须把它做成人人能玩的特效。</p></div>
+    <div><span class="kx">我的解法</span><p class="tx">不让用户写字，而是<b>从图片切入</b>：用内容识别把照片转成歌词要素，再用命题式选择代替自由输入；用 PE 把控歌词与曲风质量，最后用<b>黑胶专辑</b>的包装把“原创感”拉满。</p></div>
+  </div>
+  <div class="fdg" style="margin-top:26px">
+    <div class="fh"><i>◆</i><b>玩法与生成链路</b><s></s><i>LOW-BARRIER CREATION</i></div>
+    <div class="frow"><div class="fnode"><b>多图上传</b><span>从拍照切入，不用写字</span></div><div class="farr">→</div><div class="fnode"><b>内容识别</b><span>读出照片里的故事</span></div><div class="farr">→</div><div class="fnode"><b>命题制定</b><span>选择代替自由输入</span></div></div>
+    <div class="fvline"></div>
+    <div class="fdir"><b><em>◆</em> 歌词要素五分类 · 以内容识别替代文本输入</b><div class="fchips"><span>场景</span><span>主题</span><span>事件</span><span>情感</span><span>人物</span></div></div>
+    <div class="fvline"></div>
+    <div class="frow"><div class="fnode"><b>PE 生成歌词</b><span>控质量与情感走向</span></div><div class="farr">→</div><div class="fnode"><b>AI 编曲与演唱</b><span>曲风与音色匹配</span></div><div class="farr">→</div><div class="fnode"><b>黑胶专辑包装</b><span>突出原创仪式感</span></div><div class="farr">→</div><div class="fnode"><b>投稿与传播</b><span>可分享的个人单曲</span></div></div>
+  </div>
+  <div class="sub-t rv"><em>DESIGN</em><h4>设计亮点</h4><s></s></div>
+  <div class="fsub" style="grid-template-columns:repeat(3,1fr)"><div class="fcard"><h6>降低创作门槛</h6><div class="ft"><span>图片切入</span></div><ul><li><i>◆</i>图片投稿代替文本创作</li><li><i>◆</i>命题制定降低下笔难度</li><li><i>◆</i>不会写歌词也能出作品</li></ul></div><div class="fcard"><h6>歌词要素分类</h6><div class="ft"><span>内容识别</span></div><ul><li><i>◆</i>场景 / 主题 / 事件 / 情感 / 人物</li><li><i>◆</i>要素组合代替自由输入</li><li><i>◆</i>歌词内容更丰富不重复</li></ul></div><div class="fcard"><h6>玩法包装</h6><div class="ft"><span>仪式感</span></div><ul><li><i>◆</i>音乐专辑形式组织作品</li><li><i>◆</i>多图上传 + 黑胶唱片</li><li><i>◆</i>突出“这是我的原创”</li></ul></div></div>
+  <div class="mets"><div class="met"><b>S-</b><span>年轻爆款</span></div><div class="met"><b>S-</b><span>消费爆款</span></div><div class="met"><b>全链路</b><span>AI 音乐生成跑通</span></div><div class="met"><b>+音</b><span>文/图/视频之外的新品类</span></div></div>
+
+  <div class="sub-t rv"><em>SHOWREEL</em><h4>效果展示</h4><s></s></div>
+  <div class="stack g2"><div class="ph v"><video preload="metadata" controls playsinline><source src="assets/ScreenRecording_01-07-2025%2015-56-24_1.mp4" type="video/mp4"></video></div><div class="ph v"><video preload="metadata" controls playsinline><source src="assets/20250106-193301.mp4" type="video/mp4"></video></div></div>
+
+</div>
+
+
+<article class="row hasimg txt rv">
+  <div class="rimg soft" aria-hidden="true"><img src="assets/photo-hero.jpg" alt=""></div>
+  <div class="yr">2023 — 2024<span class="tg">核心项目 · 公司首个真人 AI 玩法</span></div>
+  <div class="side">
+    <h3>轻颜 / 抖音 AI 写真<span class="arw">↗︎</span></h3>
+    <span class="kx">背景</span>
+    <p class="tx">23 年 7 月立项、11/3 上线，是<b>公司首个带分身的真人 AI 生成玩法</b>。</p>
+    <span class="kx">成果</span>
+    <p class="tx">端内拉新完成度 <span class="n">900%</span>、DNU 环比 <span class="n">+28%</span>、主话题 VV <span class="n">3.1 亿</span>、累计拉新拉活 <span class="n">1500 万+</span>；口碑超越妙鸭等竞品；App Store 免费榜 <span class="n">73 → 17</span>。</p>
+    <span class="kx">主要职责</span>
+    <p class="tx">定义目标效果，从 0-1 跑通 AI 形象链路，主攻 <b>ID 保持</b>痛点，统筹数据打标、风格打磨与模型训练全流程。</p>
+    <ul class="li">
+      <li><b>用户相似度：</b>WebUI 搭建全链路，分身与风格 LoRA 分层优化，IP-Adapter 注入身份特征，配合 ControlNet 锁住长相。</li>
+      <li><b>写真风格：</b>聚焦胶片质感，还原色调与光圈，用效果突破换取新鲜感与传播力。</li>
+      <li><b>SOP 沉淀：</b>自研链路首次落地，沉淀真人 LoRA 制作标准与写真 SOP。</li>
+    </ul>
+    <div class="qt"><b>#这个胶片的杀伤力不亚于初恋</b>、<b>#看看你的AI美式学院照</b> 分别登上抖音挑战榜与热榜 <b>TOP1</b>，评论区跟风晒图持续带动跟投。</div>
+  </div>
+</article>
+
+<div class="deep rv" id="aiphoto">
+  <div class="fh"><i>◆</i><b>AI 写真 · 公司首个带分身的真人生成玩法</b><s></s><i>ID × STYLE</i></div>
+  <div class="dp2">
+    <div><span class="kx">挑战</span><p class="tx">真人 AI 写真最难的是两个目标互相打架：<b>像不像我</b>和<b>好不好看</b>。风格拉满就不像本人，像本人就变成平庸自拍；而这是公司首个带分身的真人 AI 玩法，链路全自研，没有前例可循。</p></div>
+    <div><span class="kx">我的解法</span><p class="tx">从<b>目标效果定义</b>倒推整条链路，主攻 <b>ID 保持</b>：把“身份”和“风格”拆成两层分开优化，再用 IP-Adapter 与 ControlNet 把人锁住；同时统筹数据打标、风格打磨与模型训练全流程，上线后沉淀成 SOP。</p></div>
+  </div>
+  <div class="fdg" style="margin-top:26px">
+    <div class="fh"><i>◆</i><b>AI 形象生成链路（0-1 自研）</b><s></s><i>PHOTO → LORA → FILM STYLE</i></div>
+    <div class="frow"><div class="fnode"><b>用户上传照片</b><span>3-10 张自拍</span></div><div class="farr">→</div><div class="fnode"><b>数据打标与筛选</b><span>建标准，剔除脏数据</span></div><div class="farr">→</div><div class="fnode"><b>分身 LoRA 训练</b><span>学住“这个人”</span></div></div>
+    <div class="fvline"></div>
+    <div class="frow"><div class="fnode"><b>风格 LoRA</b><span>胶片色调 / 质感 / 光圈</span></div><div class="farr">→</div><div class="fnode"><b>IP-Adapter 身份注入</b><span>把人锁在画面里</span></div><div class="farr">→</div><div class="fnode"><b>ControlNet 结构约束</b><span>锁姿态与五官</span></div><div class="farr">→</div><div class="fnode"><b>出图质检</b><span>ID 保持 × 风格一致</span></div></div>
+    <div class="fvline"></div>
+    <div class="frow"><div class="fout">上线与话题运营</div></div>
+  </div>
+  <div class="sub-t rv"><em>HOW</em><h4>四个攻坚点</h4><s></s></div>
+  <div class="fsub" style="grid-template-columns:repeat(4,1fr)"><div class="fcard"><h6>用户相似度 · ID 保持</h6><div class="ft"><span>核心痛点</span></div><ul><li><i>◆</i>WebUI 搭建全链路，可快速试错</li><li><i>◆</i>分身 LoRA + 风格 LoRA 分开优化</li><li><i>◆</i>IP-Adapter 注入身份特征</li><li><i>◆</i>ControlNet 配合锁定外观与长相</li></ul></div><div class="fcard"><h6>写真风格 · 胶片感</h6><div class="ft"><span>效果突破</span></div><ul><li><i>◆</i>还原胶片色调 / 质感 / 光圈</li><li><i>◆</i>连人物情绪与姿态一起定义</li><li><i>◆</i>用新鲜感券换用户主动晒图</li><li><i>◆</i>风格本身就是传播词</li></ul></div><div class="fcard"><h6>SOP 沉淀</h6><div class="ft"><span>可复用</span></div><ul><li><i>◆</i>自研链路首次在业务落地</li><li><i>◆</i>制定真人 LoRA 制作标准</li><li><i>◆</i>建立轻颜 AI 写真 SOP</li><li><i>◆</i>为 AI 形象进抖音打基础</li></ul></div><div class="fcard"><h6></h6><div class="ft"><span>跟风效应</span></div><ul><li><i>◆</i>#这个胶片的杀伤力不亚于初恋 挑战榜 TOP1</li><li><i>◆</i>#看看你的AI美式学院照 热榜 TOP1</li><li><i>◆</i>评论区跟风晒图带动持续跟投</li><li><i>◆</i>口碑超越妙鸭等竞品</li></ul></div></div>
+  <div class="sub-t rv"><em>RESULT</em><h4>成果</h4><s></s></div>
+  <div class="mets"><div class="met"><b>900%</b><span>端内拉新完成度</span></div><div class="met"><b>+28%</b><span>DNU 环比</span></div><div class="met"><b>3.1 亿</b><span>主话题 VV</span></div><div class="met"><b>1500万+</b><span>累计拉新拉活</span></div></div>
+  <p class="tx" style="max-width:900px;margin-top:16px">App Store 免费榜从 <b>73 → 17</b>，口碑超越妙鸭等竞品；两个主话题分别登上抖音<b>挑战榜 TOP1</b> 与 <b>热榜 TOP1</b>。这也是我第一次完整跑通“效果定义 → 链路自研 → 爆款出圈 → SOP 沉淀”的闭环。</p>
+  <div class="sub-t rv"><em>CAMPAIGN</em><h4>主题与运营物料</h4><s></s></div>
+  <div class="gr3 wall rv"><div><div class="ph"><img loading="lazy" src="assets/photo/p2.jpg" alt="AI 写真主题物料"></div></div><div><div class="ph"><img loading="lazy" src="assets/photo/p3.jpg" alt="AI 写真主题物料"></div></div><div><div class="ph"><img loading="lazy" src="assets/photo/p4.jpg" alt="AI 写真主题物料"></div></div><div><div class="ph"><img loading="lazy" src="assets/photo/p5.jpg" alt="AI 写真主题物料"></div></div><div><div class="ph"><img loading="lazy" src="assets/photo/p7.jpg" alt="AI 写真主题物料"></div></div><div><div class="ph"><img loading="lazy" src="assets/photo/p6.jpg" alt="AI 写真主题物料"></div></div></div>
+</div>
+
+
+<!-- ============ 02 BONDEE ============ -->
+<section class="chapter" id="bondee">
+  <div class="idx rv">02 — EXPERIENCE</div>
+  <div class="hl rv"><h2>BONDEE</h2><div class="rule"></div></div>
+  <div class="rl rv"><span>EFFECTS PLANNER</span><em>2022 — 2023</em><em>0-1 社交场景 / 形象资产 / 创作者生态</em></div>
+  <p class="sm rv">从 0-1 主导产品核心场景的设计搭建与落地，统筹项目节点、交付质量与资源成本，推动多个核心模块上线。</p>
+</section>
+
+<article class="row first rv">
+  <div class="yr">2022 — 2023<span class="tg">0-1 场景搭建</span></div>
+  <div class="stack">
+    <div class="stack g2">
+      <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2018.45.49.png" alt="BONDEE 个人空间"></div>
+      <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2018.54.35.png" alt="BONDEE 服装体系"></div>
+    </div>
+    <div class="mcap cap"><i>◆</i>个人空间 / 服装与状态动画体系</div>
+  </div>
+  <div class="side">
+    <h3>个人空间 · 形象资产体系<span class="arw">↗︎</span></h3>
+    <ul class="li">
+      <li><b>个人空间模块从 0-1 搭建：</b>主导空间视觉设计、玩法策划、交互逻辑与用户动线，完成 DIY 相框、留言便签等完整社交场景搭建，构建用户个性化表达闭环。</li>
+      <li><b>服装与状态动画体系建设：</b>负责服装风格策划、穿戴逻辑设计与道具动画制作，建立可复用的角色形象资产体系。</li>
+    </ul>
+  </div>
+</article>
+
+<article class="row rv">
+  <div class="yr">2022 — 2023<span class="tg">创作者生态</span></div>
+  <div class="stack">
+    <div>
+      <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2018.54.12.png" alt="创作者平台"></div>
+      <div class="cap"><i>◆</i>创作者平台与贴图支持策略</div>
+    </div>
+  </div>
+  <div class="side">
+    <h3>创作者平台 · UGC 内容供给<span class="arw">↗︎</span></h3>
+    <ul class="li">
+      <li><b>创作者生态搭建：</b>从 0-1 建立创作者平台，制定创作规范与贴图支持策略，持续维护优化，打通 UGC 内容供给链路。</li>
+    </ul>
+  </div>
+</article>
+
+<article class="row rv">
+  <div class="yr">2022 — 2023<span class="tg">品牌视觉</span></div>
+  <div class="stack">
+    <div>
+      <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2018.55.19.png" alt="品牌视觉"></div>
+      <div class="cap"><i>◆</i>开屏动画人设与服装策划</div>
+    </div>
+  </div>
+  <div class="side">
+    <h3>产品视觉品牌塑造<span class="arw">↗︎</span></h3>
+    <ul class="li">
+      <li><b>产品视觉品牌塑造：</b>主导开屏动画人设与服装策划，统一产品视觉调性，强化品牌心智。</li>
+    </ul>
+  </div>
+</article>
+
+<!-- ============ 03 MEITU ============ -->
+<section class="chapter" id="meitu">
+  <div class="idx rv">03 — EXPERIENCE</div>
+  <div class="hl rv"><h2>Meitu</h2><div class="rule"></div></div>
+  <div class="rl rv"><span>AR DESIGNER</span><em>2021 — 2022</em><em>美颜相机 / AR 实时交互特效</em></div>
+  <p class="sm rv">负责美颜相机 App 效果全链路上线，深耕 AR 实时交互特效玩法，挖掘影像创新点并驱动商业化转化。</p>
+</section>
+
+<article class="row first rv">
+  <div class="yr">2021 — 2022<span class="tg">爆款效果 · S 级</span></div>
+  <div class="stack">
+    <div class="stack">
+      <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2018.43.10.png" alt="妆容特效"></div>
+      <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2018.43.30.png" alt="草本拟人系列"></div>
+    </div>
+    <div class="mcap cap"><i>◆</i>妆容特效 / 草本拟人系列</div>
+  </div>
+  <div class="side">
+    <h3>妆容特效 · 从转化率到品类心智<span class="arw">↗︎</span></h3>
+    <span class="kx">核心成果</span>
+    <ul class="li">
+      <li><b>效果转化领先：</b>主导效果平均保存转化率达 <span class="n">80%</span>，显著高于同期基线。</li>
+      <li><b>商业化贡献：</b>VIP 订阅效果累计营收 <span class="n g">20w+</span>，支撑付费效果矩阵持续增长。</li>
+    </ul>
+    <span class="kx">代表爆款</span>
+    <ul class="li">
+      <li><b>笑眼妆：</b>上线 3 天下载量突破 <span class="n">98.1w</span>，快速登顶明星联名榜。</li>
+      <li><b>初恋学姐妆：</b>艺人生日当天总下载量 <span class="n">85w+</span>，借势营销案例。</li>
+      <li><b>白开水妆容：</b>端内 <span class="n">S 级爆款</span>，登顶效果榜首，超越「质感」「素颜」等长青款，并衍生「美式白开水」「鞠式白月光」等系列热点词，形成品类心智。</li>
+    </ul>
+    <div class="qt"><b>文化 IP 创新：</b>主导<b>草本拟人系列</b>，融合传统中国草本文化与现代影像技术，打造差异化，拓展 AR 效果的文化叙事边界。</div>
+  </div>
+</article>
+
+<article class="row rv">
+  <div class="yr">2021 — 2022<span class="tg">基建能力</span></div>
+  <div>
+    <div class="mtb">
+      <div class="mtt">AI 双眼皮 · 四款基础眼型</div>
+      <div class="mt4">
+        <div class="mtile"><div class="mimg"><img loading="lazy" src="assets/meitu/eye-1.jpg" alt="单眼皮"></div><b>单眼皮</b></div>
+        <div class="mtile"><div class="mimg"><img loading="lazy" src="assets/meitu/eye-2.jpg" alt="开扇"></div><b>开扇</b></div>
+        <div class="mtile"><div class="mimg"><img loading="lazy" src="assets/meitu/eye-3.jpg" alt="平扇"></div><b>平扇</b></div>
+        <div class="mtile on"><div class="mimg"><img loading="lazy" src="assets/meitu/eye-4.jpg" alt="欧式"></div><b>欧式</b></div>
+      </div>
+      <div class="mtn">为了让用户能分别体验不同眼型的效果，拆出 <b>单眼皮 / 开扇 / 平扇 / 欧式</b> 四款基础眼型单独调参；其中「欧式」后续直接复用到风格妆 · VIP 猫眼妆容，成为付费效果的底层积木。</div>
+    </div>
+    <div class="mtb">
+      <div class="mtt">一键卸妆 · 拖动对比</div>
+      <div class="cmp" id="mtcmp">
+        <img loading="lazy" src="assets/meitu/clean-before.jpg" alt="卸妆前">
+        <div class="caft"><img loading="lazy" src="assets/meitu/clean-after.jpg" alt="卸妆后"></div>
+        <div class="cbar"></div>
+        <span class="clb l">卸妆前</span><span class="clb r">卸妆后</span>
+      </div>
+      <div class="mtn">上妆类效果直接叠在「已妆」的脸上会叠色、贴合度崩坏。因此开放<b>卸妆能力</b>，先把带妆的脸回到「白纸」状态，再上妆就能更服贴、更轻薄。</div>
+    </div>
+  </div>
+  <div class="side">
+    <h3>基础能力建设 · 特效妆容基建<span class="arw">↗︎</span></h3>
+    <span class="kx">能力拓展</span>
+    <ul class="li">
+      <li><b>原子能力从 0 到 1：</b>与算法共建 AI 双眼皮、一键卸妆等基础能力，补齐特效妆容的底层积木。</li>
+      <li><b>可复用基建：</b>把高频妆容元素沉淀成参数化组件，后续新效果可直接调用，大幅缩短上线周期。</li>
+      <li><b>质量标准：</b>沉淀妆容贴合度与肤质自然度的验收标准，保证多人协作下的效果不走形。</li>
+    </ul>
+  </div>
+</article>
+
+<article class="row rv">
+  <div class="yr">2021 — 2022<span class="tg">视觉宣发</span></div>
+  <div class="stack">
+    <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2018.44.17.png" alt="活动 Banner 与宣发视觉"></div>
+    <div class="mcap cap"><i>◆</i>活动 Banner / 效果宣发视觉</div>
+  </div>
+  <div class="side">
+    <h3>视觉宣发 · 妆容品类的对外调性<span class="arw">↗︎</span></h3>
+    <span class="kx">职责范围</span>
+    <ul class="li">
+      <li><b>活动 Banner：</b>负责妆容品类节点活动、明星联名与 VIP 付费专区的 Banner 视觉，从 KV 概念到端内多尺寸适配一人闭环。</li>
+      <li><b>效果宣发：</b>为爆款效果输出首页入口图、榜单封面与站外传播物料，让同一效果在端内外的视觉认知保持一致。</li>
+    </ul>
+    <span class="kx">设计策略</span>
+    <ul class="li">
+      <li><b>统一调性：</b>为妆容品类建立配色、字体与构图规范，把零散的单次活动收拢成可延续的品类视觉语言。</li>
+      <li><b>转化导向：</b>主视觉以「妆效强对比 + 人物特写」为核心，一眼看清效果差异，直接服务点击与保存转化。</li>
+    </ul>
+  </div>
+</article>
+
+<!-- ============ 04 OTHER ============ -->
+<section class="chapter" id="other">
+  <div class="idx rv">04 — PERSONAL</div>
+  <div class="hl rv"><h2>Coding &amp; Art</h2><div class="rule"></div></div>
+  <div class="rl rv"><span>SIDE QUESTS</span><em>副本 / 手作</em><em>工具 · 短片 · 绘画 · 3D · 雕塑</em></div>
+  <p class="sm rv">从 0 到 1 的独立产品、工程化提效工具、AI 漫画短片，以及厚涂绘画、拼贴、C4D 建模与雕塑等长期积累的审美训练。这些是我保持手感与好奇心的方式。</p>
+</section>
+
+<!-- ============ FEATURED CASE · StockPulse ============ -->
+<section class="fx" id="stockpulse">
+  <div class="idx rv">PERSONAL · PRODUCT DESIGN × CODING — 2026</div>
+  <div class="bcr rv"><span>Personal</span><i>/</i><span>0 → 1 独立项目</span><i>/</i><b>产品原型</b></div>
+  <h2 class="rv">StockPulse</h2>
+  <p class="one rv">一个只在该说话的时候说话的持仓监控 App —— 从我写给自己用的一段 Python 脚本，长成一套完整的产品设计。</p>
+
+  <div class="fx-meta rv">
+    <div><span>ROLE</span><b>独立设计 + 编码实现 · 1 人全流程</b></div>
+    <div><span>TIMELINE</span><b>2026.08 起 · 已连续运行 8 天</b></div>
+    <div><span>SCOPE</span><b>需求定义 / 规则设计 / 产品原型 / Python 实现</b></div>
+    <div><span>STACK</span><b>Python · 新浪 &amp; 腾讯行情 · yfinance · 飞书开放平台</b></div>
+  </div>
+
+  <div class="fx-kv rv">
+    <img src="assets/stockpulse/kv.jpg" alt="StockPulse 产品原型主视觉">
+    <div class="tagline">Only speaks when it <em>matters</em>.</div>
+  </div>
+
+  <div class="fx-3 rv">
+    <div>
+      <span class="kx">挑战</span>
+      <p>我自己就是用户：6 只持仓横跨 A 股 / 港股 / 美股。券商 App 要么整天不吭声，要么一涨一跌就推一条，最后我把通知全关了。<b>问题不是信息太少，而是信息没有阈值。</b></p>
+    </div>
+    <div>
+      <span class="kx">解法</span>
+      <p>不做又一个行情 App，做一台<b>阈值机器</b>：只围绕「我的成本价」说话，压成 <b>4 档预警 + 1 条独立通道</b>，同档 4 小时只说一次，非交易时段闭嘴。</p>
+    </div>
+    <div>
+      <span class="kx">我做了什么</span>
+      <p>先写脚本自用（v0.1 → v0.4）并持续运行，再把验证过的规则<b>反向抽象成产品</b>：7 屏可交互原型、四档预警语义系统，以及面向「信任感」的状态可视化。</p>
+    </div>
+  </div>
+
+  <div class="fx-t rv"><span>01</span><h3>从脚本到产品</h3></div>
+  <p class="note rv">这个项目的顺序是反的：<b>先有一个真实跑着的系统，再有产品设计</b>。运行日志本身就是最好的用户研究。</p>
+  <div class="flow rv">
+    <div class="stg">
+      <div class="no">STAGE 01</div>
+      <h4>自用脚本</h4>
+      <div class="en">Script for One</div>
+      <ul>
+        <li>v0.1 单市场轮询 → v0.4 三市场 + 双数据源容灾</li>
+
+        <li>持续运行，日志里留下真实触发记录</li>
+      </ul>
+    </div>
+    <div class="arw2">→</div>
+    <div class="stg">
+      <div class="no">STAGE 02</div>
+      <h4>规则沉淀</h4>
+      <div class="en">Rules Distilled</div>
+      <ul>
+        <li>回看日志：哪些提醒真的看了，哪些是噪音</li>
+        <li>砍掉常规涨跌播报，只留四档 + 单日闪崩</li>
+
+      </ul>
+    </div>
+    <div class="arw2">→</div>
+    <div class="stg">
+      <div class="no">STAGE 03</div>
+      <h4>产品化</h4>
+      <div class="en">Designed as a Product</div>
+      <ul>
+        <li>把 CLI 里看不见的规则翻译成界面语言</li>
+
+        <li>产出 7 屏高保真可交互原型</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fx-t rv"><span>02</span><h3>四档预警语义系统</h3></div>
+  <p class="note rv">所有阈值都<b>相对成本价</b>而不是昨收——我关心的不是「今天涨没涨」，而是「离决策点还有多远」。单日闪崩是唯一例外，走独立通道。</p>
+  <div class="arch rv">
+    <div class="nd"><div class="dot"></div><b>关注 −5%</b><p>只做记录性提醒，不打断当下</p></div>
+    <div class="nd"><div class="dot"></div><b>预警 −10%</b><p>需要重新判断，同步给出距止损线的距离</p></div>
+    <div class="nd"><div class="dot"></div><b>止损 −15%</b><p>最高优先级，强提醒 + 飞书加急，带持仓上下文</p></div>
+    <div class="nd"><div class="dot"></div><b>止盈 +20%</b><p>唯一正向档位，提示分批减仓并记录触发次数</p></div>
+  </div>
+  <div class="skills rv">
+    <span class="sk">⚡︎ 单日闪崩 −5% · 独立通道</span>
+    <span class="sk">相对成本价 · 不相对昨收</span>
+    <span class="sk">4 小时同档冷却</span>
+    <span class="sk g">三市场独立交易时钟</span><span class="sk g">非交易时段全静默</span><span class="sk g">双数据源容灾与限流退避</span>
+  </div>
+
+  <div class="fx-t rv"><span>03</span><h3>四个关键设计决策</h3></div>
+  <div class="cds rv">
+    <div class="cd"><div class="n2">01</div><h5>反直觉地选了「绿涨红跌」</h5><p>一个界面里红色不能有两个意思。红＝上涨的话，−15% 止损的红就失效了。我把红色全局唯一留给「危险」，换来四档语义自洽，设置里可一键切回。</p></div>
+    <div class="cd"><div class="n2">02</div><h5>自选池刻意不显示盈亏</h5><p>没买的东西没有成本价，硬算「如果当时买了」只会制造焦虑。自选只回答<b>现在值不值得看一眼</b>，只留突破价位与异动阈值。</p></div>
+    <div class="cd"><div class="n2">03</div><h5>把「沉默」设计成可见的功能</h5><p>冷却倒计时、合并折叠、静默时段都做成界面上看得见的状态——沉默被解释了，才会变成可信任的。</p></div>
+    <div class="cd"><div class="n2">04</div><h5>让工程缺陷变成产品信息</h5><p>日志里最多的一行是 yfinance 的 <b>Too Many Requests</b>。与其藏起来，不如把数据源健康度摆上界面：主源 / 备源 / 降级中 + 近 24h 成功率。</p></div>
+  </div>
+
+  <div class="fx-t rv"><span>04</span><h3>核心屏 · 把阈值画进 K 线里</h3></div>
+  <p class="note rv">首页只回答两个问题：<b>我现在亏多少、要不要管</b>——持仓按偏离度排序，每行自带四档标尺；个股详情把 −5 / −10 / −15 / +20 画成色带铺进分时图。</p>
+  <div class="step rv"><span class="on">三市场时钟</span><i>→</i><span class="on">偏离度排序</span><i>→</i><span class="on">四档标尺</span><i>→</i><span class="on">阈值色带</span><i>→</i><span class="on">数据源健康度</span></div>
+  <div class="gr4 rv">
+    <div><div class="ph app"><img loading="lazy" src="assets/stockpulse/shots/01-home.png" alt="StockPulse 首页"></div><div class="cap"><i>◆</i>脉搏 · 首页总览与四档标尺</div></div>
+    <div><div class="ph app"><img loading="lazy" src="assets/stockpulse/shots/04-detail.png" alt="StockPulse 个股详情"></div><div class="cap"><i>◆</i>个股详情 · 阈值画进分时图</div></div>
+    <div><div class="ph app"><img loading="lazy" src="assets/stockpulse/shots/03-alert.png" alt="StockPulse 预警中心"></div><div class="cap"><i>◆</i>预警中心 · 可回溯时间轴</div></div>
+    <div><div class="ph app"><img loading="lazy" src="assets/stockpulse/shots/11-datasource.png" alt="StockPulse 数据源健康度"></div><div class="cap"><i>◆</i>数据源健康度 · 让不可靠可见</div></div>
+  </div>
+  <p class="note rv" style="margin-top:18px">完整 7 屏 / 11 态都在下面那台可以点的手机里。</p>
+
+  <div class="fx-t rv"><span>05</span><h3>可交互原型</h3></div>
+  <div class="lproto rv">
+    <div class="lpph">
+      <div class="isl"></div>
+      <iframe src="assets/stockpulse/proto.html?embed=1&amp;screen=home" title="StockPulse 可交互原型" loading="lazy"></iframe>
+    </div>
+    <div class="lpx">
+      <span class="kx">TRY IT</span>
+      <h4>这台手机是可以点的</h4>
+      <p>五个 Tab、预警条、持仓行、日报卡片、筛选 chips 与开关都是活的——点 <b>应流股份</b> 就能进个股详情看阈值可视化。</p>
+      <p>原型完全用<b>原生 HTML / CSS / SVG 手写</b>，没有设计工具导出——图表与色带按真实持仓数据运行时计算，改一个成本价，整屏会一起变。</p>
+      <a class="lpbtn" href="assets/stockpulse/proto.html" target="_blank" rel="noopener">打开完整原型（7 屏 / 11 态） ↗︎</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED CASE · ARCANA 塔罗占卜 ============ -->
+<section class="fx" id="arcana">
+  <div class="idx rv">PERSONAL · AI IMAGE PIPELINE × WEB — 2026</div>
+  <div class="bcr rv"><span>Personal</span><i>/</i><span>0 → 1 自研 Web</span><i>/</i><b>AI 生图链路 + 交互设计</b></div>
+  <h2 class="rv">ARCANA · 塔罗占卜</h2>
+  <p class="one rv">一副自己生成的 78 张牌，和一台不说废话的解读引擎——把「AI 出图」和「内容结构」放进同一个页面里验证一次。</p>
+
+  <div class="fx-meta rv">
+    <div><span>ROLE</span><b>独立设计 + 编码实现 · 1 人全流程</b></div>
+    <div><span>TIMELINE</span><b>2026.08 · 交互已迭代到第三版</b></div>
+    <div><span>SCOPE</span><b>风格锁 / AI 生图链路 / 牌义与解读引擎 / 前端实现</b></div>
+    <div><span>STACK</span><b>AI 生图 · 原生 HTML / CSS / JS · 零框架</b></div>
+  </div>
+
+  <div class="fx-kv rv">
+    <img src="assets/tarot/kv.jpg" alt="ARCANA 塔罗占卜主视觉">
+    <div class="tagline">Ask once. Read it <em>properly</em>.</div>
+  </div>
+
+  <div class="fx-3 rv">
+    <div>
+      <span class="kx">挑战</span>
+      <p>难的不是画牌：解读要<b>可信</b>，不能是随机拼词的星座口吻；氛围要<b>沉浸</b>。一个是内容结构问题，一个是视觉与动效问题。</p>
+    </div>
+    <div>
+      <span class="kx">解法</span>
+      <p>视觉沿用我自己的 <b>riso 荧光限定套印</b>风格锁，让 43 张自制牌像同一副；内容先建 78 张牌义库，再用三重交叉的解读引擎，让每句话都有出处。</p>
+    </div>
+    <div>
+      <span class="kx">我做了什么</span>
+      <p>写死 style lock 批量出牌并人工重做不达标的；40 张数字小牌<b>改用代码画</b>；搭牌义库、6 种牌阵与解读引擎；交互三版把点击从 10~15 次压到 2~6 次。</p>
+    </div>
+  </div>
+
+  <div class="fx-t rv"><span>01</span><h3>视觉定义 · riso 荧光限定套印</h3></div>
+  <p class="note rv">我一直在用的<b>个人风格锁</b>：黑场 + 米白纸块 + 四支荧光限定色，粗网点铺底，<b>品红左移 / 荧光绿上移</b>做出套印错位。零圆角、零渐变，参考 1970s 科学图鉴 × 神秘学。</p>
+  <div class="skills rv">
+    <span class="sk">黑场 #07070a</span><span class="sk">纸块 #f2ece0</span><span class="sk">四支荧光限定色</span>
+    <span class="sk g">粗网点半调</span><span class="sk g">品红左移 / 荧光绿上移</span><span class="sk g">规线与出血标记</span><span class="sk g">2:3 竖版统一</span>
+  </div>
+  <div class="gr2 rv" style="margin-top:22px">
+    <div><div class="ph riso band"><img loading="lazy" src="assets/tarot/deck-hands.jpg" alt="ARCANA 牌堆主画面"></div><div class="cap"><i>◆</i>主画面 · 四色限定与套印错位</div></div>
+    <div><div class="ph riso band"><img loading="lazy" src="assets/tarot/band-suits.jpg" alt="四花色徽记"></div><div class="cap"><i>◆</i>四花色徽记 · 权杖 / 圣杯 / 宝剑 / 星币</div></div>
+  </div>
+
+  <div class="fx-t rv"><span>02</span><h3>牌面生成链路 · AI 出量，人定风格</h3></div>
+  <p class="note rv">43 张牌面全部自己生成：<b>22 张大阿卡纳 + 16 张宫廷牌 + 1 张牌背 + 4 个花色徽记</b>。关键不是提示词写得花，而是风格锁写死之后就不再改。</p>
+  <div class="flow rv">
+    <div class="stg">
+      <div class="no">STAGE 01</div>
+      <h4>风格锁</h4>
+      <div class="en">Style Lock</div>
+      <ul>
+        <li>固定 style lock prompt 存档，每次直接复用</li>
+        <li>米白纸底 + 纯黑画板，禁文字 / 数字 / 水印</li>
+      </ul>
+    </div>
+    <div class="arw2">→</div>
+    <div class="stg">
+      <div class="no">STAGE 02</div>
+      <h4>批量生成</h4>
+      <div class="en">Batch Generation</div>
+      <ul>
+        <li>大阿卡纳 / 宫廷牌 / 徽记 / 牌背分批出图，prompts 留档</li>
+        <li>先要一致性，再要单张好看</li>
+      </ul>
+    </div>
+    <div class="arw2">→</div>
+    <div class="stg">
+      <div class="no">STAGE 03</div>
+      <h4>筛选与重做</h4>
+      <div class="en">Curation</div>
+      <ul>
+        <li>不达标或撞名的几张重写提示词重做</li>
+        <li>逐张核对错位与配色，压到 6MB 内上线</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sub-t rv"><em>THE DECK</em><h4>牌面样张 · 43 张自制牌面里的四张</h4><s></s></div>
+  <div class="gr4 rv">
+    <div><div class="ph riso"><img loading="lazy" src="assets/tarot/m00.jpg" alt="愚者"></div><div class="cap"><i>◆</i>0 愚者</div></div>
+    <div><div class="ph riso"><img loading="lazy" src="assets/tarot/m08.jpg" alt="力量"></div><div class="cap"><i>◆</i>VIII 力量 · 重做版</div></div>
+    <div><div class="ph riso"><img loading="lazy" src="assets/tarot/m18.jpg" alt="月亮"></div><div class="cap"><i>◆</i>XVIII 月亮</div></div>
+    <div><div class="ph riso"><img loading="lazy" src="assets/tarot/back.jpg" alt="牌背"></div><div class="cap"><i>◆</i>牌背 · 全牌统一入口</div></div>
+  </div>
+
+  <div class="fx-t rv"><span>03</span><h3>取舍 · 40 张数字小牌不生成，用代码画</h3></div>
+  <p class="note rv">剩下 40 张数字小牌没让 AI 画，改用四个花色徽记按<b>韦特体系 pip 排布</b>程序化渲染：省掉 40 次生成与筛选，还<b>绕开随机性、绝对统一</b>——该用 AI 的地方用 AI，该用代码的地方用代码。</p>
+  <div class="step rv"><span class="on">花色徽记</span><i>→</i><span class="on">去黑底</span><i>→</i><span class="on">pip 坐标表</span><i>→</i><span class="on">按张数排布</span><i>→</i><span class="on">成牌</span></div>
+  <div class="sub-t rv"><em>RENDERED BY CODE</em><h4>由代码画出来的四张小牌</h4><s></s></div>
+  <div class="gr4 rv">
+    <div><div class="ph riso"><img loading="lazy" src="assets/tarot/pip-w03.png" alt="权杖三"></div><div class="cap"><i>◆</i>权杖三 · 垂直三点</div></div>
+    <div><div class="ph riso"><img loading="lazy" src="assets/tarot/pip-c07.png" alt="圣杯七"></div><div class="cap"><i>◆</i>圣杯七 · 双列 + 底部单点</div></div>
+    <div><div class="ph riso"><img loading="lazy" src="assets/tarot/pip-s09.png" alt="宝剑九"></div><div class="cap"><i>◆</i>宝剑九 · 三×三 方阵</div></div>
+    <div><div class="ph riso"><img loading="lazy" src="assets/tarot/pip-p10.png" alt="星币十"></div><div class="cap"><i>◆</i>星币十 · 双列五行</div></div>
+  </div>
+  <div class="skills rv" style="margin-top:16px">
+    <span class="sk">40 张小牌 · 0 次生成</span><span class="sk">1~10 十套 pip 坐标表</span>
+    <span class="sk g">徽记尺寸随张数递减</span><span class="sk g">花色色值映射</span><span class="sk g">alpha 图层不怕逆位旋转</span>
+  </div>
+
+  <div class="fx-t rv"><span>04</span><h3>内容层 · 可信度是结构问题</h3></div>
+  <p class="note rv">解读像不像真的，不取决于形容词，取决于数据结构。78 张牌义先拆成字段，再让单张解读由<b>牌位语义 × 提问领域 × 正逆位</b>三重交叉生成，而不是从句子池里随机拽一条。</p>
+  <div class="arch rv">
+    <div class="nd"><div class="dot"></div><b>78 张牌义库</b><p>结构化字段：关键词、牌义、正逆位释义、建议与领域</p></div>
+    <div class="nd"><div class="dot"></div><b>6 种牌阵</b><p>1~10 张，每个牌位自带语义，同一张牌在不同位置说的不是一件事</p></div>
+    <div class="nd"><div class="dot"></div><b>三重交叉</b><p>牌位 × 领域 × 正逆位，先出单张解读，避开套话</p></div>
+    <div class="nd"><div class="dot"></div><b>综合解读</b><p>再合成结论、能量结构、盲点提醒与三件可执行的行动</p></div>
+  </div>
+  <div class="skills rv">
+    <span class="sk">定心 · 1 张</span><span class="sk">时间 · 3 张</span><span class="sk">二选一 · 5 张</span><span class="sk">凯尔特十字 · 10 张</span>
+    <span class="sk g">牌阵根据问题自动推荐</span><span class="sk g">领域从问题文本推断</span>
+  </div>
+
+  <div class="fx-t rv"><span>05</span><h3>交互的三次迭代 · 少点击与仪式感的拉扯</h3></div>
+  <p class="note rv">同一个产品重做了三版交互，每版都在同一对矛盾里找平衡：<b>减负会不会把仪式感一起减掉</b>。</p>
+  <div class="flow rv">
+    <div class="stg">
+      <div class="no">V1</div>
+      <h4>五个页面级步骤</h4>
+      <div class="en">Too Many Steps</div>
+      <ul>
+        <li>首页 → 四道选择题 → 选牌阵 → 抽牌 → 逐张翻牌 → 解读</li>
+        <li>点 <b>10~15 次</b>、跳 5 个页面，人还没进入状态就在填表</li>
+      </ul>
+    </div>
+    <div class="arw2">→</div>
+    <div class="stg">
+      <div class="no">V2</div>
+      <h4>压成一页式</h4>
+      <div class="en">One Page</div>
+      <ul>
+        <li>首屏即提问台，领域自动推断，留空也能直接抽</li>
+        <li>抽满自动翻牌、自动出解读，点击降到 <b>2~6 次</b></li>
+      </ul>
+    </div>
+    <div class="arw2">→</div>
+    <div class="stg">
+      <div class="no">V3</div>
+      <h4>单主舞台换场</h4>
+      <div class="en">Stage, In Progress</div>
+      <ul>
+        <li>一页长滚快但丢了空间感，改成主舞台换场 + 常驻返回</li>
+        <li>加回仪式感：牌堆呼吸、弹性抽牌、错帧翻牌、套印漂移</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="note rv" style="margin-top:26px">→ <a href="https://yanyuhan223-a11y.github.io/arcana-oracle/" target="_blank" rel="noopener" style="color:#ff3b3b;border-bottom:1px solid rgba(255,59,59,.5)">打开线上塔罗占卜页面</a>　（整副 78 张牌、6 种牌阵，留空也能直接抽；这里只放代表性牌面）</p>
+</section>
+
+
+<article class="row rv">
+  <div class="yr">ANIMATION<span class="tg">AI 漫画短片</span></div>
+  <div class="stack">
+    <div class="ph v"><video preload="metadata" controls playsinline><source src="assets/AI%20animation.Mp4" type="video/mp4"></video></div>
+    <div class="mcap cap"><i>▶︎</i>AI 漫画短片</div>
+  </div>
+  <div class="side">
+    <h3>AI 漫画短片<span class="arw">↗︎</span></h3>
+    <p class="tx">用生成能力做的一支个人短片，从分镜、角色到运动与配乐的完整叙事实验。</p>
+  </div>
+</article>
+
+<article class="row rv">
+  <div class="yr">ART<span class="tg">painting · 3d · sculpture</span></div>
+  <div class="stack">
+    <div class="mtb">
+      <div class="mtt">厚涂绘画</div>
+      <div class="gr2">
+        <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2019.07.07.png" alt="厚涂绘画"></div>
+        <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2019.07.25.png" alt="厚涂绘画"></div>
+      </div>
+    </div>
+    <div class="mtb">
+      <div class="mtt">C4D 建模</div>
+      <div class="gr2">
+        <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2019.08.46.png" alt="C4D 建模"></div>
+        <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2019.08.34.png" alt="C4D 建模"></div>
+      </div>
+    </div>
+    <div class="mtb">
+      <div class="mtt">雕塑 · 本科专业</div>
+      <div class="gr2">
+        <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2019.09.21.png" alt="雕塑"></div>
+        <div class="ph"><img loading="lazy" src="assets/截屏2026-07-22%2019.09.34.png" alt="雕塑"></div>
+      </div>
+    </div>
+  </div>
+  <div class="side">
+    <h3>手作与审美训练<span class="arw">↗︎</span></h3>
+    <span class="kx">厚涂绘画</span><p class="tx">光影与体积的长期练习，是我判断「效果好不好看」的底层直觉。</p>
+    <span class="kx">C4D 建模</span><p class="tx">场景与道具的三维搭建，掌握光影、材质与镜头语言。</p>
+    <span class="kx">雕塑 · 本科专业</span><p class="tx">科班出身的形体训练，从泥稿到人体写生，理解结构与空间关系。</p>
+  </div>
+</article>
+
+<!-- ============ PROFILE ============ -->
+<section class="chapter" id="profile">
+  <div class="idx rv">05 — PROFILE</div>
+  <div class="hl rv"><h2>About me</h2><div class="rule"></div></div>
+</section>
+
+<article class="row txt first rv tkonly">
+  <div class="side">
+    <div class="tks big">
+      <div class="tkg">
+        <em>DESIGN · CRAFT</em>
+        <div class="tkr">
+          <span class="tk"><i></i>PS</span>
+          <span class="tk"><i></i>AI</span>
+          <span class="tk"><i></i>PR · AE</span>
+          <span class="tk"><i></i>C4D</span>
+          <span class="tk"><i></i>CODING<b>Python · 前端</b></span>
+        </div>
+      </div>
+      <div class="tkg">
+        <em>AI · PIPELINE</em>
+        <div class="tkr">
+          <span class="tk"><i></i>ComfyUI</span>
+          <span class="tk"><i></i>LoRA 训练</span>
+          <span class="tk"><i></i>Prompt 工程</span>
+          <span class="tk"><i></i>Agent Skill 编排</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <img class="ffish" src="assets/v3-fish-cut.png" alt="">
+  <div class="kick">Let's make something people share</div>
+  <h2><a href="mailto:798287301@qq.com">798287301@qq.com</a></h2>
+  <div class="fm">
+    <span>颜于涵 · Vivienne · 盐盐</span>
+    <span>@ 秋刀想吃鱼</span>
+    <span>AI Designer</span>
+  </div>
+  <a class="pill2" href="mailto:798287301@qq.com">GET IN TOUCH</a>
+  <div class="cp">VIVIENNE · PORTFOLIO 2026 — ALL RIGHTS RESERVED</div>
+</footer>
+
+<div class="imode" id="imode"><i></i><span>IMAGE</span><b id="imodeTxt">融合</b></div>
+<div class="lbx" id="lbx"><button class="lbx-x" id="lbxX">✕</button><img id="lbxImg" src="" alt=""></div>
+
+<script>
+(function(){
+  var ids=['#bytedance','#bondee','#meitu','#other','#profile'];
+  var mini=document.getElementById('mini'),bar=document.getElementById('bar');
+  var menuLinks=[].slice.call(document.querySelectorAll('.menu a'));
+  var miniLinks=[].slice.call(document.querySelectorAll('.mini a.ml'));
+  function onScroll(){
+    var y=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;
+    bar.style.width=(h>0?y/h*100:0)+'%';
+    var cover=document.getElementById('home');
+    var inCover=y<cover.offsetHeight-54;
+    document.body.classList.toggle('at-entry',inCover);
+    mini.classList.toggle('show',!inCover);
+    var cur=-1;
+    ids.forEach(function(id,i){var el=document.querySelector(id);if(el&&el.offsetTop<=y+180)cur=i;});
+    menuLinks.forEach(function(a,i){a.classList.toggle('on',a.getAttribute('href')===ids[cur]);});
+    miniLinks.forEach(function(a,i){a.classList.toggle('on',i===cur);});
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.08,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+
+  function count(el){
+    var raw=el.getAttribute('data-raw');if(raw){el.textContent=raw;return;}
+    var to=parseFloat(el.getAttribute('data-to')),dec=parseInt(el.getAttribute('data-dec')||'0',10),
+        suf=el.getAttribute('data-suf')||'',t0=null;
+    function step(t){if(!t0)t0=t;var p=Math.min((t-t0)/1600,1),e=1-Math.pow(1-p,3);
+      el.textContent=(to*e).toFixed(dec)+suf;if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  }
+  var io2=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){count(e.target);io2.unobserve(e.target);}});
+  },{threshold:.5});
+  document.querySelectorAll('.st b').forEach(function(el){io2.observe(el);});
+
+  var lbx=document.getElementById('lbx'),li=document.getElementById('lbxImg');
+  document.querySelectorAll('.ph:not(.v) img, .qimg img').forEach(function(img){
+    img.parentElement.addEventListener('click',function(){
+      li.src=img.currentSrc||img.src;
+      li.classList.toggle('neg',img.parentElement.classList.contains('neg'));
+      lbx.classList.add('on');document.body.style.overflow='hidden';});
+  });
+  function close(){lbx.classList.remove('on');li.src='';document.body.style.overflow='';}
+  document.getElementById('lbxX').addEventListener('click',close);
+  lbx.addEventListener('click',function(e){if(e.target===lbx)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+
+  var vs=[].slice.call(document.querySelectorAll('video'));
+  vs.forEach(function(v){v.addEventListener('play',function(){vs.forEach(function(o){if(o!==v&&!o.paused)o.pause();});});});
+
+  var im=document.getElementById('imode'),imt=document.getElementById('imodeTxt');
+  var saved=localStorage.getItem('vv-img-mode');
+  if(saved==='raw')document.body.classList.add('raw'),imt.textContent='原图';
+  im.addEventListener('click',function(){
+    var raw=document.body.classList.toggle('raw');
+    imt.textContent=raw?'原图':'融合';
+    localStorage.setItem('vv-img-mode',raw?'raw':'soft');
+  });
+
+  var cg=document.getElementById('cg'),raf=null;
+  window.addEventListener('mousemove',function(e){
+    if(raf)return;
+    raf=requestAnimationFrame(function(){
+      cg.style.left=e.clientX+'px';cg.style.top=e.clientY+'px';cg.style.opacity='1';raf=null;});
+  });
+})();
+</script>
+<script>
+(function(){var c=document.getElementById('mtcmp');if(!c)return;
+function set(e){var r=c.getBoundingClientRect();var x=((e.clientX-r.left)/r.width)*100;
+c.style.setProperty('--p',Math.max(0,Math.min(100,x)).toFixed(1)+'%');}
+c.addEventListener('pointerdown',function(e){try{c.setPointerCapture(e.pointerId);}catch(err){} set(e);});
+c.addEventListener('pointermove',function(e){if(e.buttons)set(e);});
+})();
+</script>
+<script>
+(function(){var st=document.getElementById('astage');if(!st)return;
+st.addEventListener('click',function(){st.classList.toggle('on');});
+var vs=st.querySelectorAll('.acard video');
+st.addEventListener('mouseenter',function(){vs.forEach(function(v){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});});});
+st.addEventListener('mouseleave',function(){vs.forEach(function(v){if(!v.hasAttribute('autoplay'))v.pause();});});
+})();
+</script>
+<script>
+(function(){var box=document.querySelector('.proto2');if(!box)return;
+var ths=box.querySelectorAll('.pth'),bigs=box.querySelectorAll('.pbig'),ms=box.querySelectorAll('.pmeta');
+var lis=box.querySelectorAll('.pli,.psw');
+function pick(i){[ths,bigs,ms,lis].forEach(function(g){[].forEach.call(g,function(el){
+el.classList.toggle('on',el.getAttribute('data-i')==String(i));});});}
+[].forEach.call(lis,function(b){var i=b.getAttribute('data-i');b.addEventListener('mouseenter',function(){pick(i);});b.addEventListener('click',function(){pick(i);});});
+[].forEach.call(ths,function(b){var i=b.getAttribute('data-i');
+b.addEventListener('mouseenter',function(){pick(i);});b.addEventListener('click',function(){pick(i);});});
+})();
+</script>
+<script>
+(function(){
+  var items=[].slice.call(document.querySelectorAll('[data-fit]'));
+  if(!items.length)return;
+  items.forEach(function(el){
+    var w=document.createElement('div');w.className='fitw';
+    el.parentNode.insertBefore(w,el);w.appendChild(el);
+  });
+  function fit(){
+    items.forEach(function(el){
+      var design=parseFloat(el.getAttribute('data-fit')),host=el.parentElement;
+      var avail=host.clientWidth||host.getBoundingClientRect().width;
+      var s=Math.min(1,avail/design);
+      if(s>=1){el.style.width='';el.style.transform='';host.style.height='';return;}
+      el.style.width=design+'px';
+      el.style.transform='scale('+s+')';
+      host.style.height=Math.ceil(el.offsetHeight*s)+'px';
+    });
+  }
+  fit();
+  window.addEventListener('resize',fit);
+  window.addEventListener('load',function(){setTimeout(fit,60);});
+  document.addEventListener('click',function(){setTimeout(fit,700);});
+})();
+</script>
+<script src="gallery.js?v=pill-float-1"></script>
+</body>
+</html>

@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>StockPulse · 产品原型 v1.0</title>
+<style>
+:root{
+  --bg:#06070B;
+  --sc:#0A0C13;          /* screen bg */
+  --card:#131824;
+  --card2:#1A2131;
+  --line:rgba(255,255,255,.075);
+  --line2:rgba(255,255,255,.13);
+  --txt:#EDF1F8;
+  --mut:#8C94A8;
+  --faint:#5A6478;
+  --up:#2BD9A0;
+  --dn:#FF4A5B;
+  --brand:#7AA2FF;
+  --brand2:#9B8CFF;
+  --lv1:#FFC24B;   /* 关注 -5% */
+  --lv2:#FF9445;   /* 预警 -10% */
+  --lv3:#FF4A5B;   /* 止损 -15% */
+  --lv4:#2BD9A0;   /* 止盈 +20% */
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+  --num:"SF Pro Display",-apple-system,"DIN Alternate","PingFang SC",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);font-family:var(--sans);color:var(--txt);-webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+.mono{font-family:var(--num);letter-spacing:-.2px}
+
+/* ============ STAGE (standalone) ============ */
+.stage{min-height:100vh;padding:44px 28px 70px;
+  background:
+    radial-gradient(60% 40% at 18% 0%,rgba(122,162,255,.10),transparent 62%),
+    radial-gradient(50% 40% at 88% 8%,rgba(255,74,91,.08),transparent 65%),
+    var(--bg);}
+.stage-hd{max-width:1500px;margin:0 auto 34px;display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap}
+.stage-hd .lg{display:flex;align-items:center;gap:12px}
+.stage-hd .lg svg{width:34px;height:34px}
+.stage-hd h1{font-size:25px;font-weight:600;letter-spacing:.5px}
+.stage-hd h1 em{font-style:normal;color:var(--brand)}
+.stage-hd .vs{font-size:11px;letter-spacing:2px;color:var(--faint);padding:4px 9px;border:1px solid var(--line2);border-radius:5px}
+.stage-hd p{font-size:12.5px;color:var(--mut);line-height:1.9;margin-left:auto;max-width:520px;text-align:right}
+.stage-hd p b{color:var(--txt);font-weight:500}
+.rowlab{max-width:1500px;margin:0 auto 14px;display:flex;align-items:center;gap:14px}
+.rowlab i{font-style:normal;width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 10px var(--brand)}
+.rowlab b{font-size:12px;font-weight:500;letter-spacing:3px;color:#cfd6e6}
+.rowlab s{flex:1;height:1px;background:var(--line);text-decoration:none}
+.rowlab em{font-style:normal;font-size:10.5px;letter-spacing:2px;color:var(--faint)}
+.screens{max-width:1500px;margin:0 auto 52px;display:flex;gap:34px;flex-wrap:wrap;align-items:flex-start}
+.slot{width:330px}
+.slot .cap{margin-top:15px;font-size:11.5px;color:var(--mut);letter-spacing:.4px;line-height:1.75}
+.slot .cap b{display:block;color:#e6eaf3;font-weight:500;font-size:12.5px;margin-bottom:4px;letter-spacing:1px}
+.slot .cap b i{font-style:normal;color:var(--brand);margin-right:7px;font-size:10px}
+
+/* ============ PHONE ============ */
+.phone{position:relative;width:330px;height:714px;border-radius:46px;padding:9px;
+  background:linear-gradient(160deg,#31384a,#0d1017 42%,#262c3b);
+  box-shadow:0 34px 70px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.06);}
+.phone::after{content:'';position:absolute;left:50%;translate:-50% 0;bottom:15px;width:104px;height:4px;
+  border-radius:4px;background:rgba(255,255,255,.34);z-index:20;pointer-events:none}
+.screen{position:relative;width:100%;height:100%;border-radius:38px;overflow:hidden;background:var(--sc);
+  display:flex;flex-direction:column}
+.island{position:absolute;top:9px;left:50%;translate:-50% 0;width:88px;height:25px;border-radius:14px;background:#000;z-index:15}
+
+/* embed mode: no phone frame */
+body.embed{background:var(--sc)}
+body.embed .stage{display:none}
+.embedwrap{display:none}
+body.embed .embedwrap{display:block;width:100%;height:100vh}
+body.embed .embedwrap .screen{border-radius:0;height:100vh}
+body.embed .island{display:none}
+body.embed .statusbar{padding-top:10px}
+/* shot mode: single phone, exact size, for asset capture */
+body.shot{background:transparent}
+body.shot .stage{display:none}
+body.shot .embedwrap{display:block;width:330px;height:714px;padding:0}
+
+/* ============ STATUS BAR ============ */
+.statusbar{flex:0 0 auto;height:46px;padding:15px 24px 0;display:flex;align-items:center;justify-content:space-between;
+  font-size:12.5px;font-weight:600;letter-spacing:.2px}
+.statusbar .r{display:flex;align-items:center;gap:5px}
+.statusbar svg{display:block}
+
+/* ============ NAV BAR ============ */
+.nav{flex:0 0 auto;padding:4px 18px 10px;display:flex;align-items:center;gap:10px}
+.nav .bk{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--card);color:var(--mut)}
+.nav h2{font-size:17px;font-weight:600;letter-spacing:.3px}
+.nav .sm{font-size:10.5px;color:var(--faint);letter-spacing:1px;margin-top:1px}
+.nav .sp{margin-left:auto;display:flex;gap:8px}
+.nav .ico{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--card);color:var(--mut)}
+.nav .ico.dot{position:relative}
+.nav .ico.dot::after{content:'';position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;
+  background:var(--dn);box-shadow:0 0 7px var(--dn)}
+
+/* ============ BODY SCROLL ============ */
+.body{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 16px 18px}
+.screen[data-sc="detail"] .body,.screen[data-sc="report"] .body{padding-bottom:36px}
+.body::-webkit-scrollbar{width:0}
+
+/* ============ TABBAR ============ */
+.tabbar{flex:0 0 auto;height:66px;display:flex;padding:7px 6px 0;
+  background:rgba(10,12,19,.92);backdrop-filter:blur(20px);border-top:1px solid var(--line)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--faint);font-size:9.5px;letter-spacing:.5px;padding-top:5px;position:relative}
+.tab svg{width:21px;height:21px}
+.tab.on{color:var(--brand)}
+.tab .bdg{position:absolute;top:2px;right:calc(50% - 18px);min-width:15px;height:15px;padding:0 4px;border-radius:8px;
+  background:var(--dn);color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center;letter-spacing:0}
+
+/* ============ COMMON BITS ============ */
+.mkt{display:flex;gap:6px;margin:0 0 10px}
+.mk{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.mk .t{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--mut);letter-spacing:.6px}
+.mk .t i{width:5px;height:5px;border-radius:50%;background:var(--faint);font-style:normal;flex:0 0 auto}
+.mk.live .t i{background:var(--up);box-shadow:0 0 8px var(--up);animation:bp 1.8s infinite}
+.mk.pre .t i{background:var(--lv1)}
+@keyframes bp{0%,100%{opacity:1}50%{opacity:.3}}
+.mk .v{margin-top:4px;font-size:11px;font-weight:600;letter-spacing:.2px}
+.mk.live .v{color:var(--up)}
+.mk.pre .v{color:var(--lv1)}
+.mk.off .v{color:var(--faint)}
+
+.hero{position:relative;overflow:hidden;border-radius:17px;padding:14px 16px 10px;margin-bottom:11px;
+  background:linear-gradient(158deg,#1B2233,#11151F 60%);border:1px solid var(--line)}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(85% 70% at 88% 0%,rgba(255,74,91,.14),transparent 62%)}
+.hero .lb{position:relative;font-size:10.5px;color:var(--mut);letter-spacing:1.6px;display:flex;align-items:center;gap:7px}
+.hero .lb em{font-style:normal;margin-left:auto;font-size:9.5px;color:var(--faint);letter-spacing:.8px}
+.hero .big{position:relative;margin-top:5px;font-family:var(--num);font-size:30px;font-weight:600;letter-spacing:-.8px;line-height:1.1}
+.hero .big s{text-decoration:none;font-size:17px;opacity:.6;margin-right:2px}
+.hero .kv{position:relative;display:flex;gap:20px;margin-top:9px}
+.hero .kv div span{display:block;font-size:9.5px;color:var(--faint);letter-spacing:1px}
+.hero .kv div b{display:block;margin-top:3px;font-family:var(--num);font-size:14.5px;font-weight:600;letter-spacing:-.2px}
+.hero .spark{position:relative;margin:9px -16px -10px;height:46px}
+.hero .spark svg{width:100%;height:100%;display:block}
+
+.up{color:var(--up)}.dn{color:var(--dn)}.mu{color:var(--mut)}
+
+.strip{display:flex;align-items:center;gap:9px;padding:9px 12px;margin-bottom:11px;border-radius:13px;
+  background:linear-gradient(96deg,rgba(255,74,91,.14),rgba(255,148,69,.05));border:1px solid rgba(255,74,91,.25)}
+.strip .pl{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:rgba(255,74,91,.2);flex:0 0 auto}
+.strip .tx{flex:1;font-size:11.5px;line-height:1.55;color:#e9edf6}
+.strip .tx b{color:var(--dn);font-weight:600}
+.strip .go{font-size:11px;color:var(--mut)}
+
+.sect{display:flex;align-items:center;gap:9px;margin:13px 2px 8px}
+.sect b{font-size:12.5px;font-weight:600;letter-spacing:.8px}
+.sect s{flex:1;height:1px;background:var(--line);text-decoration:none}
+.sect em{font-style:normal;font-size:10px;color:var(--faint);letter-spacing:1px}
+
+/* holding row */
+.hold{position:relative;border-radius:14px;background:var(--card);border:1px solid var(--line);
+  padding:10px 12px 9px;margin-bottom:8px;overflow:hidden}
+.hold::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--faint)}
+.hold.l1::before{background:var(--lv1)}
+.hold.l2::before{background:var(--lv2)}
+.hold.l3::before{background:var(--lv3)}
+.hold.l4::before{background:var(--lv4)}
+.hold .r1{display:flex;align-items:flex-start;gap:8px}
+.hold .nm{font-size:14px;font-weight:600;letter-spacing:.3px}
+.hold .cd{font-size:9.5px;color:var(--faint);letter-spacing:.8px;margin-top:3px;display:flex;align-items:center;gap:6px}
+.hold .mb{padding:1px 5px;border-radius:4px;font-size:8.5px;letter-spacing:.5px;
+  background:rgba(122,162,255,.13);color:var(--brand)}
+.hold .mb.hk{background:rgba(155,140,255,.14);color:var(--brand2)}
+.hold .mb.us{background:rgba(43,217,160,.12);color:var(--up)}
+.hold .pr{margin-left:auto;text-align:right}
+.hold .pr b{display:block;font-family:var(--num);font-size:16px;font-weight:600;letter-spacing:-.3px}
+.hold .pr span{display:block;font-family:var(--num);font-size:11px;margin-top:2px}
+.hold .r2{display:flex;align-items:center;gap:7px;margin-top:10px}
+.hold .bar{position:relative;flex:1;height:5px;border-radius:3px;overflow:hidden;
+  background:linear-gradient(90deg,var(--lv3) 0%,var(--lv2) 22%,var(--lv1) 40%,#2A3245 52%,#2A3245 62%,rgba(43,217,160,.5) 100%)}
+.hold .bar i{position:absolute;top:-3px;width:2px;height:11px;background:#fff;border-radius:2px;
+  box-shadow:0 0 7px rgba(255,255,255,.85);font-style:normal}
+.hold .bar u{position:absolute;top:-1px;width:1px;height:7px;background:rgba(255,255,255,.35);text-decoration:none}
+.hold .pnl{font-family:var(--num);font-size:11.5px;font-weight:600;min-width:62px;text-align:right}
+.hold .tag{position:absolute;top:11px;right:13px;display:none}
+.hold .r3{display:flex;gap:12px;margin-top:8px;font-size:9.5px;color:var(--faint);letter-spacing:.4px}
+.hold .r3 b{color:var(--mut);font-weight:400;font-family:var(--num)}
+.lvbdg{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:20px;font-size:9.5px;letter-spacing:.5px;font-weight:500}
+.lvbdg i{width:5px;height:5px;border-radius:50%;font-style:normal}
+.b1{background:rgba(255,194,75,.13);color:var(--lv1)}.b1 i{background:var(--lv1)}
+.b2{background:rgba(255,148,69,.14);color:var(--lv2)}.b2 i{background:var(--lv2)}
+.b3{background:rgba(255,74,91,.15);color:var(--lv3)}.b3 i{background:var(--lv3)}
+.b4{background:rgba(43,217,160,.13);color:var(--lv4)}.b4 i{background:var(--lv4)}
+.b5{background:rgba(122,162,255,.13);color:var(--brand)}.b5 i{background:var(--brand)}
+.b0{background:rgba(255,255,255,.05);color:var(--mut)}.b0 i{background:var(--faint)}
+
+/* ============ ALERTS ============ */
+.chips{display:flex;gap:6px;overflow-x:auto;padding:3px 0 11px;margin:0 -16px;padding-left:16px;padding-right:16px}
+.chips::-webkit-scrollbar{height:0}
+.chip{flex:0 0 auto;padding:6px 12px;border-radius:20px;font-size:11px;letter-spacing:.5px;color:var(--mut);
+  background:var(--card);border:1px solid var(--line);white-space:nowrap}
+.chip.on{background:rgba(122,162,255,.15);border-color:rgba(122,162,255,.4);color:var(--brand)}
+.tl{position:relative;padding-left:22px}
+.tl::before{content:'';position:absolute;left:5px;top:6px;bottom:12px;width:1px;background:var(--line2)}
+.al{position:relative;margin-bottom:11px;border-radius:14px;background:var(--card);border:1px solid var(--line);padding:12px 13px}
+.al::before{content:'';position:absolute;left:-21px;top:16px;width:9px;height:9px;border-radius:50%;background:var(--faint);
+  border:2px solid var(--sc)}
+.al.l1::before{background:var(--lv1);box-shadow:0 0 9px var(--lv1)}
+.al.l2::before{background:var(--lv2);box-shadow:0 0 9px var(--lv2)}
+.al.l3::before{background:var(--lv3);box-shadow:0 0 9px var(--lv3)}
+.al.l4::before{background:var(--lv4);box-shadow:0 0 9px var(--lv4)}
+.al.l5::before{background:var(--brand);box-shadow:0 0 9px var(--brand)}
+.al .ah{display:flex;align-items:center;gap:8px}
+.al .ah b{font-size:13px;font-weight:600;letter-spacing:.3px}
+.al .ah em{font-style:normal;margin-left:auto;font-size:9.5px;color:var(--faint);font-family:var(--num)}
+.al .ab{margin-top:8px;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.028);
+  display:grid;grid-template-columns:1fr 1fr;gap:7px 10px}
+.al .ab div span{font-size:9px;color:var(--faint);letter-spacing:.8px}
+.al .ab div b{display:block;font-family:var(--num);font-size:12.5px;font-weight:600;margin-top:2px}
+.al .af{display:flex;align-items:center;gap:7px;margin-top:9px;font-size:10px;color:var(--faint);letter-spacing:.4px}
+.al .af .cd2{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:20px;
+  background:rgba(255,255,255,.05);color:var(--mut);font-family:var(--num);font-size:9.5px}
+.al .af .mrg{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:20px;
+  background:rgba(122,162,255,.1);color:var(--brand);font-size:9.5px}
+.al .sug{margin-top:8px;padding-left:9px;border-left:2px solid rgba(255,255,255,.13);font-size:10.5px;color:var(--mut);line-height:1.7}
+.al .sug b{color:#dfe4ef;font-weight:500}
+
+/* ============ DETAIL ============ */
+.dhead{padding:2px 3px 12px}
+.dhead .p{display:flex;align-items:flex-end;gap:10px}
+.dhead .p b{font-family:var(--num);font-size:35px;font-weight:600;letter-spacing:-1px;line-height:1}
+.dhead .p span{font-family:var(--num);font-size:13px;font-weight:600;padding-bottom:4px}
+.dhead .sub{margin-top:7px;display:flex;gap:9px;font-size:10px;color:var(--faint);letter-spacing:.5px}
+.chart{position:relative;border-radius:15px;background:var(--card);border:1px solid var(--line);padding:12px 0 8px;margin-bottom:11px}
+.chart svg{width:100%;display:block}
+.chart .lg2{display:flex;gap:11px;padding:0 13px 4px;flex-wrap:wrap}
+.chart .lg2 span{display:inline-flex;align-items:center;gap:4px;font-size:9px;color:var(--mut);letter-spacing:.4px}
+.chart .lg2 i{width:11px;height:2px;border-radius:2px;font-style:normal}
+.ruler{border-radius:15px;background:var(--card);border:1px solid var(--line);padding:13px 13px 11px;margin-bottom:11px}
+.ruler .rh{display:flex;align-items:center;gap:8px;margin-bottom:13px}
+.ruler .rh b{font-size:12px;font-weight:600;letter-spacing:.6px}
+.ruler .rh em{font-style:normal;margin-left:auto;font-size:9.5px;color:var(--faint);letter-spacing:.8px}
+.scale{position:relative;height:7px;border-radius:4px;margin:0 4px 30px;
+  background:linear-gradient(90deg,#FF4A5B 0%,#FF9445 24%,#FFC24B 43%,#2A3245 54%,#2A3245 63%,rgba(43,217,160,.45) 88%,#2BD9A0 100%)}
+.scale u{position:absolute;top:-4px;width:1px;height:15px;background:rgba(255,255,255,.28);text-decoration:none}
+.scale u b{position:absolute;top:19px;left:50%;translate:-50% 0;font-size:8.5px;color:var(--faint);white-space:nowrap;font-family:var(--num);font-weight:400}
+.scale .me{position:absolute;top:-8px;translate:-50% 0;display:flex;flex-direction:column;align-items:center;gap:0}
+.scale .me i{width:3px;height:23px;border-radius:3px;background:#fff;box-shadow:0 0 11px rgba(255,255,255,.8);font-style:normal}
+.scale .me b{margin-top:3px;font-family:var(--num);font-size:10.5px;font-weight:700;color:#fff;white-space:nowrap;
+  padding:1px 6px;border-radius:5px;background:rgba(255,74,91,.9)}
+.thr{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.thr .dt{width:7px;height:7px;border-radius:2px;flex:0 0 auto}
+.thr .nm2{font-size:11.5px;letter-spacing:.4px;width:52px}
+.thr .sl{position:relative;flex:1;height:3px;border-radius:3px;background:#232A3A}
+.thr .sl s{position:absolute;left:0;top:0;bottom:0;border-radius:3px;text-decoration:none}
+.thr .sl i{position:absolute;top:50%;translate:-50% -50%;width:15px;height:15px;border-radius:50%;background:#fff;
+  box-shadow:0 2px 7px rgba(0,0,0,.6);font-style:normal}
+.thr .vl{font-family:var(--num);font-size:12px;font-weight:600;width:46px;text-align:right}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px}
+.cell{border-radius:12px;background:var(--card);border:1px solid var(--line);padding:10px 12px}
+.cell span{font-size:9.5px;color:var(--faint);letter-spacing:.8px}
+.cell b{display:block;margin-top:4px;font-family:var(--num);font-size:15px;font-weight:600;letter-spacing:-.2px}
+
+/* ============ WATCHLIST ============ */
+.wgrp{margin-bottom:6px}
+.wrow{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:13px;background:var(--card);
+  border:1px solid var(--line);margin-bottom:7px;position:relative;overflow:hidden}
+.wrow.hit{border-color:rgba(122,162,255,.34);background:linear-gradient(96deg,rgba(122,162,255,.09),var(--card) 55%)}
+.wrow .wi{width:31px;height:31px;border-radius:9px;display:grid;place-items:center;font-size:11px;font-weight:700;
+  background:rgba(255,255,255,.05);color:var(--mut);flex:0 0 auto;letter-spacing:-.3px}
+.wrow .wn b{display:block;font-size:13px;font-weight:600;letter-spacing:.3px}
+.wrow .wn span{display:block;font-size:9.5px;color:var(--faint);margin-top:2px;letter-spacing:.6px}
+.wrow .wp{margin-left:auto;text-align:right}
+.wrow .wp b{display:block;font-family:var(--num);font-size:14px;font-weight:600}
+.wrow .wp s{display:block;text-decoration:none;font-family:var(--num);font-size:11px;margin-top:2px}
+.wrow .wt{flex:0 0 auto;padding:2px 6px;border-radius:5px;font-size:8.5px;letter-spacing:.4px;
+  background:rgba(255,255,255,.05);color:var(--faint);font-family:var(--num)}
+
+/* ============ ASK / CHAT ============ */
+.chat{display:flex;flex-direction:column;gap:11px;padding-top:6px}
+.bub{max-width:80%;padding:10px 13px;border-radius:15px;font-size:12.5px;line-height:1.7;letter-spacing:.2px}
+.bub.me{align-self:flex-end;background:linear-gradient(140deg,#7AA2FF,#6A7FF5);color:#fff;border-bottom-right-radius:5px}
+.bub.bot{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:5px}
+.bub.bot .bh{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--brand);letter-spacing:1px;margin-bottom:7px}
+.qcard{align-self:flex-start;max-width:88%;border-radius:15px;border-bottom-left-radius:5px;background:var(--card);
+  border:1px solid var(--line);overflow:hidden}
+.qcard .qh{padding:9px 13px;background:rgba(122,162,255,.08);display:flex;align-items:center;gap:7px;
+  font-size:10.5px;letter-spacing:1px;color:var(--brand)}
+.qcard .ql{padding:4px 13px 11px}
+.qcard .qi{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.qcard .qi:last-child{border-bottom:none}
+.qcard .qi i{width:5px;height:5px;border-radius:50%;font-style:normal;flex:0 0 auto}
+.qcard .qi b{font-size:12px;font-weight:500}
+.qcard .qi s{text-decoration:none;font-size:9px;color:var(--faint);letter-spacing:.5px}
+.qcard .qi .qv{margin-left:auto;text-align:right;font-family:var(--num);font-size:12.5px;font-weight:600}
+.qcard .qi .qv em{display:block;font-style:normal;font-size:10.5px;margin-top:1px}
+.qcard .qf{padding:9px 13px;border-top:1px solid var(--line);font-size:10.5px;color:var(--mut);
+  display:flex;justify-content:space-between}
+.qcard .qf b{font-family:var(--num);font-weight:600}
+.sugs{display:flex;gap:6px;flex-wrap:wrap;padding:4px 0 2px}
+.sugs span{padding:5px 11px;border-radius:20px;font-size:11px;color:var(--brand);letter-spacing:.4px;
+  background:rgba(122,162,255,.09);border:1px solid rgba(122,162,255,.22)}
+.inputbar{flex:0 0 auto;padding:8px 14px 12px;display:flex;gap:8px;align-items:center;
+  background:rgba(10,12,19,.95);border-top:1px solid var(--line)}
+.inputbar .ib{flex:1;height:36px;border-radius:19px;background:var(--card);border:1px solid var(--line);
+  display:flex;align-items:center;padding:0 14px;font-size:12px;color:var(--faint)}
+.inputbar .sd{width:36px;height:36px;border-radius:50%;background:var(--brand);display:grid;place-items:center;flex:0 0 auto}
+
+/* ============ REPORT ============ */
+.rpt{border-radius:16px;overflow:hidden;background:var(--card);border:1px solid var(--line);margin-bottom:12px}
+.rpt .rh2{padding:13px 14px;background:linear-gradient(120deg,rgba(255,74,91,.14),rgba(122,162,255,.05));
+  display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--line)}
+.rpt .rh2 b{font-size:13.5px;font-weight:600;letter-spacing:.5px}
+.rpt .rh2 em{font-style:normal;margin-left:auto;font-size:9.5px;color:var(--faint);font-family:var(--num)}
+.rpt .rs{padding:9px 14px 3px;font-size:10px;color:var(--faint);letter-spacing:1.4px}
+.rpt .ri{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.035)}
+.rpt .ri:last-child{border-bottom:none}
+.rpt .ri i{width:5px;height:5px;border-radius:50%;font-style:normal;flex:0 0 auto}
+.rpt .ri b{font-size:12px;font-weight:500}
+.rpt .ri s{text-decoration:none;font-size:9px;color:var(--faint);letter-spacing:.5px}
+.rpt .ri .rv{margin-left:auto;font-family:var(--num);font-size:12px;font-weight:600}
+.rpt .ri .rp{font-family:var(--num);font-size:11.5px;font-weight:600;width:60px;text-align:right}
+.rpt .rf{padding:11px 14px;border-top:1px solid var(--line);font-size:11px;line-height:1.8;color:var(--mut)}
+.rpt .rf b{color:#e4e9f3;font-weight:500}
+
+/* ============ ME / SETTINGS ============ */
+.blk{border-radius:15px;background:var(--card);border:1px solid var(--line);margin-bottom:11px;overflow:hidden}
+.blk .bt{padding:11px 13px 9px;font-size:10.5px;color:var(--faint);letter-spacing:1.6px;
+  display:flex;align-items:center;gap:7px}
+.srow{display:flex;align-items:center;gap:10px;padding:11px 13px;border-top:1px solid rgba(255,255,255,.04)}
+.srow .si{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.05);flex:0 0 auto}
+.srow .sn b{display:block;font-size:12.5px;font-weight:500}
+.srow .sn span{display:block;font-size:9.5px;color:var(--faint);margin-top:2px;letter-spacing:.4px}
+.srow .sv{margin-left:auto;font-size:11.5px;color:var(--mut);font-family:var(--num)}
+.sw{width:38px;height:22px;border-radius:12px;background:#252C3C;position:relative;flex:0 0 auto}
+.sw i{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#727C93;transition:.2s;font-style:normal}
+.sw.on{background:rgba(122,162,255,.35)}
+.sw.on i{left:18px;background:var(--brand)}
+.hbar{display:flex;gap:3px;margin-top:6px}
+.hbar u{flex:1;height:4px;border-radius:2px;background:var(--up);text-decoration:none;opacity:.85}
+.hbar u.w{background:var(--lv1)}
+.hbar u.e{background:var(--dn)}
+.hbar u.n{background:#242B3B}
+
+.pf{display:flex;align-items:center;gap:12px;padding:6px 4px 15px}
+.pf .av{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;
+  background:linear-gradient(140deg,#7AA2FF,#9B8CFF);font-size:19px;font-weight:700;color:#fff}
+.pf .pn b{display:block;font-size:16px;font-weight:600;letter-spacing:.3px}
+.pf .pn span{display:block;font-size:10.5px;color:var(--faint);margin-top:3px;letter-spacing:.6px}
+.pf .pg{margin-left:auto;text-align:right}
+.pf .pg b{display:block;font-family:var(--num);font-size:17px;font-weight:600}
+.pf .pg span{display:block;font-size:9.5px;color:var(--faint);margin-top:2px;letter-spacing:.6px}
+
+@media(max-width:760px){
+  .stage{padding:26px 14px 50px}
+  .stage-hd p{margin-left:0;text-align:left}
+  .slot{width:100%;max-width:360px;margin:0 auto}
+  .phone{width:100%;max-width:360px;height:auto;aspect-ratio:330/714}
+}
+</style>
+</head>
+<body>
+<div class="embedwrap" id="embedwrap"></div>
+<div class="stage" id="stage">
+  <div class="stage-hd">
+    <div class="lg">
+      <svg viewBox="0 0 40 40" fill="none"><rect x="1" y="1" width="38" height="38" rx="11" stroke="#7AA2FF" stroke-opacity=".45"/><path d="M6 21h5.4l2.6-8 4 16 3.4-11 2.6 5.4H34" stroke="#FF4A5B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h1>Stock<em>Pulse</em></h1>
+      <span class="vs">PROTOTYPE v1.0</span>
+    </div>
+    <p>把一个跑在终端里的 <b>Python 持仓监控脚本</b>，重新设计成一款「只在该说话的时候说话」的<b>个人持仓陪伴 App</b>。<br>7 屏高保真原型 · 真实持仓数据结构 · 四档预警语义系统</p>
+  </div>
+  <div id="mount"></div>
+</div>
+
+<script>
+/* ==================== DATA ==================== */
+const FX={cn:1,us:7.24,hk:.925};
+const HOLD=[
+ {c:'000792',n:'盐湖股份',m:'cn',cy:'¥',cost:36.636,sh:700,px:34.28,day:-2.14},
+ {c:'603308',n:'应流股份',m:'cn',cy:'¥',cost:79.526,sh:800,px:71.05,day:-5.32},
+ {c:'600584',n:'长电科技',m:'cn',cy:'¥',cost:79.931,sh:100,px:96.40,day:+3.88},
+ {c:'QCOM' ,n:'高通'    ,m:'us',cy:'$',cost:210.00,sh:5 ,px:178.32,day:-1.24},
+ {c:'RDW'  ,n:'Redwire' ,m:'us',cy:'$',cost:15.70 ,sh:50,px:22.86 ,day:+6.71},
+ {c:'00763',n:'中兴通讯',m:'hk',cy:'HK$',cost:24.48,sh:200,px:25.90,day:+1.05},
+];
+const WATCH=[
+ {g:'科技',items:[
+  {c:'NVDA',n:'英伟达',px:181.30,day:+4.26,th:4},
+  {c:'TSLA',n:'特斯拉',px:342.18,day:-5.63,th:5},
+  {c:'GOOGL',n:'谷歌',px:196.42,day:+1.12,th:3},
+  {c:'AAPL',n:'苹果',px:228.55,day:-0.42,th:3},
+  {c:'MSFT',n:'微软',px:421.66,day:+0.87,th:3},
+ ]},
+ {g:'贵金属',items:[
+  {c:'GLD',n:'黄金 ETF',px:312.44,day:+3.15,th:3},
+  {c:'SLV',n:'白银 ETF',px:34.82,day:+2.10,th:3},
+ ]},
+ {g:'有色金属',items:[
+  {c:'DBB',n:'有色金属 ETF',px:23.97,day:-0.65,th:3},
+ ]},
+];
+const LV=[
+ {k:'take_profit',n:'止盈',v:+20,cls:'l4',b:'b4',col:'var(--lv4)',ico:'▲'},
+ {k:'watch',n:'关注',v:-5,cls:'l1',b:'b1',col:'var(--lv1)',ico:'●'},
+ {k:'warning',n:'预警',v:-10,cls:'l2',b:'b2',col:'var(--lv2)',ico:'●'},
+ {k:'stop_loss',n:'止损',v:-15,cls:'l3',b:'b3',col:'var(--lv3)',ico:'▼'},
+];
+function pnlPct(h){return (h.px-h.cost)/h.cost*100}
+function level(h){const p=pnlPct(h);
+  if(p>=20)return {n:'止盈机会',cls:'l4',b:'b4'};
+  if(p<=-15)return {n:'止损触发',cls:'l3',b:'b3'};
+  if(p<=-10)return {n:'亏损预警',cls:'l2',b:'b2'};
+  if(p<=-5)return {n:'亏损关注',cls:'l1',b:'b1'};
+  return {n:'区间内',cls:'',b:'b0'};
+}
+const money=(v,d=2)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const sgn=v=>(v>=0?'+':'')+money(v,2);
+const cls=v=>v>=0?'up':'dn';
+let totCost=0,totVal=0;
+HOLD.forEach(h=>{totCost+=h.cost*h.sh*FX[h.m];totVal+=h.px*h.sh*FX[h.m]});
+const totPnl=totVal-totCost, totPct=totPnl/totCost*100;
+const dayPnl=+862.40, dayPct=dayPnl/(totVal-dayPnl)*100;
+
+/* ==================== ICONS ==================== */
+const I={
+ pulse:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12.5h4l2-6 3.5 12 2.6-8 1.9 4h6"/></svg>',
+ bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 6-2.5 7-2.5 7h17S18 14 18 8Z"/><path d="M10.3 20a2 2 0 0 0 3.4 0"/></svg>',
+ star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z"/></svg>',
+ chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20.5l1.5-4.4A8.3 8.3 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>',
+ user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg>',
+ back:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg>',
+ more:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="5" cy="12" r=".6"/><circle cx="12" cy="12" r=".6"/><circle cx="19" cy="12" r=".6"/></svg>',
+ srch:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>',
+ send:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20 4l-8 16-2-6.4Z"/></svg>',
+ warn:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF4A5B" stroke-width="2.1" stroke-linecap="round"><path d="M12 4 2.5 20.5h19Z"/><path d="M12 10v4.5M12 17.6v.1"/></svg>',
+};
+function statusbar(t='15:02'){return `<div class="statusbar"><span>${t}</span><div class="r">
+ <svg width="16" height="11" viewBox="0 0 17 11" fill="#EDF1F8"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.4" y="5" width="3" height="6" rx="1"/><rect x="8.8" y="2.6" width="3" height="8.4" rx="1"/><rect x="13.2" y="0" width="3" height="11" rx="1" fill-opacity=".35"/></svg>
+ <svg width="15" height="11" viewBox="0 0 16 12" fill="none" stroke="#EDF1F8" stroke-width="1.5" stroke-linecap="round"><path d="M1 4.3a10 10 0 0 1 14 0M3.6 7a6.3 6.3 0 0 1 8.8 0"/><circle cx="8" cy="10" r=".9" fill="#EDF1F8" stroke="none"/></svg>
+ <svg width="23" height="11" viewBox="0 0 25 12" fill="none"><rect x=".6" y=".6" width="20.5" height="10.8" rx="3" stroke="#EDF1F8" stroke-opacity=".45"/><rect x="2.3" y="2.3" width="14" height="7.4" rx="1.7" fill="#EDF1F8"/><path d="M22.6 4v4a2.1 2.1 0 0 0 0-4Z" fill="#EDF1F8" fill-opacity=".45"/></svg>
+ </div></div>`}
+function tabbar(on){const T=[['home','脉搏',I.pulse,0],['alert','预警',I.bell,3],['watch','自选',I.star,0],['ask','问它',I.chat,0],['me','我的',I.user,0]];
+ return `<div class="tabbar">${T.map(([k,n,ic,bd])=>`<div class="tab ${on===k?'on':''}" data-go="${k}">${ic}<span>${n}</span>${bd&&k!==on?`<em class="bdg">${bd}</em>`:''}</div>`).join('')}</div>`}
+
+/* ==================== CHART HELPERS ==================== */
+function rnd(seed){let s=seed;return()=>{s=(s*9301+49297)%233280;return s/233280}}
+function series(n,from,to,vol,seed){const r=rnd(seed),out=[];let v=from;
+ for(let i=0;i<n;i++){const t=i/(n-1);const base=from+(to-from)*t;v=base+(r()-.5)*vol*(1-Math.abs(t-.45));out.push(v)}
+ out[0]=from;out[n-1]=to;return out}
+function toPath(a,w,h,lo,hi,pad=0){const n=a.length;
+ return a.map((v,i)=>`${i?'L':'M'}${(i/(n-1)*w).toFixed(1)},${(pad+(hi-v)/(hi-lo)*(h-pad*2)).toFixed(1)}`).join(' ')}
+
+function sparkSVG(){
+ const a=series(46,104200,109998,2600,7717),lo=Math.min(...a)-900,hi=Math.max(...a)+700;
+ const p=toPath(a,300,46,lo,hi,4);
+ return `<svg viewBox="0 0 300 46" preserveAspectRatio="none">
+  <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#FF4A5B" stop-opacity=".26"/><stop offset="1" stop-color="#FF4A5B" stop-opacity="0"/></linearGradient></defs>
+  <path d="${p} L300,46 L0,46 Z" fill="url(#sg)"/>
+  <path d="${p}" fill="none" stroke="#FF4A5B" stroke-width="1.6" stroke-linejoin="round"/>
+ </svg>`}
+
+function detailChart(){
+ const W=300,H=168,lo=66.0,hi=81.2;
+ const y=v=>((hi-v)/(hi-lo)*H).toFixed(1);
+ const a=series(78,75.04,71.05,1.5,4231);
+ const p=toPath(a,W,H,lo,hi);
+ const band=(v1,v2,c,o)=>`<rect x="0" y="${y(v2)}" width="${W}" height="${(y(v1)-y(v2)).toFixed(1)}" fill="${c}" fill-opacity="${o}"/>`;
+ const line=(v,c,d,lb)=>`<line x1="0" y1="${y(v)}" x2="${W}" y2="${y(v)}" stroke="${c}" stroke-width="1" stroke-dasharray="${d}"/>
+   <text x="${W-3}" y="${(+y(v)-4)}" text-anchor="end" font-size="7.5" fill="${c}" font-family="ui-monospace,monospace">${lb}</text>`;
+ return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">
+  <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#FF4A5B" stop-opacity=".24"/><stop offset="1" stop-color="#FF4A5B" stop-opacity="0"/></linearGradient></defs>
+  ${band(lo,67.60,'#FF4A5B',.13)}
+  ${band(67.60,71.57,'#FF9445',.10)}
+  ${band(71.57,75.55,'#FFC24B',.07)}
+  ${line(79.526,'#EDF1F8','3 3','成本 79.526')}
+  ${line(75.55,'#FFC24B','2 4','关注 −5%')}
+  ${line(71.57,'#FF9445','2 4','预警 −10%')}
+  ${line(67.60,'#FF4A5B','2 4','止损 −15%')}
+  <path d="${p} L${W},${H} L0,${H} Z" fill="url(#pg)"/>
+  <path d="${p}" fill="none" stroke="#FF4A5B" stroke-width="1.7" stroke-linejoin="round"/>
+  <circle cx="${W}" cy="${y(71.05)}" r="3.1" fill="#FF4A5B"/>
+  <circle cx="${W}" cy="${y(71.05)}" r="6.4" fill="#FF4A5B" fill-opacity=".22"/>
+ </svg>`}
+
+/* ==================== SCREENS ==================== */
+const S={};
+
+S.home=()=>`${statusbar()}
+<div class="nav">
+  <div><h2>脉搏</h2><div class="sm">2026.08.28 周五 · 港股交易中</div></div>
+  <div class="sp"><div class="ico">${I.srch}</div><div class="ico dot">${I.bell}</div></div>
+</div>
+<div class="body">
+  <div class="mkt">
+    <div class="mk off"><div class="t"><i></i>A 股</div><div class="v">已收盘 15:00</div></div>
+    <div class="mk live"><div class="t"><i></i>港股</div><div class="v">交易中 · 尾盘</div></div>
+    <div class="mk pre"><div class="t"><i></i>美股</div><div class="v">6h28m 后开盘</div></div>
+  </div>
+
+  <div class="hero">
+    <div class="lb">总资产（折合人民币）<em>15:02 更新</em></div>
+    <div class="big mono"><s>¥</s>${money(totVal)}</div>
+    <div class="kv">
+      <div><span>今日盈亏</span><b class="mono ${cls(dayPnl)}">${sgn(dayPnl)}　${(dayPct>=0?'+':'')+dayPct.toFixed(2)}%</b></div>
+      <div><span>持仓浮亏</span><b class="mono ${cls(totPnl)}">${sgn(totPnl)}　${totPct.toFixed(2)}%</b></div>
+    </div>
+    <div class="spark">${sparkSVG()}</div>
+  </div>
+
+  <div class="strip" data-go="alert">
+    <div class="pl">${I.warn}</div>
+    <div class="tx">今天触发 <b>3 条预警</b>　1 止损 · 1 预警 · 1 止盈<br><span style="color:var(--faint);font-size:10.5px">同档位 4 小时冷却已合并 5 条重复提醒</span></div>
+    <div class="go">›</div>
+  </div>
+
+  <div class="sect"><b>我的持仓</b><em>6 只 · 按偏离度排序</em><s></s><em>成本 ¥${money(totCost,0)}</em></div>
+  ${[...HOLD].sort((a,b)=>pnlPct(a)-pnlPct(b)).map(h=>{
+    const p=pnlPct(h),lv=level(h),amt=(h.px-h.cost)*h.sh;
+    const pos=Math.max(2,Math.min(98,(p+22)/44*100));
+    return `<div class="hold ${lv.cls}" ${h.c==='603308'?'data-go="detail"':''}>
+      <div class="r1">
+        <div><div class="nm">${h.n}</div><div class="cd"><span class="mb ${h.m}">${h.m==='cn'?'A股':h.m==='hk'?'港股':'美股'}</span>${h.c}</div></div>
+        <div class="pr"><b class="mono">${h.cy}${money(h.px)}</b><span class="mono ${cls(h.day)}">${(h.day>=0?'+':'')+h.day.toFixed(2)}%</span></div>
+      </div>
+      <div class="r2">
+        <div class="bar"><u style="left:11.4%"></u><u style="left:22.7%"></u><u style="left:38.6%"></u><u style="left:95.5%"></u><i style="left:${pos}%"></i></div>
+        <div class="pnl ${cls(p)}">${(p>=0?'+':'')+p.toFixed(2)}%</div>
+      </div>
+      <div class="r3">
+        <span>成本 <b>${h.cy}${money(h.cost,3)}</b></span><span>${h.sh} 股</span>
+        <span>浮${amt>=0?'盈':'亏'} <b class="${cls(amt)}">${h.cy}${sgn(amt)}</b></span>
+        <span style="margin-left:auto"><em class="lvbdg ${lv.b}" style="font-style:normal"><i></i>${lv.n}</em></span>
+      </div>
+    </div>`}).join('')}
+
+  <div class="sect"><b>今日日报</b><s></s><em data-go="report">全部 ›</em></div>
+  <div class="rpt" data-go="report">
+    <div class="rh2"><span style="font-size:14px">🏁</span><b>A 股收盘日报</b><em>15:02</em></div>
+    <div class="rf">今日 A 股持仓 <b class="dn">-¥1,682</b>，主要来自 <b>应流股份</b> 单日 <b class="dn">-5.32%</b> 的闪崩；<b>长电科技</b> 已站上 <b class="up">+20%</b> 止盈线，是本周第 2 次触发。</div>
+  </div>
+</div>
+${tabbar('home')}`;
+
+S.alert=()=>`${statusbar()}
+<div class="nav">
+  <div><h2>预警中心</h2><div class="sm">今日 3 条 · 已合并 5 条重复</div></div>
+  <div class="sp"><div class="ico">${I.more}</div></div>
+</div>
+<div class="body">
+  <div class="chips"><span class="chip on">全部 3</span><span class="chip">🔴 止损 1</span><span class="chip">🟠 预警 1</span><span class="chip">🟡 关注 1</span><span class="chip">🟢 止盈 1</span><span class="chip">⚡ 闪崩 1</span></div>
+  <div class="tl">
+    <div class="al l3">
+      <div class="ah"><span class="lvbdg b3"><i></i>止损触发</span><b>高通 QCOM</b><em>04:12</em></div>
+      <div class="ab">
+        <div><span>现价 / 成本</span><b class="mono">$178.32 <s style="color:var(--faint);font-size:10px;text-decoration:none">/ 210.00</s></b></div>
+        <div><span>偏离成本</span><b class="mono dn">−15.09%</b></div>
+        <div><span>浮亏</span><b class="mono dn">−$158.40</b></div>
+        <div><span>当日</span><b class="mono dn">−1.24%</b></div>
+      </div>
+      <div class="sug">已跌破 <b>−15% 止损线</b>。这是本轮首次触发，建议复核持仓逻辑是否已发生变化。</div>
+      <div class="af"><span class="cd2">❄ 冷却中 2h37m</span><span class="cd2">美股盘中</span><span style="margin-left:auto">飞书已推送 ✓</span></div>
+    </div>
+
+    <div class="al l2">
+      <div class="ah"><span class="lvbdg b2"><i></i>亏损预警</span><b>应流股份 603308</b><em>14:26</em></div>
+      <div class="ab">
+        <div><span>现价 / 成本</span><b class="mono">¥71.05 <s style="color:var(--faint);font-size:10px;text-decoration:none">/ 79.526</s></b></div>
+        <div><span>偏离成本</span><b class="mono dn">−10.65%</b></div>
+        <div><span>浮亏</span><b class="mono dn">−¥6,780.80</b></div>
+        <div><span>当日</span><b class="mono dn">−5.32%</b></div>
+      </div>
+      <div class="sug">接近 <b>−15% 止损线</b>，距离仅剩 <b>4.35%</b>（约 ¥3.45）。</div>
+      <div class="af"><span class="mrg">⚡ 同时触发单日闪崩</span><span class="cd2">❄ 冷却中 3h51m</span><span style="margin-left:auto">飞书已推送 ✓</span></div>
+    </div>
+
+    <div class="al l4">
+      <div class="ah"><span class="lvbdg b4"><i></i>止盈机会</span><b>长电科技 600584</b><em>10:03</em></div>
+      <div class="ab">
+        <div><span>现价 / 成本</span><b class="mono">¥96.40 <s style="color:var(--faint);font-size:10px;text-decoration:none">/ 79.931</s></b></div>
+        <div><span>偏离成本</span><b class="mono up">+20.62%</b></div>
+        <div><span>浮盈</span><b class="mono up">+¥1,646.90</b></div>
+        <div><span>当日</span><b class="mono up">+3.88%</b></div>
+      </div>
+      <div class="sug">已站上 <b>+20% 止盈线</b>，本周第 2 次触发，建议考虑分批减仓。</div>
+      <div class="af"><span class="cd2">❄ 冷却中 0h58m</span><span class="cd2">A 股已收盘</span><span style="margin-left:auto">飞书已推送 ✓</span></div>
+    </div>
+
+    <div class="al l5">
+      <div class="ah"><span class="lvbdg b5"><i></i>关注异动</span><b>特斯拉 TSLA</b><em>昨 22:41</em></div>
+      <div class="ab">
+        <div><span>现价 / 昨收</span><b class="mono">$342.18 <s style="color:var(--faint);font-size:10px;text-decoration:none">/ 362.60</s></b></div>
+        <div><span>单日</span><b class="mono dn">−5.63%</b></div>
+      </div>
+      <div class="sug">非持仓标的，单日跌幅超过你设的 <b>±5%</b> 异动阈值。</div>
+      <div class="af"><span class="cd2">自选 · 科技</span><span style="margin-left:auto">飞书已推送 ✓</span></div>
+    </div>
+
+    <div class="al">
+      <div class="ah"><span class="lvbdg b0"><i></i>已折叠</span><b>盐湖股份 · 关注档</b><em>今日</em></div>
+      <div class="sug">同档位 4 小时内重复触发 <b>5 次</b>，已自动合并为 1 条，避免刷屏。<span style="color:var(--brand)">展开 ›</span></div>
+    </div>
+  </div>
+</div>
+${tabbar('alert')}`;
+
+S.detail=()=>`${statusbar()}
+<div class="nav">
+  <div class="bk" data-go="home">${I.back}</div>
+  <div><h2>应流股份</h2><div class="sm">603308 · 上海 · A 股</div></div>
+  <div class="sp"><div class="ico">${I.star}</div><div class="ico">${I.more}</div></div>
+</div>
+<div class="body">
+  <div class="dhead">
+    <div class="p"><b class="mono dn">71.05</b><span class="mono dn">−3.99　−5.32%</span></div>
+    <div class="sub"><span>昨收 75.04</span><span>今开 74.88</span><span>最低 70.62</span><span>15:00 收盘</span></div>
+  </div>
+  <div class="chart">
+    ${detailChart()}
+    <div class="lg2">
+      <span><i style="background:#FF4A5B"></i>分时</span>
+      <span><i style="background:#EDF1F8"></i>成本线</span>
+      <span><i style="background:#FFC24B"></i>关注 −5%</span>
+      <span><i style="background:#FF9445"></i>预警 −10%</span>
+      <span><i style="background:#FF4A5B"></i>止损 −15%</span>
+    </div>
+  </div>
+
+  <div class="ruler">
+    <div class="rh"><span class="lvbdg b2"><i></i>亏损预警档</span><em>距止损线 4.35%</em></div>
+    <div class="scale">
+      <u style="left:0%"><b>−15%</b></u>
+      <u style="left:24%"><b>−10%</b></u>
+      <u style="left:43%"><b>−5%</b></u>
+      <u style="left:58%"><b>成本</b></u>
+      <u style="left:100%"><b>+20%</b></u>
+      <div class="me" style="left:22%"><i></i><b>−10.65%</b></div>
+    </div>
+    <div class="thr"><span class="dt" style="background:var(--lv4)"></span><span class="nm2">止盈</span>
+      <div class="sl"><s style="background:var(--lv4);width:80%"></s><i style="left:80%"></i></div><span class="vl up">+20%</span></div>
+    <div class="thr"><span class="dt" style="background:var(--lv1)"></span><span class="nm2">关注</span>
+      <div class="sl"><s style="background:var(--lv1);width:33%"></s><i style="left:33%"></i></div><span class="vl dn">−5%</span></div>
+    <div class="thr"><span class="dt" style="background:var(--lv2)"></span><span class="nm2">预警</span>
+      <div class="sl"><s style="background:var(--lv2);width:60%"></s><i style="left:60%"></i></div><span class="vl dn">−10%</span></div>
+    <div class="thr"><span class="dt" style="background:var(--lv3)"></span><span class="nm2">止损</span>
+      <div class="sl"><s style="background:var(--lv3);width:88%"></s><i style="left:88%"></i></div><span class="vl dn">−15%</span></div>
+    <div class="thr" style="padding-bottom:0"><span class="dt" style="background:var(--brand)"></span><span class="nm2">闪崩</span>
+      <div class="sl"><s style="background:var(--brand);width:45%"></s><i style="left:45%"></i></div><span class="vl mu">−5%/日</span></div>
+  </div>
+
+  <div class="grid2">
+    <div class="cell"><span>持仓成本</span><b class="mono">¥79.526</b></div>
+    <div class="cell"><span>持仓数量</span><b class="mono">800 股</b></div>
+    <div class="cell"><span>持仓市值</span><b class="mono">¥56,840</b></div>
+    <div class="cell"><span>浮动盈亏</span><b class="mono dn">−¥6,780.80</b></div>
+  </div>
+  <div class="blk">
+    <div class="bt">◆ 本标的预警记录</div>
+    <div class="srow"><div class="si"><span style="color:var(--lv2)">●</span></div><div class="sn"><b>亏损预警 −10.65%</b><span>今日 14:26 · 飞书已推送</span></div><div class="sv">冷却 3h51m</div></div>
+    <div class="srow"><div class="si"><span style="color:var(--brand)">⚡</span></div><div class="sn"><b>单日闪崩 −5.32%</b><span>今日 14:26 · 独立通道</span></div><div class="sv">已推送</div></div>
+    <div class="srow"><div class="si"><span style="color:var(--lv1)">●</span></div><div class="sn"><b>亏损关注 −5.12%</b><span>08.21 10:34</span></div><div class="sv">已归档</div></div>
+  </div>
+</div>`;
+
+S.watch=()=>`${statusbar()}
+<div class="nav">
+  <div><h2>自选</h2><div class="sm">8 只 · 只盯异动，不算盈亏</div></div>
+  <div class="sp"><div class="ico">${I.srch}</div><div class="ico">${I.more}</div></div>
+</div>
+<div class="body">
+  <div class="chips"><span class="chip on">全部</span><span class="chip">今日异动 3</span><span class="chip">科技</span><span class="chip">贵金属</span><span class="chip">有色金属</span></div>
+  ${WATCH.map(g=>`<div class="wgrp">
+    <div class="sect"><b>${g.g}</b><em>${g.items.length} 只</em><s></s></div>
+    ${g.items.map(w=>{const hit=Math.abs(w.day)>=w.th;
+      return `<div class="wrow ${hit?'hit':''}">
+        <div class="wi">${w.c.slice(0,2)}</div>
+        <div class="wn"><b>${w.n}</b><span>${w.c} · 美股</span></div>
+        ${hit?`<span class="lvbdg b5" style="margin-left:6px"><i></i>${w.day>0?'异动 ↑':'异动 ↓'}</span>`:''}
+        <div class="wp"><b class="mono">$${money(w.px)}</b><s class="mono ${cls(w.day)}">${(w.day>=0?'+':'')+w.day.toFixed(2)}%</s></div>
+        <div class="wt">±${w.th}%</div>
+      </div>`}).join('')}
+  </div>`).join('')}
+  <div class="blk" style="margin-top:10px">
+    <div class="bt">◆ 为什么自选不显示盈亏</div>
+    <div style="padding:0 13px 13px;font-size:11px;line-height:1.85;color:var(--mut)">
+      自选是「还没买」的观察池，它的唯一问题是 <span style="color:#e4e9f3">「现在值不值得看一眼」</span>。<br>
+      所以这里只做两件事：<span style="color:#e4e9f3">突破/跌破价位</span> 与 <span style="color:#e4e9f3">单日异动阈值</span>，不出现任何盈亏数字，避免和持仓的语义混淆。
+    </div>
+  </div>
+</div>
+${tabbar('watch')}`;
+
+S.ask=()=>`${statusbar()}
+<div class="nav">
+  <div><h2>问它</h2><div class="sm">自然语言查行情 · 飞书同款</div></div>
+  <div class="sp"><div class="ico">${I.more}</div></div>
+</div>
+<div class="body">
+  <div class="chat">
+    <div class="bub me">铜</div>
+    <div class="qcard">
+      <div class="qh">◆ 模糊匹配：铜 → 有色金属 ETF</div>
+      <div class="ql">
+        <div class="qi"><i style="background:var(--dn)"></i><b>有色金属 ETF</b><s>DBB</s><div class="qv mono">$23.97<em class="dn">−0.65%</em></div></div>
+      </div>
+      <div class="qf"><span>关键词反查命中 · 铜/铝/锌/有色/金属</span></div>
+    </div>
+
+    <div class="bub me">持仓</div>
+    <div class="qcard">
+      <div class="qh">📊 持仓快照　15:02</div>
+      <div class="ql">
+        ${HOLD.map(h=>{const p=pnlPct(h),a=(h.px-h.cost)*h.sh;
+          return `<div class="qi"><i style="background:${p>=0?'var(--up)':'var(--dn)'}"></i><b>${h.n}</b><s>${h.c}</s>
+          <div class="qv mono">${h.cy}${money(h.px)}<em class="${cls(p)}">${(p>=0?'+':'')+p.toFixed(2)}%　${h.cy}${sgn(a)}</em></div></div>`}).join('')}
+      </div>
+      <div class="qf"><span>总盈亏（折人民币）</span><b class="dn">−¥5,075.30　−4.41%</b></div>
+    </div>
+
+    <div class="bub me">应流为什么跌</div>
+    <div class="bub bot">
+      <div class="bh">◆ StockPulse</div>
+      我只负责<b style="color:#e4e9f3">价格与阈值</b>，不做基本面归因 —— 这是刻意的边界。<br>
+      我能告诉你的是：<b style="color:#e4e9f3">应流股份今日 −5.32%</b>，已同时触发<b style="color:#FF9445">亏损预警档</b>与<b style="color:#7AA2FF">单日闪崩</b>，距离你设的止损线还有 4.35%。要不要我把它的止损线调到 −12%？
+    </div>
+    <div class="sugs"><span>调整止损线</span><span>今日全部异动</span><span>黄金</span><span>收盘日报</span><span>帮助</span></div>
+  </div>
+</div>
+<div class="inputbar"><div class="ib">输入代码、名称或一句话…</div><div class="sd">${I.send}</div></div>`;
+
+S.report=()=>`${statusbar('15:30')}
+<div class="nav">
+  <div class="bk" data-go="home">${I.back}</div>
+  <div><h2>收盘日报</h2><div class="sm">2026.08.28 · A 股场次</div></div>
+  <div class="sp"><div class="ico">${I.more}</div></div>
+</div>
+<div class="body">
+  <div class="chips"><span class="chip on">🏁 A股 15:00</span><span class="chip">港股 16:00</span><span class="chip">美股 次日 05:00</span></div>
+  <div class="rpt">
+    <div class="rh2"><span style="font-size:15px">🏁</span><b>A 股收盘</b><em>08-28 15:02</em></div>
+    <div class="rs">持仓盈亏</div>
+    ${HOLD.filter(h=>h.m==='cn').map(h=>{const p=pnlPct(h);
+      return `<div class="ri"><i style="background:${h.day>=0?'var(--up)':'var(--dn)'}"></i><b>${h.n}</b><s>${h.c}</s>
+      <div class="rv mono">${h.cy}${money(h.px)}</div><div class="rp mono ${cls(h.day)}">${(h.day>=0?'+':'')+h.day.toFixed(2)}%</div></div>`}).join('')}
+    <div class="rs">跨市场持仓（非本场）</div>
+    ${HOLD.filter(h=>h.m!=='cn').map(h=>`<div class="ri" style="opacity:.62"><i style="background:${h.day>=0?'var(--up)':'var(--dn)'}"></i><b>${h.n}</b><s>${h.c}</s>
+      <div class="rv mono">${h.cy}${money(h.px)}</div><div class="rp mono ${cls(h.day)}">${(h.day>=0?'+':'')+h.day.toFixed(2)}%</div></div>`).join('')}
+    <div class="rs">自选异动</div>
+    <div class="ri"><i style="background:var(--up)"></i><b>英伟达</b><s>NVDA</s><div class="rv mono">$181.30</div><div class="rp mono up">+4.26%</div></div>
+    <div class="ri"><i style="background:var(--dn)"></i><b>特斯拉</b><s>TSLA</s><div class="rv mono">$342.18</div><div class="rp mono dn">−5.63%</div></div>
+    <div class="ri"><i style="background:var(--up)"></i><b>黄金 ETF</b><s>GLD</s><div class="rv mono">$312.44</div><div class="rp mono up">+3.15%</div></div>
+    <div class="rf">今日 A 股持仓合计 <b class="dn">−¥1,682</b>。<b>应流股份</b> 单日 −5.32% 拖累最大，已进入预警档；<b>长电科技</b> 触发止盈线，是本周第 2 次。<br>自选池 3 只越过异动阈值，贵金属整体走强。</div>
+  </div>
+  <div class="blk">
+    <div class="bt">◆ 日报推送时间</div>
+    <div class="srow"><div class="si">🇨🇳</div><div class="sn"><b>A 股</b><span>收盘后 30 分钟内推送</span></div><div class="sv">15:00</div></div>
+    <div class="srow"><div class="si">🇭🇰</div><div class="sn"><b>港股</b><span>收盘后 30 分钟内推送</span></div><div class="sv">16:00</div></div>
+    <div class="srow"><div class="si">🇺🇸</div><div class="sn"><b>美股</b><span>夏令时自动切换 04:00</span></div><div class="sv">次日 05:00</div></div>
+  </div>
+</div>`;
+
+S.me=()=>`${statusbar()}
+<div class="nav"><div><h2>我的</h2><div class="sm">规则、数据源与推送</div></div></div>
+<div class="body">
+  <div class="pf">
+    <div class="av">盐</div>
+    <div class="pn"><b>Vivienne</b><span>已接入飞书机器人 · 运行 78 天</span></div>
+    <div class="pg"><b class="mono">6 / 8</b><span>持仓 / 自选</span></div>
+  </div>
+
+  <div class="blk">
+    <div class="bt">◆ 数据源健康度 <span style="margin-left:auto;color:var(--lv1)">1 项降级</span></div>
+    <div class="srow"><div class="si" style="background:rgba(43,217,160,.13)"><span style="color:var(--up);font-size:12px">●</span></div>
+      <div class="sn" style="flex:1"><b>新浪财经 · A 股主源</b><span>近 24h 成功率 99.8%</span>
+        <div class="hbar"><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u></div></div>
+      <div class="sv">主用</div></div>
+    <div class="srow"><div class="si" style="background:rgba(43,217,160,.13)"><span style="color:var(--up);font-size:12px">●</span></div>
+      <div class="sn" style="flex:1"><b>腾讯行情 · A 股备源</b><span>待命 · 主源失败时 0 秒接管</span>
+        <div class="hbar"><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u></div></div>
+      <div class="sv">备用</div></div>
+    <div class="srow"><div class="si" style="background:rgba(255,74,91,.13)"><span style="color:var(--dn);font-size:12px">●</span></div>
+      <div class="sn" style="flex:1"><b>yfinance · 美股/港股</b><span style="color:var(--lv2)">限流中 Too Many Requests · 已退避到 5 分钟</span>
+        <div class="hbar"><u></u><u></u><u class="w"></u><u class="e"></u><u class="e"></u><u class="w"></u><u></u><u class="e"></u><u class="e"></u><u class="e"></u><u class="w"></u><u class="n"></u></div></div>
+      <div class="sv">降级</div></div>
+  </div>
+
+  <div class="blk">
+    <div class="bt">◆ 预警规则</div>
+    <div class="srow"><div class="si"><span style="color:var(--lv1)">●</span></div><div class="sn"><b>关注</b><span>相对成本回撤</span></div><div class="sv dn">−5%</div></div>
+    <div class="srow"><div class="si"><span style="color:var(--lv2)">●</span></div><div class="sn"><b>预警</b><span>相对成本回撤</span></div><div class="sv dn">−10%</div></div>
+    <div class="srow"><div class="si"><span style="color:var(--lv3)">●</span></div><div class="sn"><b>止损</b><span>相对成本回撤</span></div><div class="sv dn">−15%</div></div>
+    <div class="srow"><div class="si"><span style="color:var(--lv4)">●</span></div><div class="sn"><b>止盈</b><span>相对成本盈利</span></div><div class="sv up">+20%</div></div>
+    <div class="srow"><div class="si"><span style="color:var(--brand)">⚡</span></div><div class="sn"><b>单日闪崩</b><span>独立通道，不受成本档位影响</span></div><div class="sv">−5%/日</div></div>
+  </div>
+
+  <div class="blk">
+    <div class="bt">◆ 防打扰</div>
+    <div class="srow"><div class="si">❄</div><div class="sn"><b>同档位冷却</b><span>同一标的同一档 4 小时内只提醒一次</span></div><div class="sv">4 小时</div></div>
+    <div class="srow"><div class="si">⏱</div><div class="sn"><b>检查频率</b><span>仅在对应市场交易时段内轮询</span></div><div class="sv">90 秒</div></div>
+    <div class="srow"><div class="si">🌙</div><div class="sn"><b>非交易时段静默</b><span>闭市后不再产生任何价格提醒</span></div><div class="sw on"><i></i></div></div>
+  </div>
+
+  <div class="blk">
+    <div class="bt">◆ 显示与推送</div>
+    <div class="srow"><div class="si">🎨</div><div class="sn"><b>涨跌配色</b><span>绿涨红跌 · 让红色全局只代表「危险」</span></div><div class="sv">绿涨红跌</div></div>
+    <div class="srow"><div class="si">💬</div><div class="sn"><b>飞书机器人</b><span>预警 / 日报 / 双向查询</span></div><div class="sw on"><i></i></div></div>
+    <div class="srow"><div class="si">📱</div><div class="sn"><b>App 推送</b><span>仅止损与止盈档强提醒</span></div><div class="sw on"><i></i></div></div>
+  </div>
+</div>
+${tabbar('me')}`;
+
+/* ==================== RENDER ==================== */
+const ORDER=[
+ ['home'  ,'脉搏 · 首页','一屏回答「我现在亏多少、要不要管」：三市场时钟、总资产脉搏线、按偏离度排序的持仓、四档预警色条',0],
+ ['home'  ,'脉搏 · 持仓列表','每一行都自带一条「四档标尺」：白色游标是当前偏离度，落在红/橙/黄/绿哪一段，不用读数字也知道',330],
+ ['alert' ,'预警中心','把脚本里的 5 类推送变成可回溯的时间轴，冷却状态、合并折叠、闪崩并联全部显性化',0],
+ ['detail','个股详情 · 阈值可视化','原型的核心屏：把 −5 / −10 / −15 / +20 四条阈值直接画进分时图，价格落在哪一档一眼可见',0],
+ ['detail','个股详情 · 阈值调节','四档阈值逐只可调，底部保留该标的的完整预警履历与冷却状态',300],
+ ['watch' ,'自选 · 只盯异动','观察池刻意不显示盈亏，只保留「突破价位」与「单日异动阈值」两种触发',0],
+ ['ask'   ,'问它 · 对话式查询','继承飞书机器人的模糊匹配能力（铜 → 有色金属 ETF），并明确划出「不做基本面归因」的能力边界',0],
+ ['report','收盘日报','三个市场各自的收盘场次，跨市场持仓降透明度显示，底部给一句人话总结',0],
+ ['me'    ,'规则与数据源健康','把双数据源容灾、限流退避、冷却与静默这些「看不见的工程」翻译成用户能读懂的状态',0],
+];
+const GROUPS=[
+ ['01　核心链路','HOME → ALERT → DETAIL','日常主路径：看一眼 → 被提醒 → 决定要不要动'],
+ ['02　深度与观察','DETAIL · WATCH · ASK','把「调规则」「还没买的」「想问的」，收进三个语义不同的容器'],
+ ['03　日报与信任','REPORT · SETTINGS','低频，但决定这个 App 值不值得托付的两屏'],
+];
+function build(){
+ const p=new URLSearchParams(location.search);
+ const emb=p.get('embed'), sc=p.get('screen'), shot=p.get('shot');
+ if(shot){
+   document.body.classList.add('shot');
+   document.getElementById('embedwrap').innerHTML=
+     `<div class="phone" style="width:330px;height:714px"><div class="island"></div><div class="screen" data-sc="${shot}">${(S[shot]||S.home)()}</div></div>`;
+   bind();
+   const sy=+(p.get('scroll')||0);
+   if(sy){const b=document.querySelector('.body');if(b)b.scrollTop=sy}
+   return;
+ }
+ if(emb){
+   document.body.classList.add('embed');
+   document.getElementById('embedwrap').innerHTML=`<div class="screen" data-sc="${sc||'home'}">${(S[sc]||S.home)()}</div>`;
+   bind();
+   const sy=+(p.get('scroll')||0);
+   if(sy){const b=document.querySelector('.body');if(b)b.scrollTop=sy}
+   return;
+ }
+ const m=document.getElementById('mount');
+ let html='',i=0;
+ const slices=[ORDER.slice(0,4),ORDER.slice(4,7),ORDER.slice(7,9)];
+ slices.forEach((sl,gi)=>{
+   html+=`<div class="rowlab"><i></i><b>${GROUPS[gi][0]}</b><em>${GROUPS[gi][1]}</em><s></s><em>${GROUPS[gi][2]}</em></div><div class="screens">`;
+   sl.forEach(([k,t,d,sy])=>{
+     html+=`<div class="slot"><div class="phone"><div class="island"></div><div class="screen" data-sc="${k}" data-sy="${sy||0}">${S[k]()}</div></div>
+       <div class="cap"><b><i>◆</i>${String(++i).padStart(2,'0')} ${t}</b>${d}</div></div>`;
+   });
+   html+=`</div>`;
+ });
+ m.innerHTML=html;
+ document.querySelectorAll('.slot .screen').forEach(s=>{
+   const sy=+(s.getAttribute('data-sy')||0);
+   if(sy){const b=s.querySelector('.body');if(b)b.scrollTop=sy}
+ });
+ bind();
+}
+function bind(){
+ document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',e=>{
+   e.stopPropagation();
+   const k=el.getAttribute('data-go');
+   const sc=el.closest('.screen'); if(!sc||!S[k])return;
+   sc.innerHTML=S[k]();sc.setAttribute('data-sc',k);
+   const b=sc.querySelector('.body'); if(b)b.scrollTop=0;
+   bind();
+ }));
+ document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',e=>{
+   e.stopPropagation();
+   c.parentNode.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+ }));
+ document.querySelectorAll('.sw').forEach(s=>s.addEventListener('click',e=>{e.stopPropagation();s.classList.toggle('on')}));
+}
+build();
+</script>
+</body>
+</html>
