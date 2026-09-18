@@ -104,9 +104,9 @@
      cover:'assets/bondee/scene-cover.jpg',
      summary:'\u4e2a\u4eba\u7a7a\u95f4 / \u521b\u4f5c\u8005\u5e73\u53f0 / \u54c1\u724c\u89c6\u89c9 \u00b7 \u4e09\u4e2a\u9879\u76ee',
      subjects:[
-       {i:1,id:'bondee-1',title:'个人空间 · 形象资产体系',en:'PERSONAL SPACE / AVATAR SYSTEM',x:10.052,y:9.405,w:25.755,h:67.354,cx:22.92,ty:75.12},
-       {i:2,id:'bondee-2',title:'创作者平台 · UGC 内容供给',en:'CREATOR PLATFORM / UGC SUPPLY',x:34.036,y:3.216,w:31.927,h:81.857,cx:50,ty:82.71},
-       {i:3,id:'bondee-3',title:'产品视觉品牌塑造',en:'PRODUCT BRAND VISUAL',x:67.24,y:17.536,w:20.964,h:62.925,cx:77.73,ty:79.07}
+       {i:1,id:'bondee-1',title:'个人空间 · 形象资产体系',en:'PERSONAL SPACE / AVATAR SYSTEM',x:8.229,y:8.981,w:26.771,h:70.024,cx:21.61,ty:77.12},
+       {i:2,id:'bondee-2',title:'创作者平台 · UGC 内容供给',en:'CREATOR PLATFORM / UGC SUPPLY',x:33.646,y:3.034,w:33.255,h:85.255,cx:50.26,ty:85.62},
+       {i:3,id:'bondee-3',title:'产品视觉品牌塑造',en:'PRODUCT BRAND VISUAL',x:68.229,y:17.051,w:21.901,h:65.716,cx:79.17,ty:81.07}
      ]},
     {id:'bytedance',dir:'bytedance',file:'subject',cell:'11',reach:'2',
      label:'ByteDance \u516d\u4e2a\u9879\u76ee\u5165\u53e3',
@@ -254,6 +254,6 @@
   window.addEventListener('hashchange',route);
   route();
   const capsulesScript=document.createElement('script');capsulesScript.src='matrix-capsules.js?v=pill-float-1';document.body.append(capsulesScript);
-  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=stages-unified-1';document.body.append(stageScript);
+  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=stages-unified-2';document.body.append(stageScript);
   const transitScript=document.createElement('script');transitScript.src='matrix-transit.js?v=pill-float-1';document.body.append(transitScript);
 })();

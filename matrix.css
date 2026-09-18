@@ -241,7 +241,7 @@ a:focus-visible{outline-color:#b5edc2}
 .bd-fig.on{z-index:3}
 .bd-fig.on img{filter:drop-shadow(0 0 8px rgba(74,255,132,.46)) drop-shadow(0 0 26px rgba(37,255,89,.26)) brightness(1.08)}
 .bd-fig:focus-visible img{filter:drop-shadow(0 0 9px rgba(74,255,132,.5)) drop-shadow(0 0 28px rgba(37,255,89,.3)) brightness(1.1)}
-.code-stage.busy .bd-fig:not(.on) img{opacity:.62;filter:brightness(.9) drop-shadow(0 0 3px rgba(37,255,89,.1))}
+.code-stage.busy .bd-fig:not(.on) img{opacity:.92;filter:brightness(.52) saturate(.8) drop-shadow(0 0 3px rgba(37,255,89,.08))}
 .code-stage.busy .bd-bg{opacity:.7}
 .bd-tag{position:absolute;left:var(--cx);top:var(--ty);z-index:5;width:max-content;max-width:20%;padding:7px 12px 8px;border-radius:2px;background:radial-gradient(74% 130% at 50% 50%,rgba(0,15,7,.88),rgba(0,10,4,0) 74%);opacity:0;transform:translate(-50%,6px);transition:opacity .28s,transform .28s;text-align:center}
 .bd-tag.on{opacity:1;transform:translate(-50%,0)}
