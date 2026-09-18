@@ -101,7 +101,7 @@
     {i:3,id:'bondee-3',title:'\u4ea7\u54c1\u89c6\u89c9\u54c1\u724c\u5851\u9020',en:'PRODUCT BRAND VISUAL',x:56.582,y:6.561,w:43.418,h:60.510}
   ];
   const bondeeStage=document.createElement('section');
-  bondeeStage.className='bondee-stage';bondeeStage.hidden=true;
+  bondeeStage.className='code-stage bondee-stage';bondeeStage.hidden=true;bondeeStage.dataset.collection='bondee';
   bondeeStage.setAttribute('aria-label','BONDEE \u4e09\u4e2a\u9879\u76ee\u5165\u53e3');
   const bdRain=document.createElement('canvas');bdRain.className='bd-rain';bdRain.setAttribute('aria-hidden','true');
   const bdCast=document.createElement('div');bdCast.className='bd-cast';
@@ -123,6 +123,55 @@
   bdHint.textContent='hover a figure_';
   bondeeStage.append(bdRain,bdCast,bdTags,bdHead,bdHint);
   grid.before(bondeeStage);
+  // --- ByteDance unified stage ----------------------------------------------
+  // The six ByteDance covers collapse into one artwork: the original frame sits
+  // underneath (dimmed) with a live code-rain canvas over it, and the six
+  // subjects cut out of that artwork are composited back at source position.
+  // DOM order is back-to-front, so the small subjects (portrait, scales) come
+  // last and win the hit test where boxes overlap. cx/ty anchor the caption on
+  // a dark patch of the artwork right below each subject.
+  const bytedanceSubjects=[
+    {i:3,id:'bytedance-3',title:'成片 Agent',en:'NARRATIVE VIDEO AGENT',x:1.198,y:6.553,w:31.484,h:78.277,cx:12,ty:44},
+    {i:5,id:'bytedance-5',title:'AI 音乐',en:'AI MUSIC / NEW YEAR SINGLE',x:69.193,y:13.714,w:29.714,h:73.544,cx:84,ty:87.5},
+    {i:1,id:'featured',title:'随变 AI',en:'FEATURED · AI CHARACTER PIPELINE',x:38.75,y:10.012,w:21.328,h:71.784,cx:49.4,ty:85},
+    {i:4,id:'bytedance-4',title:'AI 风格化',en:'AI STYLE TRANSFER / PENCIL LOOK',x:1.146,y:54.794,w:9.479,h:27.367,cx:7,ty:83.5},
+    {i:2,id:'bytedance-2',title:'模型评测',en:'MODEL EVALUATION / BENCHMARK',x:39.714,y:0.728,w:21.745,h:24.272,cx:36.5,ty:26.5},
+    {i:6,id:'bytedance-6',title:'AI 写真',en:'AI PORTRAIT / QINGYAN x DOUYIN',x:67.057,y:44.66,w:7.63,h:22.633,cx:70.8,ty:69}
+  ];
+  const bytedanceStage=document.createElement('section');
+  bytedanceStage.className='code-stage bytedance-stage';bytedanceStage.hidden=true;
+  bytedanceStage.dataset.collection='bytedance';bytedanceStage.dataset.cell='11';bytedanceStage.dataset.reach='2';
+  bytedanceStage.setAttribute('aria-label','ByteDance 六个项目入口');
+  const btBg=document.createElement('img');btBg.className='bd-bg';btBg.src=freshAsset('assets/bytedance/scene-bg.jpg');
+  btBg.alt='';btBg.draggable=false;btBg.setAttribute('aria-hidden','true');
+  const btRain=document.createElement('canvas');btRain.className='bd-rain';btRain.setAttribute('aria-hidden','true');
+  const btCast=document.createElement('div');btCast.className='bd-cast';
+  const btList=document.createElement('nav');btList.className='bt-list';btList.setAttribute('aria-label','ByteDance 项目列表');
+  bytedanceSubjects.forEach(s=>{
+    const a=document.createElement('a');a.className='bd-fig';a.href='#project/'+s.id;a.dataset.i=s.i;
+    a.setAttribute('aria-label',s.title);
+    a.style.cssText='--x:'+s.x+'%;--y:'+s.y+'%;--w:'+s.w+'%;--h:'+s.h+'%';
+    const img=document.createElement('img');img.src=freshAsset('assets/bytedance/subject-'+s.i+'.png');
+    img.alt='';img.draggable=false;a.append(img);btCast.append(a);
+  });
+  bytedanceSubjects.forEach(s=>{
+    const tag=document.createElement('span');tag.className='bd-tag at';tag.dataset.i=s.i;
+    tag.style.cssText='--cx:'+s.cx+'%;--ty:'+s.ty+'%';
+    tag.innerHTML='<small>'+String(s.i).padStart(2,'0')+'</small><strong>'+s.title+'</strong><em>'+s.en+'</em>';
+    btCast.append(tag);
+  });
+  [...bytedanceSubjects].sort((a,b)=>a.i-b.i).forEach(s=>{
+    const a=document.createElement('a');a.href='#project/'+s.id;
+    a.innerHTML='<small>'+String(s.i).padStart(2,'0')+'</small><strong>'+s.title+'</strong>';
+    a.addEventListener('click',()=>{sessionStorage.setItem('portfolio-collection','bytedance');});
+    btList.append(a);
+  });
+  const btHead=document.createElement('div');btHead.className='bd-head';
+  btHead.innerHTML='<b>ByteDance</b> / 2023 — 2026 / 6 PROJECTS';
+  const btHint=document.createElement('div');btHint.className='bd-hint';
+  btHint.textContent='hover a subject_';
+  bytedanceStage.append(btBg,btRain,btCast,btHead,btHint,btList);
+  grid.before(bytedanceStage);
   function layoutArchive(){
     if(!grid.clientWidth)return;
     const mobile=innerWidth<=700,w=grid.clientWidth;
@@ -156,16 +205,25 @@
     grid.replaceChildren();
     const bondeeTab=!personal&&!allCommercial&&c.id==='bondee';
     bondeeStage.hidden=!bondeeTab;
+    const bytedanceTab=!personal&&!allCommercial&&c.id==='bytedance';
+    bytedanceStage.hidden=!bytedanceTab;
     let list=projects.filter(p=>personal?p.company==='other'&&(id==='other'||personalType(p)===id):allCommercial?p.company!=='other':p.company===c.id);
-    if(bondeeTab)list=[];                      // the stage IS the BONDEE page
+    if(bondeeTab||bytedanceTab)list=[];         // the stage IS the collection page
     else if(allCommercial){
-      // collapse BONDEE's three entries into one group tile, keeping archive order
+      // collapse each unified stage's entries into one group tile, keeping archive order
       const at=list.findIndex(p=>p.company==='bondee');
       if(at>=0){
         list=list.filter(p=>p.company!=='bondee');
         list.splice(at,0,{id:'bondee',title:'BONDEE',
           summary:'\u4e2a\u4eba\u7a7a\u95f4 / \u521b\u4f5c\u8005\u5e73\u53f0 / \u54c1\u724c\u89c6\u89c9 \u00b7 \u4e09\u4e2a\u9879\u76ee',
           displayCover:'assets/display-bondee-2.png',href:'#work/bondee'});
+      }
+      const bd=list.findIndex(p=>p.company==='bytedance');
+      if(bd>=0){
+        list=list.filter(p=>p.company!=='bytedance');
+        list.splice(bd,0,{id:'bytedance',title:'ByteDance',
+          summary:'随变 AI / 模型评测 / 成片 Agent / 风格化 / AI 音乐 / AI 写真 · 六个项目',
+          displayCover:'assets/bytedance/scene-cover.jpg',href:'#work/bytedance'});
       }
     }
     list.forEach((p,i)=>{
@@ -214,6 +272,6 @@
   window.addEventListener('hashchange',route);
   route();
   const capsulesScript=document.createElement('script');capsulesScript.src='matrix-capsules.js?v=pill-float-1';document.body.append(capsulesScript);
-  const bondeeScript=document.createElement('script');bondeeScript.src='bondee-scene.js?v=pill-float-1';document.body.append(bondeeScript);
+  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=bytedance-unified-1';document.body.append(stageScript);
   const transitScript=document.createElement('script');transitScript.src='matrix-transit.js?v=pill-float-1';document.body.append(transitScript);
 })();

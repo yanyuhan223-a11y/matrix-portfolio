@@ -1,16 +1,18 @@
 (() => {
   'use strict';
-  // Unified BONDEE stage: a flowing code-rain backdrop with the three cut-out
-  // figures composited back at their original positions. Their bounding boxes
-  // overlap heavily (the middle figure spans the whole frame), so hover/click
-  // hit-testing samples each figure's alpha channel instead of its box.
+  // Unified "code stage": a flowing code-rain canvas with cut-out subjects
+  // composited back at their original positions inside the artwork frame.
+  // Used by the BONDEE stage (3 figures) and the ByteDance stage (6 subjects).
+  // Bounding boxes overlap heavily, so hover/click hit-testing samples each
+  // sprite's alpha channel instead of its box.
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
   function initRain(stage, cast, canvas) {
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
     const glyphs = '01';
-    let w = 0, h = 0, dpr = 1, cell = 16, cols = [], last = 0, onScreen = true, raf = 0;
+    const base = Math.max(9, parseFloat(stage.dataset.cell) || 16);
+    let w = 0, h = 0, dpr = 1, cell = base, cols = [], last = 0, onScreen = true, raf = 0;
 
     function resize() {
       const r = cast.getBoundingClientRect();
@@ -20,13 +22,14 @@
       canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
       canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cell = w < 620 ? 12 : 16;
+      cell = w < 620 ? Math.max(9, base - 4) : base;
       const n = Math.ceil(w / cell);
       cols = Array.from({ length: n }, (_, i) => (cols[i] || {
         y: Math.random() * h,
         speed: 0.9 + Math.random() * 2.4,   // px per frame-step, varies per column
         len: 8 + Math.floor(Math.random() * 16),
-        glow: Math.random() < 0.22
+        glow: Math.random() < 0.22,
+        live: Math.random() < 0.74          // leave gaps so the artwork breathes
       }));
       ctx.fillStyle = 'rgba(1,6,3,1)'; ctx.fillRect(0, 0, w, h);
     }
@@ -44,11 +47,13 @@
       for (let i = 0; i < cols.length; i++) {
         const c = cols[i], x = i * cell + cell / 2;
         c.y += c.speed * dt * 3;
+        if (!c.live) { if (c.y - c.len * cell > h) { c.y = -Math.random() * h * .6; c.live = Math.random() < 0.74; } continue; }
         if (c.y - c.len * cell > h) {             // recycle above the top edge
           c.y = -Math.random() * h * .5;
           c.speed = 0.9 + Math.random() * 2.4;
           c.len = 8 + Math.floor(Math.random() * 16);
           c.glow = Math.random() < 0.22;
+          c.live = Math.random() < 0.74;
         }
         const head = Math.floor(c.y / cell) * cell;
         for (let j = 0; j < c.len; j++) {
@@ -77,6 +82,7 @@
   }
 
   function initFigures(stage, cast) {
+    const collection = stage.dataset.collection || 'bondee';
     const figs = [...cast.querySelectorAll('.bd-fig')];
     const tags = [...stage.querySelectorAll('.bd-tag')];
     const masks = new Map();
@@ -86,7 +92,7 @@
       const img = fig.querySelector('img');
       const build = () => {
         try {
-          const mw = Math.min(240, img.naturalWidth || 240);
+          const mw = Math.min(300, img.naturalWidth || 300);
           const mh = Math.max(1, Math.round(mw * (img.naturalHeight || 1) / (img.naturalWidth || 1)));
           const cv = document.createElement('canvas');
           cv.width = mw; cv.height = mh;
@@ -102,6 +108,8 @@
       else img.addEventListener('load', build, { once: true });
     });
 
+    // line-art is mostly empty space, so accept a small neighbourhood as a hit
+    const reach = parseInt(stage.dataset.reach || '0', 10);
     const hit = (fig, px, py) => {
       const r = fig.getBoundingClientRect();
       if (px < r.left || px > r.right || py < r.top || py > r.bottom) return false;
@@ -109,7 +117,17 @@
       if (!m) return true;                       // no mask yet -> box hit
       const x = Math.floor((px - r.left) / r.width * m.w);
       const y = Math.floor((py - r.top) / r.height * m.h);
-      return m.a[y * m.w + x] > 24;
+      if (m.a[y * m.w + x] > 24) return true;
+      for (let dy = -reach; dy <= reach; dy++) {
+        const yy = y + dy;
+        if (yy < 0 || yy >= m.h) continue;
+        for (let dx = -reach; dx <= reach; dx++) {
+          const xx = x + dx;
+          if (xx < 0 || xx >= m.w) continue;
+          if (m.a[yy * m.w + xx] > 60) return true;
+        }
+      }
+      return false;
     };
 
     let active = null;
@@ -126,6 +144,10 @@
       for (let i = figs.length - 1; i >= 0; i--) if (hit(figs[i], e.clientX, e.clientY)) return figs[i];
       return null;
     };
+    const go = fig => {
+      try { sessionStorage.setItem('portfolio-collection', collection); } catch (err) { }
+      location.hash = fig.getAttribute('href').slice(1);
+    };
 
     cast.addEventListener('pointermove', e => setActive(pick(e)));
     cast.addEventListener('pointerleave', () => setActive(null));
@@ -134,8 +156,7 @@
       const f = pick(e);
       if (!f) return;
       e.preventDefault();
-      try { sessionStorage.setItem('portfolio-collection', 'bondee'); } catch (err) { }
-      location.hash = f.getAttribute('href').slice(1);
+      go(f);
     });
     // keyboard: the links stay focusable even though pointer events go to the stage
     figs.forEach(fig => {
@@ -144,8 +165,7 @@
       fig.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          try { sessionStorage.setItem('portfolio-collection', 'bondee'); } catch (err) { }
-          location.hash = fig.getAttribute('href').slice(1);
+          go(fig);
         }
       });
     });
@@ -161,7 +181,7 @@
     initFigures(stage, cast);
   }
 
-  const scan = () => document.querySelectorAll('.bondee-stage').forEach(boot);
+  const scan = () => document.querySelectorAll('.code-stage').forEach(boot);
   scan();
   // the stage is (re)built by gallery.js when a collection renders
   new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
