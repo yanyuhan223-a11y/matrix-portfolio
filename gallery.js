@@ -53,8 +53,8 @@
   choice.className='matrix-choice';choice.hidden=true;choice.setAttribute('aria-label','项目入口');choice.tabIndex=-1;
   choice.innerHTML=`<header class="choice-top"><a href="#home" aria-label="返回作品集封面">V / 颜于涵</a><span>PORTFOLIO · SELECT YOUR PATH</span><a href="#home">[ ← 返回封面 ]</a></header>
     <div class="choice-stage"><img class="choice-hands" src="${freshAsset('assets/matrix-choice-hands2.png')}" alt="两只由绿色数字代码构成、掌心向上的手" fetchpriority="high">
-      <a class="pill-choice pill-red" href="#work/commercial" aria-label="选择红色药丸，进入商业项目"><span class="pill-aura" aria-hidden="true"></span><span class="pill-capsule" aria-hidden="true"><i></i></span><span class="choice-label"><small>01 / RED PILL</small><strong>商业项目 <b>↗</b></strong><em>Commercial projects</em></span></a>
-      <a class="pill-choice pill-blue" href="#work/other" aria-label="选择蓝色药丸，进入个人项目"><span class="pill-aura" aria-hidden="true"></span><span class="pill-capsule" aria-hidden="true"><i></i></span><span class="choice-label"><small>02 / BLUE PILL</small><strong>个人项目 <b>↗</b></strong><em>Personal experiments</em></span></a>
+      <a class="pill-choice pill-red" href="#work/bytedance" aria-label="选择红色药丸，进入商业项目"><span class="pill-aura" aria-hidden="true"></span><span class="pill-capsule" aria-hidden="true"><i></i></span><span class="choice-label"><small>01 / RED PILL</small><strong>商业项目 <b>↗</b></strong><em>Commercial projects</em></span></a>
+      <a class="pill-choice pill-blue" href="#work/coding" aria-label="选择蓝色药丸，进入个人项目"><span class="pill-aura" aria-hidden="true"></span><span class="pill-capsule" aria-hidden="true"><i></i></span><span class="choice-label"><small>02 / BLUE PILL</small><strong>个人项目 <b>↗</b></strong><em>Personal experiments</em></span></a>
     </div><footer class="choice-bottom"><span>CONNECTED_ <i class="terminal-dot"></i></span><span class="choice-hint">HOVER TO ROTATE / CLICK TO ENTER</span><span>VIVIENNE / 2026</span></footer>`;
   shell.prepend(choice);
   const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
@@ -68,7 +68,7 @@
   });
   const matrixScript=document.createElement('script');matrixScript.src='matrix.js?v=pill-float-1';document.body.append(matrixScript);
   const gallery=document.createElement('section');gallery.className='gallery-page';gallery.hidden=true;
-  gallery.innerHTML='<header class="gallery-header"><a class="gallery-home" href="#home" aria-label="返回首页">V.</a><nav class="collection-tabs" aria-label="作品分类"><a href="#work/bytedance" data-collection="commercial">商业项目 <span>Commercial</span></a><a href="#work/other" data-collection="personal">个人作品 <span>Personal</span></a></nav><nav class="company-tabs" aria-label="公司与作品类型"></nav></header><h1 class="gallery-accessible-title">Vivienne 精选项目</h1><div class="project-grid"></div><footer class="gallery-footer"><a href="#about">Vivienne / 颜于涵</a><span class="company-caption"></span><a href="mailto:798287301@qq.com">Contact ↗</a></footer>';
+  gallery.innerHTML='<header class="gallery-header"><a class="gallery-home" href="#home" aria-label="返回首页">V.</a><nav class="collection-tabs" aria-label="作品分类"><a href="#work/bytedance" data-collection="commercial">商业项目 <span>Commercial</span></a><a href="#work/coding" data-collection="personal">个人作品 <span>Personal</span></a></nav><nav class="company-tabs" aria-label="公司与作品类型"></nav></header><h1 class="gallery-accessible-title">Vivienne 精选项目</h1><div class="project-grid"></div><footer class="gallery-footer"><a href="#about">Vivienne / 颜于涵</a><span class="company-caption"></span><a href="mailto:798287301@qq.com">Contact ↗</a></footer>';
   shell.prepend(gallery);
   gallery.querySelector('.collection-tabs').remove();
   gallery.querySelector('.gallery-home').href='#choose';
@@ -78,13 +78,13 @@
   gallery.querySelector('.gallery-header').prepend(collectionIntro);
   function makePortal(personal){
     const portal=document.createElement('a');portal.className='collection-portal '+(personal?'pill-red':'pill-blue');
-    portal.href=personal?'#work/commercial':'#work/other';
+    portal.href=personal?'#work/bytedance':'#work/coding';
     portal.innerHTML='<span class="portal-copy"><small>CONTINUE EXPLORING_</small><strong>'+(personal?'进入商业项目':'进入个人项目')+' ↗</strong><em>'+(personal?'COMMERCIAL ARCHIVE':'PERSONAL EXPERIMENTS')+'</em></span><span class="pill-capsule" aria-hidden="true"><i></i></span>';
     return portal;
   }
   const galleryPortal=makePortal(false);gallery.querySelector('.gallery-footer').before(galleryPortal);
   const tabs=gallery.querySelector('.company-tabs');
-  const personalCategories=[{id:'other',name:'All Works'},{id:'coding',name:'Product & Coding'},{id:'motion',name:'Moving Image'},{id:'art',name:'Fine Art'}];
+  const personalCategories=[{id:'coding',name:'Product & Coding'},{id:'motion',name:'Moving Image'},{id:'art',name:'Fine Art'}];
   const personalType=p=>p.id==='stockpulse'||p.id==='arcana'?'coding':p.id==='other-3'?'motion':'art';
   let lastCollection='bytedance';
   const nav=document.createElement('nav');nav.className='app-nav';nav.setAttribute('aria-label','页面导航');
@@ -178,36 +178,26 @@
   window.addEventListener('resize',layoutArchive);
   function renderCompany(id){
     gallery.classList.remove('archive-ready');
+    if(id==='commercial')id='bytedance';               // legacy links: no aggregate page any more
+    else if(id==='other')id='coding';
     const personal=personalCategories.some(c=>c.id===id);
     const c=personal?companies[3]:companies.find(c=>c.id===id)||companies[0];
-    const allCommercial=id==='commercial';
-    lastCollection=personal?id:allCommercial?'commercial':c.id;
+    lastCollection=personal?id:c.id;
     gallery.dataset.collection=personal?'personal':'commercial';
     gallery.querySelectorAll('.collection-tabs a').forEach(a=>{const active=a.dataset.collection===gallery.dataset.collection;a.classList.toggle('active',active);a.setAttribute('aria-current',active?'page':'false');});
     tabs.replaceChildren();
-    (personal?personalCategories:[{id:'commercial',name:'All Work'},...companies.slice(0,3)]).forEach(item=>{const a=document.createElement('a');a.href='#work/'+item.id;a.textContent=item.name;tabs.append(a);});
+    (personal?personalCategories:companies.slice(0,3)).forEach(item=>{const a=document.createElement('a');a.href='#work/'+item.id;a.textContent=item.name;tabs.append(a);});
     tabs.querySelectorAll('a').forEach(a=>{const active=a.hash==='#work/'+lastCollection;a.classList.toggle('active',active);a.setAttribute('aria-current',active?'page':'false');});
-    gallery.querySelector('.company-caption').textContent=personal?'PERSONAL / INDEPENDENT':allCommercial?'COMMERCIAL / SELECTED WORK':c.years+' / '+c.role;
+    gallery.querySelector('.company-caption').textContent=personal?'PERSONAL / INDEPENDENT':c.years+' / '+c.role;
     collectionIntro.querySelector('.collection-code').textContent=personal?'02 / BLUE PILL / PERSONAL':'01 / RED PILL / COMMERCIAL';
     collectionIntro.querySelector('h1').textContent=personal?'Personal experiments.':'Selected commercial work.';
     collectionIntro.querySelector('.collection-description').textContent=personal?'个人项目 / 产品、影像与艺术实验':'商业项目 / 工作中的设计与实践';
     const portalContent=makePortal(personal);galleryPortal.className=portalContent.className;galleryPortal.href=portalContent.href;galleryPortal.innerHTML=portalContent.innerHTML;
     grid.replaceChildren();
-    const stageTab=!personal&&!allCommercial&&stages[c.id]?c.id:'';
+    const stageTab=!personal&&stages[c.id]?c.id:'';
     Object.keys(stages).forEach(k=>{stages[k].hidden=k!==stageTab;});
-    let list=projects.filter(p=>personal?p.company==='other'&&(id==='other'||personalType(p)===id):allCommercial?p.company!=='other':p.company===c.id);
+    let list=projects.filter(p=>personal?p.company==='other'&&personalType(p)===id:p.company===c.id);
     if(stageTab)list=[];                        // the stage IS the collection page
-    else if(allCommercial){
-      // collapse every staged collection into one group tile, keeping archive order
-      stageDefs.forEach(def=>{
-        const at=list.findIndex(p=>p.company===def.id);
-        if(at<0)return;
-        const title=(companies.find(c=>c.id===def.id)||{}).name||def.id;
-        list=list.filter(p=>p.company!==def.id);
-        list.splice(at,0,{id:def.id,title:title,summary:def.summary,
-          displayCover:def.cover,href:'#work/'+def.id});
-      });
-    }
     list.forEach((p,i)=>{
       const a=document.createElement('a');a.className='project-tile';a.href=p.href||'#project/'+p.id;a.style.setProperty('--delay',i*55+'ms');
       a.setAttribute('aria-label',p.title);a.addEventListener('click',()=>{sessionStorage.setItem('portfolio-collection',lastCollection);});
@@ -231,7 +221,7 @@
   }
   projects.forEach((p,i)=>{
     const foot=document.createElement('nav');foot.className='project-pagination';
-    const back=document.createElement('a');back.href='#work/'+p.company;back.textContent='← 返回 '+companies.find(c=>c.id===p.company).name;
+    const back=document.createElement('a');back.href='#work/'+(p.company==='other'?personalType(p):p.company);back.textContent='← 返回 '+companies.find(c=>c.id===p.company).name;
     const siblings=projects.filter(item=>(item.company==='other')===(p.company==='other'));
     const next=siblings[(siblings.indexOf(p)+1)%siblings.length];const forward=document.createElement('a');forward.href='#project/'+next.id;forward.textContent='下一个项目：'+next.title+' →';foot.append(back,forward);p.page.append(foot,makePortal(p.company==='other'));
   });
@@ -241,7 +231,7 @@
     cover.hidden=true;choice.hidden=true;gallery.hidden=true;profile.hidden=true;projects.forEach(p=>p.page.hidden=true);
     document.querySelectorAll('video').forEach(v=>v.pause());
     document.body.classList.remove('view-home','view-work','view-project','view-about','view-choice');
-    if(kind==='project'&&current){current.page.hidden=false;const saved=sessionStorage.getItem('portfolio-collection');const backId=current.company==='other'&&personalCategories.some(c=>c.id===saved)?saved:current.company;nav.querySelector('.app-back').href='#work/'+backId;current.page.querySelector('.project-pagination a').href='#work/'+backId;document.body.classList.add('view-project');document.title=current.title+' · Vivienne';}
+    if(kind==='project'&&current){current.page.hidden=false;const saved=sessionStorage.getItem('portfolio-collection');const backId=current.company==='other'?(personalCategories.some(c=>c.id===saved)?saved:personalType(current)):current.company;nav.querySelector('.app-back').href='#work/'+backId;current.page.querySelector('.project-pagination a').href='#work/'+backId;document.body.classList.add('view-project');document.title=current.title+' · Vivienne';}
     else if(kind==='choose'){choice.hidden=false;document.body.classList.add('view-choice');document.title='项目入口 · Vivienne';choice.focus({preventScroll:true});}
     else if(kind==='about'||kind==='profile'){profile.hidden=false;document.body.classList.add('view-about');document.title='About · Vivienne';}
     else if(kind==='work'||companies.some(c=>c.id===kind)){renderCompany(key||kind);gallery.hidden=false;document.body.classList.add('view-work');document.title='Selected work · Vivienne';}
@@ -254,6 +244,6 @@
   window.addEventListener('hashchange',route);
   route();
   const capsulesScript=document.createElement('script');capsulesScript.src='matrix-capsules.js?v=pill-float-1';document.body.append(capsulesScript);
-  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=stages-unified-2';document.body.append(stageScript);
+  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=stages-nowall-1';document.body.append(stageScript);
   const transitScript=document.createElement('script');transitScript.src='matrix-transit.js?v=pill-float-1';document.body.append(transitScript);
 })();

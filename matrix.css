@@ -232,17 +232,18 @@ a:focus-visible{outline-color:#b5edc2}
    silhouette. Both stages share one frame ratio so the two pages feel identical. */
 .code-stage{position:relative;margin:30px 0 6px;border:1px solid rgba(37,255,89,.15);border-radius:3px;background:radial-gradient(130% 105% at 50% 0,rgba(9,30,15,.72),rgba(1,6,3,.94) 68%);overflow:hidden;isolation:isolate}
 .bd-bg{position:absolute;left:0;top:0;z-index:0;width:100%;height:auto;aspect-ratio:3840/1648;object-fit:cover;pointer-events:none;transition:opacity .35s}
-.bd-rain{position:absolute;left:0;top:0;z-index:1;pointer-events:none;opacity:.34;mix-blend-mode:screen}
+.bd-rain{position:absolute;left:0;top:0;z-index:1;pointer-events:none;opacity:.34;mix-blend-mode:screen;transition:opacity .35s}
 .bd-cast{position:relative;z-index:2;width:100%;aspect-ratio:3840/1648}
 .bd-head{position:absolute;left:18px;top:14px;z-index:4;font:600 9px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.24em;color:rgba(150,255,180,.62);text-transform:uppercase;pointer-events:none}
 .bd-head b{color:rgba(214,255,224,.9);font-weight:700}
 .bd-fig{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);pointer-events:none;text-decoration:none;outline:0}
 .bd-fig img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 5px rgba(37,255,89,.16));transition:filter .32s,opacity .32s}
 .bd-fig.on{z-index:3}
-.bd-fig.on img{filter:drop-shadow(0 0 8px rgba(74,255,132,.46)) drop-shadow(0 0 26px rgba(37,255,89,.26)) brightness(1.08)}
-.bd-fig:focus-visible img{filter:drop-shadow(0 0 9px rgba(74,255,132,.5)) drop-shadow(0 0 28px rgba(37,255,89,.3)) brightness(1.1)}
-.code-stage.busy .bd-fig:not(.on) img{opacity:.92;filter:brightness(.52) saturate(.8) drop-shadow(0 0 3px rgba(37,255,89,.08))}
-.code-stage.busy .bd-bg{opacity:.7}
+.bd-fig.on img{filter:drop-shadow(0 0 10px rgba(150,255,185,.8)) drop-shadow(0 0 30px rgba(37,255,89,.52)) drop-shadow(0 0 70px rgba(37,255,89,.32)) brightness(1.36) saturate(1.22) contrast(1.06)}
+.bd-fig:focus-visible img{filter:drop-shadow(0 0 10px rgba(150,255,185,.82)) drop-shadow(0 0 30px rgba(37,255,89,.54)) drop-shadow(0 0 70px rgba(37,255,89,.34)) brightness(1.38) saturate(1.24)}
+.code-stage.busy .bd-fig:not(.on) img{opacity:.9;filter:brightness(.34) saturate(.95) drop-shadow(0 0 2px rgba(37,255,89,.05))}
+.code-stage.busy .bd-bg{opacity:.4}
+.code-stage.busy .bd-rain{opacity:.17}
 .bd-tag{position:absolute;left:var(--cx);top:var(--ty);z-index:5;width:max-content;max-width:20%;padding:7px 12px 8px;border-radius:2px;background:radial-gradient(74% 130% at 50% 50%,rgba(0,15,7,.88),rgba(0,10,4,0) 74%);opacity:0;transform:translate(-50%,6px);transition:opacity .28s,transform .28s;text-align:center}
 .bd-tag.on{opacity:1;transform:translate(-50%,0)}
 .bd-tag small{display:block;font:700 8px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.3em;color:rgba(74,255,132,.72)}
