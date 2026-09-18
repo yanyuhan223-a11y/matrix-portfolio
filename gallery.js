@@ -91,87 +91,77 @@
   nav.innerHTML='<a href="#home" class="app-brand">Vivienne<span> / PORTFOLIO</span></a><a class="app-back" href="#work/bytedance">返回项目</a><a href="#about">About</a><a href="mailto:798287301@qq.com">Contact</a>';
   document.body.prepend(nav);
   const grid=gallery.querySelector('.project-grid');
-  // --- BONDEE unified stage -------------------------------------------------
-  // The three cover tiles are replaced by one integrated scene: figures cut out
-  // of the original artwork, composited at their source positions over a live
-  // code-rain canvas. Percentages come from the cut-out bounding boxes.
-  const bondeeFigures=[
-    {i:1,id:'bondee-1',title:'\u4e2a\u4eba\u7a7a\u95f4 \u00b7 \u5f62\u8c61\u8d44\u4ea7\u4f53\u7cfb',en:'PERSONAL SPACE / AVATAR SYSTEM',x:0,y:0,w:33.688,h:72.904},
-    {i:2,id:'bondee-2',title:'\u521b\u4f5c\u8005\u5e73\u53f0 \u00b7 UGC \u5185\u5bb9\u4f9b\u7ed9',en:'CREATOR PLATFORM / UGC SUPPLY',x:22.731,y:6.926,w:55.192,h:93.074},
-    {i:3,id:'bondee-3',title:'\u4ea7\u54c1\u89c6\u89c9\u54c1\u724c\u5851\u9020',en:'PRODUCT BRAND VISUAL',x:56.582,y:6.561,w:43.418,h:60.510}
+  // --- unified code stages --------------------------------------------------
+  // A collection renders as one artwork instead of separate cover tiles: the
+  // frame artwork underneath (dimmed), a live code-rain canvas flowing over it
+  // and the cut-out subjects composited back at their position in the frame.
+  // Subject order is back-to-front, so small subjects come last and win the
+  // alpha hit test; cx/ty anchor each caption on a dark patch below its subject.
+  const stageDefs=[
+    {id:'bondee',dir:'bondee',file:'figure',cell:'12',reach:'1',
+     label:'BONDEE \u4e09\u4e2a\u9879\u76ee\u5165\u53e3',
+     head:'<b>BONDEE</b> / 2022 \u2014 2023 / 3 PROJECTS',
+     cover:'assets/bondee/scene-cover.jpg',
+     summary:'\u4e2a\u4eba\u7a7a\u95f4 / \u521b\u4f5c\u8005\u5e73\u53f0 / \u54c1\u724c\u89c6\u89c9 \u00b7 \u4e09\u4e2a\u9879\u76ee',
+     subjects:[
+       {i:1,id:'bondee-1',title:'个人空间 · 形象资产体系',en:'PERSONAL SPACE / AVATAR SYSTEM',x:10.052,y:9.405,w:25.755,h:67.354,cx:22.92,ty:75.12},
+       {i:2,id:'bondee-2',title:'创作者平台 · UGC 内容供给',en:'CREATOR PLATFORM / UGC SUPPLY',x:34.036,y:3.216,w:31.927,h:81.857,cx:50,ty:82.71},
+       {i:3,id:'bondee-3',title:'产品视觉品牌塑造',en:'PRODUCT BRAND VISUAL',x:67.24,y:17.536,w:20.964,h:62.925,cx:77.73,ty:79.07}
+     ]},
+    {id:'bytedance',dir:'bytedance',file:'subject',cell:'11',reach:'2',
+     label:'ByteDance \u516d\u4e2a\u9879\u76ee\u5165\u53e3',
+     head:'<b>ByteDance</b> / 2023 \u2014 2026 / 6 PROJECTS',
+     cover:'assets/bytedance/scene-cover.jpg',
+     summary:'随变 AI / 模型评测 / 成片 Agent / 风格化 / AI 音乐 / AI 写真 · 六个项目',
+     subjects:[
+       {i:3,id:'bytedance-3',title:'成片 Agent',en:'NARRATIVE VIDEO AGENT',x:1.198,y:6.553,w:31.484,h:78.277,cx:12,ty:44},
+       {i:5,id:'bytedance-5',title:'AI 音乐',en:'AI MUSIC / NEW YEAR SINGLE',x:69.193,y:13.714,w:29.714,h:73.544,cx:84,ty:87.5},
+       {i:1,id:'featured',title:'随变 AI',en:'FEATURED · AI CHARACTER PIPELINE',x:38.75,y:10.012,w:21.328,h:71.784,cx:49.4,ty:85},
+       {i:4,id:'bytedance-4',title:'AI 风格化',en:'AI STYLE TRANSFER / PENCIL LOOK',x:1.146,y:54.794,w:9.479,h:27.367,cx:7,ty:83.5},
+       {i:2,id:'bytedance-2',title:'模型评测',en:'MODEL EVALUATION / BENCHMARK',x:39.714,y:0.728,w:21.745,h:24.272,cx:36.5,ty:26.5},
+       {i:6,id:'bytedance-6',title:'AI 写真',en:'AI PORTRAIT / QINGYAN x DOUYIN',x:67.057,y:44.66,w:7.63,h:22.633,cx:70.8,ty:69}
+     ]}
   ];
-  const bondeeStage=document.createElement('section');
-  bondeeStage.className='code-stage bondee-stage';bondeeStage.hidden=true;bondeeStage.dataset.collection='bondee';
-  bondeeStage.setAttribute('aria-label','BONDEE \u4e09\u4e2a\u9879\u76ee\u5165\u53e3');
-  const bdRain=document.createElement('canvas');bdRain.className='bd-rain';bdRain.setAttribute('aria-hidden','true');
-  const bdCast=document.createElement('div');bdCast.className='bd-cast';
-  const bdTags=document.createElement('div');bdTags.className='bd-tags';
-  bondeeFigures.forEach(f=>{
-    const a=document.createElement('a');a.className='bd-fig';a.href='#project/'+f.id;a.dataset.i=f.i;
-    a.setAttribute('aria-label',f.title);
-    a.style.cssText='--x:'+f.x+'%;--y:'+f.y+'%;--w:'+f.w+'%;--h:'+f.h+'%';
-    const img=document.createElement('img');img.src=freshAsset('assets/bondee/figure-'+f.i+'.png');
-    img.alt='';img.draggable=false;a.append(img);bdCast.append(a);
-    const tag=document.createElement('span');tag.className='bd-tag';tag.dataset.i=f.i;
-    tag.style.cssText='--cx:'+(f.x+f.w/2).toFixed(2)+'%';
-    tag.innerHTML='<small>'+String(f.i).padStart(2,'0')+'</small><strong>'+f.title+'</strong><em>'+f.en+'</em>';
-    bdTags.append(tag);
+  const stages={};
+  stageDefs.forEach(def=>{
+    const stage=document.createElement('section');
+    stage.className='code-stage '+def.id+'-stage';stage.hidden=true;
+    stage.dataset.collection=def.id;stage.dataset.cell=def.cell;stage.dataset.reach=def.reach;
+    stage.setAttribute('aria-label',def.label);
+    const bg=document.createElement('img');bg.className='bd-bg';
+    bg.src=freshAsset('assets/'+def.dir+'/scene-bg.jpg');bg.alt='';bg.draggable=false;
+    bg.setAttribute('aria-hidden','true');
+    const rain=document.createElement('canvas');rain.className='bd-rain';rain.setAttribute('aria-hidden','true');
+    const cast=document.createElement('div');cast.className='bd-cast';
+    def.subjects.forEach(s=>{
+      const a=document.createElement('a');a.className='bd-fig';a.href='#project/'+s.id;a.dataset.i=s.i;
+      a.setAttribute('aria-label',s.title);
+      a.style.cssText='--x:'+s.x+'%;--y:'+s.y+'%;--w:'+s.w+'%;--h:'+s.h+'%';
+      const img=document.createElement('img');
+      img.src=freshAsset('assets/'+def.dir+'/'+def.file+'-'+s.i+'.png');
+      img.alt='';img.draggable=false;a.append(img);cast.append(a);
+    });
+    def.subjects.forEach(s=>{
+      const tag=document.createElement('span');tag.className='bd-tag';tag.dataset.i=s.i;
+      tag.style.cssText='--cx:'+s.cx+'%;--ty:'+s.ty+'%';
+      tag.innerHTML='<small>'+String(s.i).padStart(2,'0')+'</small><strong>'+s.title+
+        '</strong><em>'+s.en+'</em>';
+      cast.append(tag);
+    });
+    const list=document.createElement('nav');list.className='bd-list';
+    list.setAttribute('aria-label',def.label);
+    [...def.subjects].sort((a,b)=>a.i-b.i).forEach(s=>{
+      const a=document.createElement('a');a.href='#project/'+s.id;
+      a.innerHTML='<small>'+String(s.i).padStart(2,'0')+'</small><strong>'+s.title+'</strong>';
+      a.addEventListener('click',()=>{try{sessionStorage.setItem('portfolio-collection',def.id);}catch(e){}});
+      list.append(a);
+    });
+    const head=document.createElement('div');head.className='bd-head';head.innerHTML=def.head;
+    const hint=document.createElement('div');hint.className='bd-hint';hint.textContent='hover a subject_';
+    stage.append(bg,rain,cast,head,hint,list);
+    grid.before(stage);
+    stages[def.id]=stage;
   });
-  const bdHead=document.createElement('div');bdHead.className='bd-head';
-  bdHead.innerHTML='<b>BONDEE</b> / 2022 \u2014 2023 / 3 PROJECTS';
-  const bdHint=document.createElement('div');bdHint.className='bd-hint';
-  bdHint.textContent='hover a figure_';
-  bondeeStage.append(bdRain,bdCast,bdTags,bdHead,bdHint);
-  grid.before(bondeeStage);
-  // --- ByteDance unified stage ----------------------------------------------
-  // The six ByteDance covers collapse into one artwork: the original frame sits
-  // underneath (dimmed) with a live code-rain canvas over it, and the six
-  // subjects cut out of that artwork are composited back at source position.
-  // DOM order is back-to-front, so the small subjects (portrait, scales) come
-  // last and win the hit test where boxes overlap. cx/ty anchor the caption on
-  // a dark patch of the artwork right below each subject.
-  const bytedanceSubjects=[
-    {i:3,id:'bytedance-3',title:'成片 Agent',en:'NARRATIVE VIDEO AGENT',x:1.198,y:6.553,w:31.484,h:78.277,cx:12,ty:44},
-    {i:5,id:'bytedance-5',title:'AI 音乐',en:'AI MUSIC / NEW YEAR SINGLE',x:69.193,y:13.714,w:29.714,h:73.544,cx:84,ty:87.5},
-    {i:1,id:'featured',title:'随变 AI',en:'FEATURED · AI CHARACTER PIPELINE',x:38.75,y:10.012,w:21.328,h:71.784,cx:49.4,ty:85},
-    {i:4,id:'bytedance-4',title:'AI 风格化',en:'AI STYLE TRANSFER / PENCIL LOOK',x:1.146,y:54.794,w:9.479,h:27.367,cx:7,ty:83.5},
-    {i:2,id:'bytedance-2',title:'模型评测',en:'MODEL EVALUATION / BENCHMARK',x:39.714,y:0.728,w:21.745,h:24.272,cx:36.5,ty:26.5},
-    {i:6,id:'bytedance-6',title:'AI 写真',en:'AI PORTRAIT / QINGYAN x DOUYIN',x:67.057,y:44.66,w:7.63,h:22.633,cx:70.8,ty:69}
-  ];
-  const bytedanceStage=document.createElement('section');
-  bytedanceStage.className='code-stage bytedance-stage';bytedanceStage.hidden=true;
-  bytedanceStage.dataset.collection='bytedance';bytedanceStage.dataset.cell='11';bytedanceStage.dataset.reach='2';
-  bytedanceStage.setAttribute('aria-label','ByteDance 六个项目入口');
-  const btBg=document.createElement('img');btBg.className='bd-bg';btBg.src=freshAsset('assets/bytedance/scene-bg.jpg');
-  btBg.alt='';btBg.draggable=false;btBg.setAttribute('aria-hidden','true');
-  const btRain=document.createElement('canvas');btRain.className='bd-rain';btRain.setAttribute('aria-hidden','true');
-  const btCast=document.createElement('div');btCast.className='bd-cast';
-  const btList=document.createElement('nav');btList.className='bt-list';btList.setAttribute('aria-label','ByteDance 项目列表');
-  bytedanceSubjects.forEach(s=>{
-    const a=document.createElement('a');a.className='bd-fig';a.href='#project/'+s.id;a.dataset.i=s.i;
-    a.setAttribute('aria-label',s.title);
-    a.style.cssText='--x:'+s.x+'%;--y:'+s.y+'%;--w:'+s.w+'%;--h:'+s.h+'%';
-    const img=document.createElement('img');img.src=freshAsset('assets/bytedance/subject-'+s.i+'.png');
-    img.alt='';img.draggable=false;a.append(img);btCast.append(a);
-  });
-  bytedanceSubjects.forEach(s=>{
-    const tag=document.createElement('span');tag.className='bd-tag at';tag.dataset.i=s.i;
-    tag.style.cssText='--cx:'+s.cx+'%;--ty:'+s.ty+'%';
-    tag.innerHTML='<small>'+String(s.i).padStart(2,'0')+'</small><strong>'+s.title+'</strong><em>'+s.en+'</em>';
-    btCast.append(tag);
-  });
-  [...bytedanceSubjects].sort((a,b)=>a.i-b.i).forEach(s=>{
-    const a=document.createElement('a');a.href='#project/'+s.id;
-    a.innerHTML='<small>'+String(s.i).padStart(2,'0')+'</small><strong>'+s.title+'</strong>';
-    a.addEventListener('click',()=>{sessionStorage.setItem('portfolio-collection','bytedance');});
-    btList.append(a);
-  });
-  const btHead=document.createElement('div');btHead.className='bd-head';
-  btHead.innerHTML='<b>ByteDance</b> / 2023 — 2026 / 6 PROJECTS';
-  const btHint=document.createElement('div');btHint.className='bd-hint';
-  btHint.textContent='hover a subject_';
-  bytedanceStage.append(btBg,btRain,btCast,btHead,btHint,btList);
-  grid.before(bytedanceStage);
   function layoutArchive(){
     if(!grid.clientWidth)return;
     const mobile=innerWidth<=700,w=grid.clientWidth;
@@ -203,28 +193,20 @@
     collectionIntro.querySelector('.collection-description').textContent=personal?'个人项目 / 产品、影像与艺术实验':'商业项目 / 工作中的设计与实践';
     const portalContent=makePortal(personal);galleryPortal.className=portalContent.className;galleryPortal.href=portalContent.href;galleryPortal.innerHTML=portalContent.innerHTML;
     grid.replaceChildren();
-    const bondeeTab=!personal&&!allCommercial&&c.id==='bondee';
-    bondeeStage.hidden=!bondeeTab;
-    const bytedanceTab=!personal&&!allCommercial&&c.id==='bytedance';
-    bytedanceStage.hidden=!bytedanceTab;
+    const stageTab=!personal&&!allCommercial&&stages[c.id]?c.id:'';
+    Object.keys(stages).forEach(k=>{stages[k].hidden=k!==stageTab;});
     let list=projects.filter(p=>personal?p.company==='other'&&(id==='other'||personalType(p)===id):allCommercial?p.company!=='other':p.company===c.id);
-    if(bondeeTab||bytedanceTab)list=[];         // the stage IS the collection page
+    if(stageTab)list=[];                        // the stage IS the collection page
     else if(allCommercial){
-      // collapse each unified stage's entries into one group tile, keeping archive order
-      const at=list.findIndex(p=>p.company==='bondee');
-      if(at>=0){
-        list=list.filter(p=>p.company!=='bondee');
-        list.splice(at,0,{id:'bondee',title:'BONDEE',
-          summary:'\u4e2a\u4eba\u7a7a\u95f4 / \u521b\u4f5c\u8005\u5e73\u53f0 / \u54c1\u724c\u89c6\u89c9 \u00b7 \u4e09\u4e2a\u9879\u76ee',
-          displayCover:'assets/display-bondee-2.png',href:'#work/bondee'});
-      }
-      const bd=list.findIndex(p=>p.company==='bytedance');
-      if(bd>=0){
-        list=list.filter(p=>p.company!=='bytedance');
-        list.splice(bd,0,{id:'bytedance',title:'ByteDance',
-          summary:'随变 AI / 模型评测 / 成片 Agent / 风格化 / AI 音乐 / AI 写真 · 六个项目',
-          displayCover:'assets/bytedance/scene-cover.jpg',href:'#work/bytedance'});
-      }
+      // collapse every staged collection into one group tile, keeping archive order
+      stageDefs.forEach(def=>{
+        const at=list.findIndex(p=>p.company===def.id);
+        if(at<0)return;
+        const title=(companies.find(c=>c.id===def.id)||{}).name||def.id;
+        list=list.filter(p=>p.company!==def.id);
+        list.splice(at,0,{id:def.id,title:title,summary:def.summary,
+          displayCover:def.cover,href:'#work/'+def.id});
+      });
     }
     list.forEach((p,i)=>{
       const a=document.createElement('a');a.className='project-tile';a.href=p.href||'#project/'+p.id;a.style.setProperty('--delay',i*55+'ms');
@@ -272,6 +254,6 @@
   window.addEventListener('hashchange',route);
   route();
   const capsulesScript=document.createElement('script');capsulesScript.src='matrix-capsules.js?v=pill-float-1';document.body.append(capsulesScript);
-  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=bytedance-unified-1';document.body.append(stageScript);
+  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=stages-unified-1';document.body.append(stageScript);
   const transitScript=document.createElement('script');transitScript.src='matrix-transit.js?v=pill-float-1';document.body.append(transitScript);
 })();

@@ -224,79 +224,46 @@ a:focus-visible{outline-color:#b5edc2}
 .pill-choice:hover .pill-aura,.pill-choice:focus-visible .pill-aura{animation:none}
 @media(prefers-reduced-motion:reduce){.pill-capsule,.pill-aura{animation:none}}
 
-/* ===== BONDEE unified stage =================================================
-   One integrated scene replaces the three separate cover tiles: a flowing
-   code-rain canvas behind the three cut-out figures, each figure a link to its
-   project with a green hover bloom and a caption on a shared baseline. */
-.code-stage{position:relative;margin:30px 0 6px;padding:0 0 76px;border:1px solid rgba(37,255,89,.15);border-radius:3px;background:radial-gradient(130% 105% at 50% 0,rgba(9,30,15,.72),rgba(1,6,3,.94) 68%);overflow:hidden;isolation:isolate}
-.bd-rain{position:absolute;left:0;top:0;pointer-events:none;opacity:.62;mix-blend-mode:screen;-webkit-mask-image:linear-gradient(#000,#000 68%,transparent);mask-image:linear-gradient(#000,#000 68%,transparent)}
-.bd-cast{position:relative;width:100%;aspect-ratio:1223/823;z-index:1}
+/* ===== unified code stages (BONDEE / ByteDance) ==============================
+   One integrated scene per collection instead of separate cover tiles: the
+   frame artwork sits underneath (dimmed), a live code-rain canvas flows over it
+   and the cut-out subjects are composited back on top. Every subject links to
+   its project, blooms green on hover and captions itself right below its own
+   silhouette. Both stages share one frame ratio so the two pages feel identical. */
+.code-stage{position:relative;margin:30px 0 6px;border:1px solid rgba(37,255,89,.15);border-radius:3px;background:radial-gradient(130% 105% at 50% 0,rgba(9,30,15,.72),rgba(1,6,3,.94) 68%);overflow:hidden;isolation:isolate}
+.bd-bg{position:absolute;left:0;top:0;z-index:0;width:100%;height:auto;aspect-ratio:3840/1648;object-fit:cover;pointer-events:none;transition:opacity .35s}
+.bd-rain{position:absolute;left:0;top:0;z-index:1;pointer-events:none;opacity:.34;mix-blend-mode:screen}
+.bd-cast{position:relative;z-index:2;width:100%;aspect-ratio:3840/1648}
 .bd-head{position:absolute;left:18px;top:14px;z-index:4;font:600 9px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.24em;color:rgba(150,255,180,.62);text-transform:uppercase;pointer-events:none}
 .bd-head b{color:rgba(214,255,224,.9);font-weight:700}
 .bd-fig{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);pointer-events:none;text-decoration:none;outline:0}
-.bd-fig img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 5px rgba(37,255,89,.16));transition:filter .32s,opacity .32s,transform .5s cubic-bezier(.2,.7,.2,1)}
+.bd-fig img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 5px rgba(37,255,89,.16));transition:filter .32s,opacity .32s}
 .bd-fig.on{z-index:3}
-.bd-fig.on img{filter:drop-shadow(0 0 7px rgba(74,255,132,.42)) drop-shadow(0 0 20px rgba(37,255,89,.24)) brightness(1.05);transform:translateY(-5px)}
-.code-stage.busy .bd-fig:not(.on) img{opacity:.72;filter:brightness(.96) drop-shadow(0 0 4px rgba(37,255,89,.12))}
-.bd-tags{position:absolute;left:0;right:0;bottom:20px;height:44px;z-index:4;pointer-events:none}
-.bd-tag{position:absolute;left:var(--cx);bottom:0;transform:translate(-50%,10px);width:max-content;max-width:44%;opacity:0;transition:opacity .28s,transform .28s;text-align:center}
+.bd-fig.on img{filter:drop-shadow(0 0 8px rgba(74,255,132,.46)) drop-shadow(0 0 26px rgba(37,255,89,.26)) brightness(1.08)}
+.bd-fig:focus-visible img{filter:drop-shadow(0 0 9px rgba(74,255,132,.5)) drop-shadow(0 0 28px rgba(37,255,89,.3)) brightness(1.1)}
+.code-stage.busy .bd-fig:not(.on) img{opacity:.62;filter:brightness(.9) drop-shadow(0 0 3px rgba(37,255,89,.1))}
+.code-stage.busy .bd-bg{opacity:.7}
+.bd-tag{position:absolute;left:var(--cx);top:var(--ty);z-index:5;width:max-content;max-width:20%;padding:7px 12px 8px;border-radius:2px;background:radial-gradient(74% 130% at 50% 50%,rgba(0,15,7,.88),rgba(0,10,4,0) 74%);opacity:0;transform:translate(-50%,6px);transition:opacity .28s,transform .28s;text-align:center}
 .bd-tag.on{opacity:1;transform:translate(-50%,0)}
 .bd-tag small{display:block;font:700 8px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.3em;color:rgba(74,255,132,.72)}
-.bd-tag strong{display:block;margin-top:5px;font:600 12.5px/1.35 var(--sans,inherit);color:#eafff0;text-shadow:0 0 12px rgba(37,255,89,.5)}
-.bd-tag em{display:block;margin-top:3px;font:400 8px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.2em;color:rgba(150,255,180,.5);font-style:normal;text-transform:uppercase}
-.bd-hint{position:absolute;right:18px;bottom:22px;z-index:4;font:600 8.5px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.24em;color:rgba(150,255,180,.45);text-transform:uppercase;pointer-events:none;transition:opacity .3s}
+.bd-tag strong{display:block;margin-top:5px;font:600 13.5px/1.35 var(--sans,inherit);color:#eafff0;text-shadow:0 0 12px rgba(37,255,89,.5)}
+.bd-tag em{display:block;margin-top:3px;font:400 7.6px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.14em;color:rgba(150,255,180,.5);font-style:normal;text-transform:uppercase}
+.bd-hint{position:absolute;right:18px;bottom:14px;z-index:4;font:600 8.5px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.24em;color:rgba(150,255,180,.45);text-transform:uppercase;pointer-events:none;transition:opacity .3s}
 .code-stage.busy .bd-hint{opacity:0}
-.bd-fig:focus-visible img{filter:drop-shadow(0 0 8px rgba(74,255,132,.5)) drop-shadow(0 0 22px rgba(37,255,89,.3)) brightness(1.07)}
+.bd-list{display:none}
 @media(max-width:820px){
-  .code-stage{margin:22px 0 4px;padding-bottom:14px}
+  .code-stage{margin:22px 0 4px}
   .bd-head{left:12px;top:10px;font-size:8px;letter-spacing:.18em}
-  .bd-tags{position:static;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;height:auto;padding:14px 10px 4px;border-top:1px solid rgba(37,255,89,.12)}
-  .bd-tag{position:static;left:auto;bottom:auto;transform:none;max-width:none;width:auto;opacity:1}
-  .bd-tag strong{margin-top:4px;font-size:10px;line-height:1.3}
-  .bd-tag small{font-size:7.5px;letter-spacing:.2em}
-  .bd-tag em{display:none}
-  .bd-hint{display:none}
+  .bd-tag,.bd-hint{display:none}
+  .bd-list{position:relative;z-index:6;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 6px;padding:13px 10px 5px;border-top:1px solid rgba(37,255,89,.12);background:rgba(1,6,3,.9)}
+  .bd-list a{text-decoration:none;text-align:center}
+  .bd-list small{display:block;font:700 7.5px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.2em;color:rgba(74,255,132,.72)}
+  .bd-list strong{display:block;margin-top:4px;font:600 10px/1.3 var(--sans,inherit);color:#eafff0;text-shadow:0 0 10px rgba(37,255,89,.45)}
 }
-/* touch: there is no hover, so keep every caption visible and never dim */
 @media(hover:none){
-  .bd-tag{opacity:1;transform:translate(-50%,0)}
   .code-stage.busy .bd-fig:not(.on) img{opacity:1;filter:drop-shadow(0 0 5px rgba(37,255,89,.16))}
   .bd-fig img{filter:drop-shadow(0 0 7px rgba(37,255,89,.3))}
 }
 @media(prefers-reduced-motion:reduce){
-  .bd-fig img,.bd-tag{transition:none}
-  .bd-fig.on img{transform:none}
-}
-
-/* ===== ByteDance unified stage ==============================================
-   Same engine as the BONDEE stage, one frame wide: the original artwork sits
-   underneath (dimmed) so the city + water keep their depth, a live code-rain
-   canvas flows over it, and the six subjects are composited back on top at
-   full brightness. Each subject links to its project, glows green on hover and
-   captions itself right below its own silhouette. */
-.bytedance-stage{padding-bottom:0}
-.bd-bg{position:absolute;left:0;top:0;z-index:0;width:100%;height:auto;aspect-ratio:3840/1648;object-fit:cover;pointer-events:none;transition:opacity .35s,filter .35s}
-.bytedance-stage .bd-rain{z-index:1;opacity:.34;-webkit-mask-image:none;mask-image:none}
-.bytedance-stage .bd-cast{aspect-ratio:3840/1648;z-index:2}
-.bytedance-stage .bd-fig.on img{filter:drop-shadow(0 0 8px rgba(74,255,132,.46)) drop-shadow(0 0 26px rgba(37,255,89,.26)) brightness(1.08);transform:none}
-.bytedance-stage.busy .bd-fig:not(.on) img{opacity:.62;filter:brightness(.9) drop-shadow(0 0 3px rgba(37,255,89,.1))}
-.bytedance-stage.busy .bd-bg{opacity:.7}
-.bytedance-stage .bd-hint{bottom:14px}
-/* caption anchored under the hovered subject instead of a shared baseline */
-.bd-tag.at{position:absolute;left:var(--cx);top:var(--ty);bottom:auto;z-index:5;padding:7px 12px 8px;max-width:19%;transform:translate(-50%,6px);border-radius:2px;background:radial-gradient(74% 130% at 50% 50%,rgba(0,15,7,.88),rgba(0,10,4,0) 74%)}
-.bd-tag.at.on{transform:translate(-50%,0)}
-.bd-tag.at strong{font-size:13.5px}
-.bd-tag.at em{letter-spacing:.14em;font-size:7.6px}
-/* touch / narrow screens: the scene stays tappable, plus a real caption list */
-.bt-list{display:none}
-@media(max-width:820px){
-  .bytedance-stage{padding-bottom:0}
-  .bytedance-stage .bd-tag.at{display:none}
-  .bt-list{position:relative;z-index:6;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 6px;padding:13px 10px 5px;border-top:1px solid rgba(37,255,89,.12);background:rgba(1,6,3,.9)}
-  .bt-list a{text-decoration:none;text-align:center}
-  .bt-list small{display:block;font:700 7.5px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.2em;color:rgba(74,255,132,.72)}
-  .bt-list strong{display:block;margin-top:4px;font:600 10px/1.3 var(--sans,inherit);color:#eafff0;text-shadow:0 0 10px rgba(37,255,89,.45)}
-}
-@media(prefers-reduced-motion:reduce){
-  .bd-bg{transition:none}
+  .bd-fig img,.bd-tag,.bd-bg{transition:none}
 }
