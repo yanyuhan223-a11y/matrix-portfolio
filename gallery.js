@@ -187,13 +187,17 @@
     grid.before(stage);
     stages[def.id]=stage;
   });
+  // Projects whose display artwork reads better as a wide landscape frame.
+  const wideTiles=new Set(['other-3']);
   function layoutArchive(){
     if(!grid.clientWidth)return;
     const mobile=innerWidth<=700,w=grid.clientWidth;
     const slots=mobile?[[46,0,50,.8],[1,120,38,1],[55,390,42,.8],[2,510,47,1.25],[48,750,50,1],[1,880,38,1.25]]:[[43,0,27,.8],[4,95,24,1],[76,150,22,.8],[18,510,29,1.25],[58,610,32,1],[7,880,27,1.25]];
     const scale=w/(mobile?400:1000);let bottom=0;
     [...grid.children].forEach((tile,i)=>{
-      const [x,y,width,ratio]=slots[i%6],top=(y+Math.floor(i/6)*(mobile?1160:1250))*scale;
+      let [x,y,width,ratio]=slots[i%6];
+      const top=(y+Math.floor(i/6)*(mobile?1160:1250))*scale;
+      if(tile.dataset.wide){ratio=1.6;width=mobile?92:46;x=mobile?4:27;}
       tile.style.setProperty('--tile-x',x+'%');tile.style.setProperty('--tile-y',top+'px');tile.style.setProperty('--tile-width',width+'%');tile.style.setProperty('--tile-ratio',ratio);
       const label=tile.querySelector('.tile-label');
       bottom=Math.max(bottom,top+w*width/100/ratio+(label?.offsetHeight||55));
@@ -225,6 +229,7 @@
     if(stageTab)list=[];                        // the stage IS the collection page
     list.forEach((p,i)=>{
       const a=document.createElement('a');a.className='project-tile';a.href=p.href||'#project/'+p.id;a.style.setProperty('--delay',i*55+'ms');
+      if(wideTiles.has(p.id))a.dataset.wide='1';
       a.setAttribute('aria-label',p.title);a.addEventListener('click',()=>{sessionStorage.setItem('portfolio-collection',lastCollection);});
       const media=document.createElement('div');media.className='tile-media';
       const img=document.createElement('img');img.src=freshAsset(p.displayCover||p.image||'assets/cover/interactive-cover.png');img.alt=p.title;img.loading='lazy';media.append(img);

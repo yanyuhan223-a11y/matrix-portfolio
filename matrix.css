@@ -153,12 +153,12 @@ a:focus-visible{outline-color:#b5edc2}
 .gallery-page:not(.archive-ready){visibility:hidden}
 @media(min-width:701px){
  .choice-stage .pill-blue{left:74.5%;top:36%}
- .choice-stage .pill-capsule.has-3d,.choice-stage .pill-choice:hover .pill-capsule.has-3d,.choice-stage .pill-choice:focus-visible .pill-capsule.has-3d{width:clamp(82px,10vw,169px);height:clamp(55px,6.69vw,113px)}
+ .choice-stage .pill-capsule.has-3d,.choice-stage .pill-choice:hover .pill-capsule.has-3d,.choice-stage .pill-choice:focus-visible .pill-capsule.has-3d{width:clamp(73.8px,9vw,152.1px);height:clamp(49.5px,6.02vw,101.7px)}
 }
 @media(max-width:700px){
  .choice-stage{top:45%;width:112%}.choice-stage .pill-red{top:30%}.choice-stage .pill-blue{top:37%}
  .choice-label{top:calc(50% + 33vw)}.choice-label strong{font-size:11px}.choice-label em{font-size:8px}.choice-label small{font-size:7px}
- .pill-capsule.has-3d,.pill-choice:hover .pill-capsule.has-3d,.pill-choice:focus-visible .pill-capsule.has-3d{width:42px;height:29px}
+ .pill-capsule.has-3d,.pill-choice:hover .pill-capsule.has-3d,.pill-choice:focus-visible .pill-capsule.has-3d{width:46.2px;height:31.9px}
  .choice-bottom .choice-hint{font-size:7px}.choice-bottom>span:first-child{text-align:left;margin-bottom:8px}
  .gallery-page{padding:0 22px 24px}.gallery-page .gallery-header{padding-top:90px}.collection-intro h1{font-size:24px;letter-spacing:-1px}
  .gallery-page .company-tabs{gap:14px}.gallery-page .project-grid{margin-top:35px}
