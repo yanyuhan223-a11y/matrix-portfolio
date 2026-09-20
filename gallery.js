@@ -30,13 +30,9 @@
   }
   document.body.append(archive,shell);
   // Display artwork is independent of every image inside the original case study.
+  // Commercial collections (bytedance/bondee/meitu) render as 3D stages, not tiles,
+  // so only the personal collections still use concept covers.
   const conceptCovers={
-    'featured':'commercial/_covers/display-featured',
-    'bytedance-2':'commercial/_covers/glitch-evaluation','bytedance-3':'commercial/_covers/glitch-film',
-    'bytedance-4':'commercial/_covers/display-bytedance-4','bytedance-5':'commercial/_covers/glitch-music',
-    'bytedance-6':'commercial/_covers/display-bytedance-6',
-    'bondee-1':'commercial/_covers/display-bondee-1','bondee-2':'commercial/_covers/display-bondee-2','bondee-3':'commercial/_covers/display-bondee-3',
-    'meitu-1':'commercial/_covers/display-meitu-1','meitu-2':'commercial/_covers/display-meitu-2','meitu-3':'commercial/_covers/display-meitu-3',
     'stockpulse':'personal/_covers/display-stockpulse','arcana':'personal/_covers/display-arcana',
     'other-3':'personal/_covers/display-other-3','other-4':'personal/_covers/display-other-4'
   };
