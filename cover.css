@@ -1,8 +1,8 @@
-@font-face{font-family:CoverScript;src:url('assets/cover-lobster.ttf') format('truetype');font-display:swap}
+@font-face{font-family:CoverScript;src:url('assets/cover/cover-lobster.ttf') format('truetype');font-display:swap}
 /* The cover is isolated from the original project presentation. */
 .entry-cover{position:relative;z-index:90;isolation:isolate;min-height:520px;height:calc(100svh - 24px);background:#000;color:#f12b24;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;text-align:center;padding:28px 32px 18px}
 .entry-cover *{letter-spacing:0;box-sizing:border-box}
-.entry-cover::before,.entry-cover::after{content:'';position:absolute;z-index:-1;pointer-events:none;width:850px;height:850px;background:url('assets/v3-ornament.jpg') center/contain no-repeat;filter:grayscale(1) brightness(3);opacity:.52;animation:entry-turn 70s linear infinite}
+.entry-cover::before,.entry-cover::after{content:'';position:absolute;z-index:-1;pointer-events:none;width:850px;height:850px;background:url('assets/profile/v3-ornament.jpg') center/contain no-repeat;filter:grayscale(1) brightness(3);opacity:.52;animation:entry-turn 70s linear infinite}
 .entry-cover::before{left:-480px;top:-390px}
 .entry-cover::after{right:-480px;bottom:-390px;animation-direction:reverse}
 @keyframes entry-turn{to{transform:rotate(360deg)}}

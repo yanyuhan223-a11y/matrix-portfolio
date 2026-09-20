@@ -31,28 +31,28 @@
   document.body.append(archive,shell);
   // Display artwork is independent of every image inside the original case study.
   const conceptCovers={
-    'featured':'display-featured',
-    'bytedance-2':'glitch-evaluation','bytedance-3':'glitch-film',
-    'bytedance-4':'display-bytedance-4','bytedance-5':'glitch-music',
-    'bytedance-6':'display-bytedance-6',
-    'bondee-1':'display-bondee-1','bondee-2':'display-bondee-2','bondee-3':'display-bondee-3',
-    'meitu-1':'display-meitu-1','meitu-2':'display-meitu-2','meitu-3':'display-meitu-3',
-    'stockpulse':'display-stockpulse','arcana':'display-arcana',
-    'other-3':'display-other-3','other-4':'display-other-4'
+    'featured':'commercial/_covers/display-featured',
+    'bytedance-2':'commercial/_covers/glitch-evaluation','bytedance-3':'commercial/_covers/glitch-film',
+    'bytedance-4':'commercial/_covers/display-bytedance-4','bytedance-5':'commercial/_covers/glitch-music',
+    'bytedance-6':'commercial/_covers/display-bytedance-6',
+    'bondee-1':'commercial/_covers/display-bondee-1','bondee-2':'commercial/_covers/display-bondee-2','bondee-3':'commercial/_covers/display-bondee-3',
+    'meitu-1':'commercial/_covers/display-meitu-1','meitu-2':'commercial/_covers/display-meitu-2','meitu-3':'commercial/_covers/display-meitu-3',
+    'stockpulse':'personal/_covers/display-stockpulse','arcana':'personal/_covers/display-arcana',
+    'other-3':'personal/_covers/display-other-3','other-4':'personal/_covers/display-other-4'
   };
   projects.forEach(p=>{if(conceptCovers[p.id]){p.displayCover='assets/'+conceptCovers[p.id]+'.png';p.concept=true;}});
   const profile=document.createElement('section');profile.className='profile-page';profile.hidden=true;
   [...archive.children].filter(n=>n.matches('.hero,.stats,.foot')||n.id==='profile'||n.matches('.tkonly')).forEach(n=>profile.append(n));
   shell.append(profile);
   const cover=document.getElementById('home');
-  cover.innerHTML=`<div class="matrix-visual depth3d"><div class="mx-scene"><picture class="mx-l mx-l0"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l0-mobile.jpg')}"><img class="matrix-portrait" src="${freshAsset('assets/cover-l0.jpg')}" alt="绿色 CRT 电视墙" draggable="false"></picture><canvas class="monitor-effects" aria-hidden="true"></canvas><picture class="mx-l mx-l1" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l1-mobile.webp')}"><img class="" src="${freshAsset('assets/cover-l1.webp')}" alt="" draggable="false"></picture><picture class="mx-l mx-l2" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l2-mobile.webp')}"><img class="" src="${freshAsset('assets/cover-l2.webp')}" alt="" draggable="false"></picture><span class="mx-rim" aria-hidden="true"></span><picture class="mx-l mx-l3"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l3-mobile.webp')}"><img class="mx-person-img" src="${freshAsset('assets/cover-l3.webp')}" alt="墨镜人物" draggable="false"></picture><picture class="mx-l mx-l4" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l4-mobile.webp')}"><img class="mx-face" src="${freshAsset('assets/cover-l4.webp')}" alt="" draggable="false"></picture></div><span class="mx-tag" aria-hidden="true"><b>LIVE PORTRAIT</b><i>DEPTH PARALLAX_</i></span><button class="mx-motion" type="button" hidden>启用体感视差 ↗</button></div><div class="matrix-top"><span>V / 颜于涵</span><span>AI DESIGNER · 2026</span></div><div class="matrix-heading"><p><i></i>IMAGERY / SYSTEMS / EXPERIMENTS</p><h1 data-text="VIVIENNE" aria-label="VIVIENNE PORTFOLIO 2026">VIVIENNE<span>PORTFOLIO_2026</span></h1></div><nav class="matrix-nav" aria-label="封面导航"><a href="#about">ABOUT</a><span>AI_CONTENT_DESIGN / IMAGERY / INTERACTION</span><a href="mailto:798287301@qq.com">CONTACT ↗</a></nav>`;
+  cover.innerHTML=`<div class="matrix-visual depth3d"><div class="mx-scene"><picture class="mx-l mx-l0"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover/cover-l0-mobile.jpg')}"><img class="matrix-portrait" src="${freshAsset('assets/cover/cover-l0.jpg')}" alt="绿色 CRT 电视墙" draggable="false"></picture><canvas class="monitor-effects" aria-hidden="true"></canvas><picture class="mx-l mx-l1" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover/cover-l1-mobile.webp')}"><img class="" src="${freshAsset('assets/cover/cover-l1.webp')}" alt="" draggable="false"></picture><picture class="mx-l mx-l2" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover/cover-l2-mobile.webp')}"><img class="" src="${freshAsset('assets/cover/cover-l2.webp')}" alt="" draggable="false"></picture><span class="mx-rim" aria-hidden="true"></span><picture class="mx-l mx-l3"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover/cover-l3-mobile.webp')}"><img class="mx-person-img" src="${freshAsset('assets/cover/cover-l3.webp')}" alt="墨镜人物" draggable="false"></picture><picture class="mx-l mx-l4" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover/cover-l4-mobile.webp')}"><img class="mx-face" src="${freshAsset('assets/cover/cover-l4.webp')}" alt="" draggable="false"></picture></div><span class="mx-tag" aria-hidden="true"><b>LIVE PORTRAIT</b><i>DEPTH PARALLAX_</i></span><button class="mx-motion" type="button" hidden>启用体感视差 ↗</button></div><div class="matrix-top"><span>V / 颜于涵</span><span>AI DESIGNER · 2026</span></div><div class="matrix-heading"><p><i></i>IMAGERY / SYSTEMS / EXPERIMENTS</p><h1 data-text="VIVIENNE" aria-label="VIVIENNE PORTFOLIO 2026">VIVIENNE<span>PORTFOLIO_2026</span></h1></div><nav class="matrix-nav" aria-label="封面导航"><a href="#about">ABOUT</a><span>AI_CONTENT_DESIGN / IMAGERY / INTERACTION</span><a href="mailto:798287301@qq.com">CONTACT ↗</a></nav>`;
   const coverTitle=cover.querySelector('.matrix-heading h1');
   coverTitle.removeAttribute('data-text');
   coverTitle.innerHTML='<a class="matrix-title-link" href="#choose" aria-label="点击 VIVIENNE 进入作品集"><span class="terminal-title-line" aria-hidden="true"><span class="terminal-title-text">VIVIENNE</span><i class="terminal-title-cursor">_</i></span><span class="terminal-subtitle-line" aria-hidden="true"><span class="terminal-subtitle-text">PORTFOLIO_2026</span><i class="terminal-subtitle-cursor">_</i></span><span class="terminal-click-hint" aria-hidden="true"><b>&gt;</b><span class="terminal-hint-idle"> CLICK_VIVIENNE_TO_ENTER</span><span class="terminal-hint-active"> EXECUTE ./PORTFOLIO</span><i>_</i></span></a>';
   const choice=document.createElement('section');
   choice.className='matrix-choice';choice.hidden=true;choice.setAttribute('aria-label','项目入口');choice.tabIndex=-1;
   choice.innerHTML=`<header class="choice-top"><a href="#home" aria-label="返回作品集封面">V / 颜于涵</a><span>PORTFOLIO · SELECT YOUR PATH</span><a href="#home">[ ← 返回封面 ]</a></header>
-    <div class="choice-stage"><img class="choice-hands" src="${freshAsset('assets/matrix-choice-hands2.png')}" alt="两只由绿色数字代码构成、掌心向上的手" fetchpriority="high">
+    <div class="choice-stage"><img class="choice-hands" src="${freshAsset('assets/cover/matrix-choice-hands2.png')}" alt="两只由绿色数字代码构成、掌心向上的手" fetchpriority="high">
       <a class="pill-choice pill-red" href="#work/bytedance" aria-label="选择红色药丸，进入商业项目"><span class="pill-aura" aria-hidden="true"></span><span class="pill-capsule" aria-hidden="true"><i></i></span><span class="choice-label"><small>01 / RED PILL</small><strong>商业项目 <b>↗</b></strong><em>Commercial projects</em></span></a>
       <a class="pill-choice pill-blue" href="#work/coding" aria-label="选择蓝色药丸，进入个人项目"><span class="pill-aura" aria-hidden="true"></span><span class="pill-capsule" aria-hidden="true"><i></i></span><span class="choice-label"><small>02 / BLUE PILL</small><strong>个人项目 <b>↗</b></strong><em>Personal experiments</em></span></a>
     </div><footer class="choice-bottom"><span>CONNECTED_ <i class="terminal-dot"></i></span><span class="choice-hint">HOVER TO ROTATE / CLICK TO ENTER</span><span>VIVIENNE / 2026</span></footer>`;
@@ -105,20 +105,20 @@
   // Subject order is back-to-front, so small subjects come last and win the
   // alpha hit test; cx/ty anchor each caption on a dark patch below its subject.
   const stageDefs=[
-    {id:'bondee',dir:'bondee',file:'figure',cell:'12',reach:'1',
+    {id:'bondee',dir:'commercial/bondee',file:'figure',cell:'12',reach:'1',
      label:'BONDEE \u4e09\u4e2a\u9879\u76ee\u5165\u53e3',
      head:'<b>BONDEE</b> / 2022 \u2014 2023 / 3 PROJECTS',
-     cover:'assets/bondee/scene-cover.jpg',
+     cover:'assets/commercial/bondee/scene-cover.jpg',
      summary:'\u4e2a\u4eba\u7a7a\u95f4 / \u521b\u4f5c\u8005\u5e73\u53f0 / \u54c1\u724c\u89c6\u89c9 \u00b7 \u4e09\u4e2a\u9879\u76ee',
      subjects:[
        {i:1,id:'bondee-1',title:'个人空间 · 形象资产体系',en:'PERSONAL SPACE / AVATAR SYSTEM',x:8.229,y:8.981,w:26.771,h:70.024,cx:21.61,ty:77.12},
        {i:2,id:'bondee-2',title:'创作者平台 · UGC 内容供给',en:'CREATOR PLATFORM / UGC SUPPLY',x:33.646,y:3.034,w:33.255,h:85.255,cx:50.26,ty:85.62},
        {i:3,id:'bondee-3',title:'产品视觉品牌塑造',en:'PRODUCT BRAND VISUAL',x:68.229,y:17.051,w:21.901,h:65.716,cx:79.17,ty:81.07}
      ]},
-    {id:'bytedance',dir:'bytedance',file:'subject',cell:'11',reach:'2',
+    {id:'bytedance',dir:'commercial/bytedance',file:'subject',cell:'11',reach:'2',
      label:'ByteDance \u516d\u4e2a\u9879\u76ee\u5165\u53e3',
      head:'<b>ByteDance</b> / 2023 \u2014 2026 / 6 PROJECTS',
-     cover:'assets/bytedance/scene-cover.jpg',
+     cover:'assets/commercial/bytedance/scene-cover.jpg',
      summary:'随变 AI / 模型评测 / 成片 Agent / 风格化 / AI 音乐 / AI 写真 · 六个项目',
      subjects:[
        {i:3,id:'bytedance-3',title:'成片 Agent',en:'NARRATIVE VIDEO AGENT',x:1.198,y:6.553,w:31.484,h:78.277,cx:12,ty:44},
@@ -135,11 +135,11 @@
     // matching (compose_meitu.py, match score .94), so the stage reproduces the
     // reference 1:1. The rain gets the same camera: vanishing point, the near
     // plane (here the frame edges themselves) and the rear-wall scale.
-    {id:'meitu',dir:'meitu',file:'figure',cell:'15',reach:'3',ar:'16/9',
+    {id:'meitu',dir:'commercial/meitu',file:'figure',cell:'15',reach:'3',ar:'16/9',
      rain:'space',soft:'9',data:{vpx:'50.2',vpy:'43.7',nearTop:'0',nearBottom:'100',back:'.409'},
      label:'Meitu \u4e09\u4e2a\u9879\u76ee\u5165\u53e3',
      head:'<b>Meitu</b> / 2021 \u2014 2022 / 3 PROJECTS',
-     cover:'assets/meitu/scene-cover.jpg',
+     cover:'assets/commercial/meitu/scene-cover.jpg',
      summary:'妆容特效 / 特效妆容基建 / 视觉宣发 · 三个项目',
      subjects:[
        {i:2,id:'meitu-2',title:'基础能力建设',en:'MAKEUP PIPELINE / FOUNDATION',x:12.083,y:14.074,w:24.479,h:59.259,cx:27.5,ty:74.7},
@@ -231,7 +231,7 @@
       const a=document.createElement('a');a.className='project-tile';a.href=p.href||'#project/'+p.id;a.style.setProperty('--delay',i*55+'ms');
       a.setAttribute('aria-label',p.title);a.addEventListener('click',()=>{sessionStorage.setItem('portfolio-collection',lastCollection);});
       const media=document.createElement('div');media.className='tile-media';
-      const img=document.createElement('img');img.src=freshAsset(p.displayCover||p.image||'assets/interactive-cover.png');img.alt=p.title;img.loading='lazy';media.append(img);
+      const img=document.createElement('img');img.src=freshAsset(p.displayCover||p.image||'assets/cover/interactive-cover.png');img.alt=p.title;img.loading='lazy';media.append(img);
       const number=document.createElement('span');number.className='tile-number';number.textContent=String(i+1).padStart(2,'0');media.append(number);
       if(p.concept){const badge=document.createElement('span');badge.className='tile-concept';badge.textContent='概念封面';media.append(badge);}
       const arrow=document.createElement('span');arrow.className='tile-arrow';arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');media.append(arrow);

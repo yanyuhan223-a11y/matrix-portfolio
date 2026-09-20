@@ -1,3 +1,8 @@
 .DS_Store
 _shot.html
 *.bak
+
+__pycache__/
+reorg_*.py
+verify_*.py
+*.pyc
