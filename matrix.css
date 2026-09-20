@@ -158,7 +158,7 @@ a:focus-visible{outline-color:#b5edc2}
 @media(max-width:700px){
  .choice-stage{top:45%;width:112%}.choice-stage .pill-red{top:30%}.choice-stage .pill-blue{top:37%}
  .choice-label{top:calc(50% + 33vw)}.choice-label strong{font-size:11px}.choice-label em{font-size:8px}.choice-label small{font-size:7px}
- .pill-capsule.has-3d,.pill-choice:hover .pill-capsule.has-3d,.pill-choice:focus-visible .pill-capsule.has-3d{width:46.2px;height:31.9px}
+ .pill-capsule.has-3d,.pill-choice:hover .pill-capsule.has-3d,.pill-choice:focus-visible .pill-capsule.has-3d{width:50.8px;height:35.1px}
  .choice-bottom .choice-hint{font-size:7px}.choice-bottom>span:first-child{text-align:left;margin-bottom:8px}
  .gallery-page{padding:0 22px 24px}.gallery-page .gallery-header{padding-top:90px}.collection-intro h1{font-size:24px;letter-spacing:-1px}
  .gallery-page .company-tabs{gap:14px}.gallery-page .project-grid{margin-top:35px}
@@ -323,3 +323,13 @@ a:focus-visible{outline-color:#b5edc2}
 }
 @media(max-width:650px){.mx-tag{display:none}}
 @media(prefers-reduced-motion:reduce){.mx-scene,.mx-l,.mx-rim,.monitor-effects{transform:none}.mx-rim{opacity:.16}}
+
+/* ── 子弹正面光标 ────────────────────────────────────────────────
+   Mouse-only: a 5.56 cartridge base replaces the pointer, with a
+   green-glow variant over anything interactive. Touch devices keep
+   the native cursor so tap targets are unaffected. */
+@media (hover:hover) and (pointer:fine){
+ body{cursor:url(assets/cover/cursor-bullet.png) 20 20,auto;cursor:image-set(url(assets/cover/cursor-bullet.png) 1x,url(assets/cover/cursor-bullet-2x.png) 2x) 20 20,auto}
+ a,button,summary,label,select,[role=button],[tabindex]:not([tabindex="-1"]),.pill-choice,.project-tile,.matrix-title-link,.motion-toggle,.stage-subject,.mx-motion,.cmp,.matrix-visual.depth3d.live-on{cursor:url(assets/cover/cursor-bullet-hot.png) 23 23,pointer;cursor:image-set(url(assets/cover/cursor-bullet-hot.png) 1x,url(assets/cover/cursor-bullet-hot-2x.png) 2x) 23 23,pointer}
+ input:not([type=button]):not([type=submit]),textarea{cursor:text}
+}

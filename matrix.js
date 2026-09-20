@@ -151,6 +151,36 @@
   const choiceVisibility=new MutationObserver(()=>{if(!choice.hidden){resizeHands();paintHands();start();}});
   choiceVisibility.observe(choice,{attributes:true,attributeFilter:['hidden']});
   function label(){cover.classList.toggle('title-motion-paused',paused);button.textContent=paused?'▶':'Ⅱ';button.setAttribute('aria-label',paused?'播放背景动效':'暂停背景动效');button.title=button.getAttribute('aria-label');button.setAttribute('aria-pressed',String(paused));}
+  // ---- pointer ripples: the rain swells into concentric rings under the cursor ----
+  // Each pointer sample drops a shockwave that expands with an ease-out falloff;
+  // glyphs near a wave crest brighten, shift to the head colour and get nudged
+  // outward along the wave normal, so the code reads as water rings.
+  const ripples=[];
+  const RIPPLE_MS=1400,RIPPLE_REACH=340,RING=46,TRAIL=RING*2.6;
+  const ripOut=[0,0,0];
+  let lastRipX=-1e4,lastRipY=-1e4,lastRipT=-1e4;
+  function addRipple(x,y,power){
+    ripples.push({x:x,y:y,born:elapsed,power:power,seed:Math.random()*6.283});
+    if(ripples.length>8)ripples.shift();
+    start();
+  }
+  function ripRadius(r){const age=(elapsed-r.born)/RIPPLE_MS;return (1-(1-age)*(1-age))*RIPPLE_REACH;}
+  function rippleAt(gx,gy){
+    let v=0,vx=0,vy=0;
+    for(let i=0;i<ripples.length;i++){
+      const r=ripples[i],age=(elapsed-r.born)/RIPPLE_MS;
+      if(age<0||age>1)continue;
+      const radius=(1-(1-age)*(1-age))*RIPPLE_REACH;   // ease-out: fast then settling
+      const dx=gx-r.x,dy=gy-r.y,dist=Math.hypot(dx,dy)||1,off=dist-radius;
+      if(off>RING||off<-TRAIL)continue;
+      const rings=Math.cos(off/RING*Math.PI);          // repeating crests -> concentric
+      if(rings<=0)continue;
+      const c=rings*rings*(1+off/TRAIL)*(1-age)*r.power;
+      v+=c;vx+=dx/dist*c;vy+=dy/dist*c;
+    }
+    ripOut[0]=v;ripOut[1]=vx;ripOut[2]=vy;
+    return v;
+  }
   // Rain follows the section palette: green on the cover / pill screen,
   // red inside commercial work, blue inside personal work.
   const RAIN={'':['202,255,214','81,210,114'],red:['255,208,198','230,74,54'],blue:['208,230,255','70,146,238']};
@@ -166,9 +196,42 @@
       for(let j=0;j<20;j++){
         const y=((head-j+rows)%rows-10)*cell;
         const alpha=(1-j/20)*(col%4===0?.85:.45);
-        ctx.fillStyle=choosing?`rgba(40,245,91,${alpha*(j===0?1:.8)})`:`rgba(${pal[j===0?0:1]},${alpha})`;
+        const gx=col*cell+bend;
+        const rip=ripples.length?rippleAt(gx,y):0;
         const index=(col*13+j*7+Math.floor(loop*48))%chars.length;
-        ctx.fillText(chars[index],col*cell+bend,y);
+        if(rip>0){
+          const lit=Math.min(1,alpha+rip*1.7);
+          ctx.fillStyle=choosing
+            ?`rgba(${rip>.35?'196,255,214':'40,245,91'},${Math.min(1,lit*(j===0?1:.9)+rip*.35)})`
+            :`rgba(${pal[rip>.35||j===0?0:1]},${lit})`;
+          ctx.fillText(chars[index],gx+ripOut[1]*9,y+ripOut[2]*9);
+          continue;
+        }
+        ctx.fillStyle=choosing?`rgba(40,245,91,${alpha*(j===0?1:.8)})`:`rgba(${pal[j===0?0:1]},${alpha})`;
+        ctx.fillText(chars[index],gx,y);
+      }
+    }
+    // The wavefront itself is spelled out in glyphs: each crest is a circle of
+    // characters, so the rain reads as code rippling outward rather than as a
+    // vector ring drawn on top of it.
+    for(let i=0;i<ripples.length;i++){
+      const r=ripples[i],age=(elapsed-r.born)/RIPPLE_MS;
+      if(age<0||age>1)continue;
+      const radius=ripRadius(r),fade=Math.pow(1-age,1.5)*r.power;
+      if(fade<.06)continue;
+      const crests=fade>.4?3:2;   // trim the faint tail crest to cap glyph count
+      for(let k=0;k<crests;k++){
+        const rr=radius-k*RING;
+        if(rr<9)continue;
+        const n=Math.max(10,Math.round(2*Math.PI*rr/26)),step=Math.PI*2/n;
+        const a0=r.seed+k*.35+age*.2,al=fade*(k===0?1:k===1?.52:.24);
+        for(let t=0;t<n;t++){
+          const ang=a0+t*step,px=r.x+Math.cos(ang)*rr,py=r.y+Math.sin(ang)*rr;
+          if(px<-16||px>w+16||py<-16||py>h+16)continue;
+          const idx=(t*7+k*13+(r.seed*97|0)+Math.floor(loop*40))%chars.length;
+          ctx.fillStyle=`rgba(${k===0?(choosing?'186,255,205':pal[0]):(choosing?'40,245,91':pal[1])},${Math.min(1,al).toFixed(3)})`;
+          ctx.fillText(chars[idx],px,py);
+        }
       }
     }
   }
@@ -244,6 +307,21 @@
     visual.classList.toggle('live-on',liveTarget===1);
   },{passive:true});
   cover.addEventListener('pointerleave',()=>{tx=ty=0;liveTarget=0;if(visual)visual.classList.remove('live-on');});
+  // Drop a ripple along the pointer trail (mouse only) and a stronger one on click.
+  addEventListener('pointermove',e=>{
+    if(paused||e.pointerType==='touch')return;
+    const x=e.clientX,y=e.clientY,moved=Math.hypot(x-lastRipX,y-lastRipY),gap=elapsed-lastRipT;
+    // Hard cadence cap first: a fast flick otherwise stacks a dozen waves at the
+    // same age and the rings collapse into a blob instead of a trail.
+    if(gap<75)return;
+    if(moved<26&&gap<220)return;
+    lastRipX=x;lastRipY=y;lastRipT=elapsed;
+    addRipple(x,y,moved>150?.9:.65);
+  },{passive:true});
+  addEventListener('pointerdown',e=>{
+    if(paused||e.pointerType==='touch')return;
+    addRipple(e.clientX,e.clientY,1.4);
+  },{passive:true});
   if(person){
     person.addEventListener('load',()=>{buildPersonMask();placeRim();});
     if(person.complete)buildPersonMask();
