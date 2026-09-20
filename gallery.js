@@ -289,6 +289,6 @@
     setTimeout(done,4000);
   })();
   const capsulesScript=document.createElement('script');capsulesScript.src='matrix-capsules.js?v=pill-float-1';document.body.append(capsulesScript);
-  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=meitu-2';document.body.append(stageScript);
-  const transitScript=document.createElement('script');transitScript.src='matrix-transit.js?v=pill-float-1';document.body.append(transitScript);
+  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=cursor-6';document.body.append(stageScript);
+  const transitScript=document.createElement('script');transitScript.src='matrix-transit.js?v=cursor-6';document.body.append(transitScript);
 })();

@@ -329,7 +329,17 @@ a:focus-visible{outline-color:#b5edc2}
    green-glow variant over anything interactive. Touch devices keep
    the native cursor so tap targets are unaffected. */
 @media (hover:hover) and (pointer:fine){
- body{cursor:url(assets/cover/cursor-aim.png?v=4) 27 27,auto;cursor:image-set(url(assets/cover/cursor-aim.png?v=4) 1x,url(assets/cover/cursor-aim-2x.png?v=4) 2x) 27 27,auto}
- a,button,summary,label,select,[role=button],[tabindex]:not([tabindex="-1"]),.pill-choice,.project-tile,.matrix-title-link,.motion-toggle,.stage-subject,.mx-motion,.cmp,.matrix-visual.depth3d.live-on{cursor:url(assets/cover/cursor-aim-hot.png?v=4) 27 27,pointer;cursor:image-set(url(assets/cover/cursor-aim-hot.png?v=4) 1x,url(assets/cover/cursor-aim-hot-2x.png?v=4) 2x) 27 27,pointer}
- input:not([type=button]):not([type=submit]),textarea{cursor:text}
+ body{cursor:url(assets/cover/cursor-aim.png?v=5) 26 26,auto;cursor:image-set(url(assets/cover/cursor-aim.png?v=5) 1x,url(assets/cover/cursor-aim-2x.png?v=5) 2x) 26 26,auto}
+ a,button,summary,label,select,[role=button],[tabindex]:not([tabindex="-1"]),.pill-choice,.project-tile,.matrix-title-link,.motion-toggle,.stage-subject,.mx-motion,.cmp,.matrix-visual.depth3d.live-on,.code-stage.hot,.meitu-stage.hot,.code-stage.hot *,.meitu-stage.hot *{cursor:url(assets/cover/cursor-aim-hot.png?v=5) 26 26,pointer!important;cursor:image-set(url(assets/cover/cursor-aim-hot.png?v=5) 1x,url(assets/cover/cursor-aim-hot-2x.png?v=5) 2x) 26 26,pointer!important}
+ input:not([type=button]):not([type=submit]),textarea{cursor:text!important}
+ /* Click punch: while the button is held the reticle snaps to a contracted,
+    brighter "fired" frame, then springs back on release. A cursor image cannot
+    be animated, so the recoil is a discrete swap driven by a body class.
+    The class is repeated so the pressed frame outranks the hover selectors
+    above (two classes) no matter which element sits under the pointer. */
+ body.shot.shot,body.shot.shot *{cursor:url(assets/cover/cursor-aim-shot.png?v=5) 26 26,pointer!important;cursor:image-set(url(assets/cover/cursor-aim-shot.png?v=5) 1x,url(assets/cover/cursor-aim-shot-2x.png?v=5) 2x) 26 26,pointer!important}
+ /* Loading beats own the screen: the boot gate and the decode rain that plays
+    while a project route loads must stay completely cursor-free. */
+ html.mx-boot.mx-boot body,html.mx-boot.mx-boot body *,body.transit.transit,body.transit.transit *{cursor:none!important}
 }
+html.mx-boot.mx-boot body,html.mx-boot.mx-boot body *,body.transit.transit,body.transit.transit *{cursor:none!important}

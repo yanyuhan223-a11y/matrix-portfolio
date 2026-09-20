@@ -9,6 +9,8 @@
     const destination=link.hash;if(!destination||destination===location.hash)return;
     const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');if(!ctx)return;
     event.preventDefault();canvas.className='matrix-transit';canvas.setAttribute('aria-hidden','true');document.body.append(canvas);
+    // The decoding rain is a full-screen loading beat: hide every cursor on it.
+    document.body.classList.add('transit');document.body.classList.remove('shot');
     const blue=link.classList.contains('pill-blue'),rgb=blue?'35,145,255':'255,78,18';
     let w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2),frame=0,committed=false,readyAt=0,forceReveal=false;
     const noise=n=>{const v=Math.sin(n*127.1+311.7)*43758.5453;return v-Math.floor(v);};
@@ -17,7 +19,7 @@
     resize();window.addEventListener('resize',resize);
     const start=performance.now();
     function navigate(){if(committed)return;committed=true;location.hash=destination;}
-    function finish(){cancelAnimationFrame(frame);clearTimeout(fallback);window.removeEventListener('resize',resize);document.removeEventListener('keydown',skip);window.removeEventListener('hashchange',changed);canvas.remove();active=null;}
+    function finish(){cancelAnimationFrame(frame);clearTimeout(fallback);window.removeEventListener('resize',resize);document.removeEventListener('keydown',skip);window.removeEventListener('hashchange',changed);canvas.remove();document.body.classList.remove('transit');active=null;}
     function skip(e){if(e.key==='Escape'){navigate();finish();}}
     function changed(){if(location.hash!==destination)finish();}
     const fallback=setTimeout(()=>{navigate();forceReveal=true;},3000);

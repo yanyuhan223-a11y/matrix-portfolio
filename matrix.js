@@ -322,6 +322,32 @@
     if(paused||e.pointerType==='touch')return;
     addRipple(e.clientX,e.clientY,1.4);
   },{passive:true});
+  // ---- click punch: hold the "fired" reticle for a beat, then spring back ----
+  // Kept separate from the ripple hook so the recoil still fires while the
+  // background motion is paused. Preloading avoids a first-click flicker.
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    ['cursor-aim-shot.png','cursor-aim-shot-2x.png'].forEach(n=>{
+      const i=new Image();i.src='assets/cover/'+n+'?v=5';
+    });
+    const HOLD=110;let shotAt=0,shotTimer=0,held=false;
+    const clear=()=>{document.body.classList.remove('shot');shotTimer=0;};
+    addEventListener('pointerdown',e=>{
+      if(e.pointerType==='touch'||e.button!==0)return;
+      held=true;shotAt=performance.now();
+      document.body.classList.add('shot');
+      if(shotTimer){clearTimeout(shotTimer);shotTimer=0;}
+    },{passive:true});
+    const release=e=>{
+      if(e&&e.pointerType==='touch')return;
+      if(!held)return;
+      held=false;
+      const rest=HOLD-(performance.now()-shotAt);
+      if(rest>0)shotTimer=setTimeout(clear,rest); else clear();
+    };
+    addEventListener('pointerup',release,{passive:true});
+    addEventListener('pointercancel',release,{passive:true});
+    addEventListener('blur',()=>{held=false;clear();});
+  }
   if(person){
     person.addEventListener('load',()=>{buildPersonMask();placeRim();});
     if(person.complete)buildPersonMask();

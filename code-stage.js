@@ -339,7 +339,9 @@
       figs.forEach(f => f.classList.toggle('on', f === fig));
       tags.forEach(t => t.classList.toggle('on', !!fig && t.dataset.i === fig.dataset.i));
       stage.classList.toggle('busy', !!fig);
-      stage.style.cursor = fig ? 'pointer' : '';
+      // Hover feedback stays in CSS (.code-stage.hot) so the custom crosshair
+      // cursor is not overridden by an inline native pointer.
+      stage.classList.toggle('hot', !!fig);
     }
     const pick = e => {
       // topmost first: the DOM order is back-to-front
