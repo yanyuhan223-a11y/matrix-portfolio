@@ -329,7 +329,7 @@ a:focus-visible{outline-color:#b5edc2}
    green-glow variant over anything interactive. Touch devices keep
    the native cursor so tap targets are unaffected. */
 @media (hover:hover) and (pointer:fine){
- body{cursor:url(assets/cover/cursor-aim.png?v=3) 23 23,auto;cursor:image-set(url(assets/cover/cursor-aim.png?v=3) 1x,url(assets/cover/cursor-aim-2x.png?v=3) 2x) 23 23,auto}
- a,button,summary,label,select,[role=button],[tabindex]:not([tabindex="-1"]),.pill-choice,.project-tile,.matrix-title-link,.motion-toggle,.stage-subject,.mx-motion,.cmp,.matrix-visual.depth3d.live-on{cursor:url(assets/cover/cursor-aim-hot.png?v=3) 23 23,pointer;cursor:image-set(url(assets/cover/cursor-aim-hot.png?v=3) 1x,url(assets/cover/cursor-aim-hot-2x.png?v=3) 2x) 23 23,pointer}
+ body{cursor:url(assets/cover/cursor-aim.png?v=4) 27 27,auto;cursor:image-set(url(assets/cover/cursor-aim.png?v=4) 1x,url(assets/cover/cursor-aim-2x.png?v=4) 2x) 27 27,auto}
+ a,button,summary,label,select,[role=button],[tabindex]:not([tabindex="-1"]),.pill-choice,.project-tile,.matrix-title-link,.motion-toggle,.stage-subject,.mx-motion,.cmp,.matrix-visual.depth3d.live-on{cursor:url(assets/cover/cursor-aim-hot.png?v=4) 27 27,pointer;cursor:image-set(url(assets/cover/cursor-aim-hot.png?v=4) 1x,url(assets/cover/cursor-aim-hot-2x.png?v=4) 2x) 27 27,pointer}
  input:not([type=button]):not([type=submit]),textarea{cursor:text}
 }
