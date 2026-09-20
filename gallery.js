@@ -45,7 +45,7 @@
   [...archive.children].filter(n=>n.matches('.hero,.stats,.foot')||n.id==='profile'||n.matches('.tkonly')).forEach(n=>profile.append(n));
   shell.append(profile);
   const cover=document.getElementById('home');
-  cover.innerHTML=`<div class="matrix-visual"><picture class="matrix-picture"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/matrix-monitor-cover-mobile.png')}"><img class="matrix-portrait" src="${freshAsset('assets/matrix-monitor-cover.jpeg')}" alt="墨镜人物与绿色 CRT 电视墙"></picture><canvas class="monitor-effects" aria-hidden="true"></canvas></div><div class="matrix-top"><span>V / 颜于涵</span><span>AI DESIGNER · 2026</span></div><div class="matrix-heading"><p><i></i>IMAGERY / SYSTEMS / EXPERIMENTS</p><h1 data-text="VIVIENNE" aria-label="VIVIENNE PORTFOLIO 2026">VIVIENNE<span>PORTFOLIO_2026</span></h1></div><nav class="matrix-nav" aria-label="封面导航"><a href="#about">ABOUT</a><span>AI_CONTENT_DESIGN / IMAGERY / INTERACTION</span><a href="mailto:798287301@qq.com">CONTACT ↗</a></nav>`;
+  cover.innerHTML=`<div class="matrix-visual depth3d"><div class="mx-scene"><picture class="mx-l mx-l0"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l0-mobile.jpg')}"><img class="matrix-portrait" src="${freshAsset('assets/cover-l0.jpg')}" alt="绿色 CRT 电视墙" draggable="false"></picture><canvas class="monitor-effects" aria-hidden="true"></canvas><picture class="mx-l mx-l1" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l1-mobile.webp')}"><img class="" src="${freshAsset('assets/cover-l1.webp')}" alt="" draggable="false"></picture><picture class="mx-l mx-l2" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l2-mobile.webp')}"><img class="" src="${freshAsset('assets/cover-l2.webp')}" alt="" draggable="false"></picture><span class="mx-rim" aria-hidden="true"></span><picture class="mx-l mx-l3"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l3-mobile.webp')}"><img class="mx-person-img" src="${freshAsset('assets/cover-l3.webp')}" alt="墨镜人物" draggable="false"></picture><picture class="mx-l mx-l4" aria-hidden="true"><source media="(max-width: 900px) and (orientation: portrait)" srcset="${freshAsset('assets/cover-l4-mobile.webp')}"><img class="mx-face" src="${freshAsset('assets/cover-l4.webp')}" alt="" draggable="false"></picture></div><span class="mx-tag" aria-hidden="true"><b>LIVE PORTRAIT</b><i>DEPTH PARALLAX_</i></span><button class="mx-motion" type="button" hidden>启用体感视差 ↗</button></div><div class="matrix-top"><span>V / 颜于涵</span><span>AI DESIGNER · 2026</span></div><div class="matrix-heading"><p><i></i>IMAGERY / SYSTEMS / EXPERIMENTS</p><h1 data-text="VIVIENNE" aria-label="VIVIENNE PORTFOLIO 2026">VIVIENNE<span>PORTFOLIO_2026</span></h1></div><nav class="matrix-nav" aria-label="封面导航"><a href="#about">ABOUT</a><span>AI_CONTENT_DESIGN / IMAGERY / INTERACTION</span><a href="mailto:798287301@qq.com">CONTACT ↗</a></nav>`;
   const coverTitle=cover.querySelector('.matrix-heading h1');
   coverTitle.removeAttribute('data-text');
   coverTitle.innerHTML='<a class="matrix-title-link" href="#choose" aria-label="点击 VIVIENNE 进入作品集"><span class="terminal-title-line" aria-hidden="true"><span class="terminal-title-text">VIVIENNE</span><i class="terminal-title-cursor">_</i></span><span class="terminal-subtitle-line" aria-hidden="true"><span class="terminal-subtitle-text">PORTFOLIO_2026</span><i class="terminal-subtitle-cursor">_</i></span><span class="terminal-click-hint" aria-hidden="true"><b>&gt;</b><span class="terminal-hint-idle"> CLICK_VIVIENNE_TO_ENTER</span><span class="terminal-hint-active"> EXECUTE ./PORTFOLIO</span><i>_</i></span></a>';
@@ -66,7 +66,7 @@
     },{passive:true});
     pill.addEventListener('pointerleave',()=>pill.style.setProperty('--tilt','0deg'));
   });
-  const matrixScript=document.createElement('script');matrixScript.src='matrix.js?v=pill-float-1';document.body.append(matrixScript);
+  const matrixScript=document.createElement('script');matrixScript.src='matrix.js?v=meitu-2';document.body.append(matrixScript);
   const gallery=document.createElement('section');gallery.className='gallery-page';gallery.hidden=true;
   gallery.innerHTML='<header class="gallery-header"><a class="gallery-home" href="#home" aria-label="返回首页">V.</a><nav class="collection-tabs" aria-label="作品分类"><a href="#work/bytedance" data-collection="commercial">商业项目 <span>Commercial</span></a><a href="#work/coding" data-collection="personal">个人作品 <span>Personal</span></a></nav><nav class="company-tabs" aria-label="公司与作品类型"></nav></header><h1 class="gallery-accessible-title">Vivienne 精选项目</h1><div class="project-grid"></div><footer class="gallery-footer"><a href="#about">Vivienne / 颜于涵</a><span class="company-caption"></span><a href="mailto:798287301@qq.com">Contact ↗</a></footer>';
   shell.prepend(gallery);
@@ -86,6 +86,13 @@
   const tabs=gallery.querySelector('.company-tabs');
   const personalCategories=[{id:'coding',name:'Product & Coding'},{id:'motion',name:'Moving Image'},{id:'art',name:'Fine Art'}];
   const personalType=p=>p.id==='stockpulse'||p.id==='arcana'?'coding':p.id==='other-3'?'motion':'art';
+  // Only the project pages you click into carry a palette: commercial reads red,
+  // personal reads blue. Cover, pill screen, both collection levels and About
+  // stay on the Matrix green code tone, so they carry no palette flag.
+  function setPalette(pal){
+    if(pal)document.body.dataset.pal=pal; else delete document.body.dataset.pal;
+    window.dispatchEvent(new CustomEvent('palettechange',{detail:pal||''}));
+  }
   let lastCollection='bytedance';
   const nav=document.createElement('nav');nav.className='app-nav';nav.setAttribute('aria-label','页面导航');
   nav.innerHTML='<a href="#home" class="app-brand">Vivienne<span> / PORTFOLIO</span></a><a class="app-back" href="#work/bytedance">返回项目</a><a href="#about">About</a><a href="mailto:798287301@qq.com">Contact</a>';
@@ -120,6 +127,24 @@
        {i:4,id:'bytedance-4',title:'AI 风格化',en:'AI STYLE TRANSFER / PENCIL LOOK',x:1.146,y:54.794,w:9.479,h:27.367,cx:7,ty:83.5},
        {i:2,id:'bytedance-2',title:'模型评测',en:'MODEL EVALUATION / BENCHMARK',x:39.714,y:0.728,w:21.745,h:24.272,cx:36.5,ty:26.5},
        {i:6,id:'bytedance-6',title:'AI 写真',en:'AI PORTRAIT / QINGYAN x DOUYIN',x:67.057,y:44.66,w:7.63,h:22.633,cx:70.8,ty:69}
+     ]},
+    // Meitu keeps the designer's own 16:9 frame (ar) instead of the shared wide
+    // crop, because the reference is a one-point-perspective room: cropping it
+    // moved the three heads off their reference positions and clipped them.
+    // Geometry below is recovered from background_16x93.png by masked template
+    // matching (compose_meitu.py, match score .94), so the stage reproduces the
+    // reference 1:1. The rain gets the same camera: vanishing point, the near
+    // plane (here the frame edges themselves) and the rear-wall scale.
+    {id:'meitu',dir:'meitu',file:'figure',cell:'15',reach:'3',ar:'16/9',
+     rain:'space',soft:'9',data:{vpx:'50.2',vpy:'43.7',nearTop:'0',nearBottom:'100',back:'.409'},
+     label:'Meitu \u4e09\u4e2a\u9879\u76ee\u5165\u53e3',
+     head:'<b>Meitu</b> / 2021 \u2014 2022 / 3 PROJECTS',
+     cover:'assets/meitu/scene-cover.jpg',
+     summary:'妆容特效 / 特效妆容基建 / 视觉宣发 · 三个项目',
+     subjects:[
+       {i:2,id:'meitu-2',title:'基础能力建设',en:'MAKEUP PIPELINE / FOUNDATION',x:12.083,y:14.074,w:24.479,h:59.259,cx:27.5,ty:74.7},
+       {i:1,id:'meitu-1',title:'妆容特效',en:'MAKEUP FX / CONVERSION TO MINDSHARE',x:41.042,y:15.556,w:22.083,h:58.519,cx:54.5,ty:75.5},
+       {i:3,id:'meitu-3',title:'视觉宣发',en:'VISUAL CAMPAIGN / CATEGORY TONE',x:68.854,y:19.815,w:22.604,h:61.852,cx:78,ty:83}
      ]}
   ];
   const stages={};
@@ -127,6 +152,10 @@
     const stage=document.createElement('section');
     stage.className='code-stage '+def.id+'-stage';stage.hidden=true;
     stage.dataset.collection=def.id;stage.dataset.cell=def.cell;stage.dataset.reach=def.reach;
+    if(def.ar)stage.style.setProperty('--stage-ar',def.ar);
+    if(def.rain)stage.dataset.rain=def.rain;
+    if(def.soft)stage.dataset.soft=def.soft;
+    if(def.data)Object.assign(stage.dataset,def.data);
     stage.setAttribute('aria-label',def.label);
     const bg=document.createElement('img');bg.className='bd-bg';
     bg.src=freshAsset('assets/'+def.dir+'/scene-bg.jpg');bg.alt='';bg.draggable=false;
@@ -231,11 +260,11 @@
     cover.hidden=true;choice.hidden=true;gallery.hidden=true;profile.hidden=true;projects.forEach(p=>p.page.hidden=true);
     document.querySelectorAll('video').forEach(v=>v.pause());
     document.body.classList.remove('view-home','view-work','view-project','view-about','view-choice');
-    if(kind==='project'&&current){current.page.hidden=false;const saved=sessionStorage.getItem('portfolio-collection');const backId=current.company==='other'?(personalCategories.some(c=>c.id===saved)?saved:personalType(current)):current.company;nav.querySelector('.app-back').href='#work/'+backId;current.page.querySelector('.project-pagination a').href='#work/'+backId;document.body.classList.add('view-project');document.title=current.title+' · Vivienne';}
-    else if(kind==='choose'){choice.hidden=false;document.body.classList.add('view-choice');document.title='项目入口 · Vivienne';choice.focus({preventScroll:true});}
-    else if(kind==='about'||kind==='profile'){profile.hidden=false;document.body.classList.add('view-about');document.title='About · Vivienne';}
-    else if(kind==='work'||companies.some(c=>c.id===kind)){renderCompany(key||kind);gallery.hidden=false;document.body.classList.add('view-work');document.title='Selected work · Vivienne';}
-    else{cover.hidden=false;document.body.classList.add('view-home');document.title='Vivienne · AI Designer';}
+    if(kind==='project'&&current){current.page.hidden=false;const saved=sessionStorage.getItem('portfolio-collection');const backId=current.company==='other'?(personalCategories.some(c=>c.id===saved)?saved:personalType(current)):current.company;nav.querySelector('.app-back').href='#work/'+backId;current.page.querySelector('.project-pagination a').href='#work/'+backId;document.body.classList.add('view-project');setPalette(current.company==='other'?'blue':'red');document.title=current.title+' · Vivienne';}
+    else if(kind==='choose'){choice.hidden=false;setPalette('');document.body.classList.add('view-choice');document.title='项目入口 · Vivienne';choice.focus({preventScroll:true});}
+    else if(kind==='about'||kind==='profile'){profile.hidden=false;setPalette('');document.body.classList.add('view-about');document.title='About · Vivienne';}
+    else if(kind==='work'||companies.some(c=>c.id===kind)){renderCompany(key||kind);gallery.hidden=false;setPalette('');document.body.classList.add('view-work');document.title='Selected work · Vivienne';}
+    else{cover.hidden=false;setPalette('');document.body.classList.add('view-home');document.title='Vivienne · AI Designer';}
     document.querySelectorAll('#portfolio-app .rv').forEach(n=>n.classList.add('in'));
     window.scrollTo({top:0,behavior:'instant'});
     requestAnimationFrame(()=>{window.dispatchEvent(new Event('resize'));window.scrollTo({top:0,behavior:'instant'});});
@@ -243,7 +272,22 @@
   }
   window.addEventListener('hashchange',route);
   route();
+  // Lift the boot gate only when the shell is live and the cover planes are decoded,
+  // so the visitor never sees the source document underneath.
+  (() => {
+    const done=()=>{
+      if(!document.documentElement.classList.contains('mx-boot'))return;
+      document.documentElement.classList.remove('mx-boot');
+      const scr=document.querySelector('.mx-bootscreen');
+      if(scr)setTimeout(()=>scr.remove(),600);
+      window.dispatchEvent(new Event('resize'));
+    };
+    const shots=[...cover.querySelectorAll('.mx-l0 img,.mx-l3 img')];
+    const waits=shots.map(img=>img.decode?img.decode().catch(()=>{}):Promise.resolve());
+    Promise.race([Promise.all(waits),new Promise(r=>setTimeout(r,2200))]).then(done);
+    setTimeout(done,4000);
+  })();
   const capsulesScript=document.createElement('script');capsulesScript.src='matrix-capsules.js?v=pill-float-1';document.body.append(capsulesScript);
-  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=stages-nowall-1';document.body.append(stageScript);
+  const stageScript=document.createElement('script');stageScript.src='code-stage.js?v=meitu-2';document.body.append(stageScript);
   const transitScript=document.createElement('script');transitScript.src='matrix-transit.js?v=pill-float-1';document.body.append(transitScript);
 })();

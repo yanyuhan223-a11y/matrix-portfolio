@@ -11,6 +11,12 @@
   const portrait=cover.querySelector('.matrix-portrait');
   const monitor=cover.querySelector('.monitor-effects');
   const screen=monitor.getContext('2d');
+  const person=cover.querySelector('.mx-person-img');
+  const scene=cover.querySelector('.mx-scene');
+  const rim=cover.querySelector('.mx-rim');
+  const motionBtn=cover.querySelector('.mx-motion');
+  let tilted=false;
+  let maskData=null,maskW=0,maskH=0,maskBox=null,live=0,liveTarget=0;
   let cw=0,ch=0;
   // Screen bounds are in source-image coordinates; the foreground face is excluded.
   const screens=[
@@ -145,9 +151,13 @@
   const choiceVisibility=new MutationObserver(()=>{if(!choice.hidden){resizeHands();paintHands();start();}});
   choiceVisibility.observe(choice,{attributes:true,attributeFilter:['hidden']});
   function label(){cover.classList.toggle('title-motion-paused',paused);button.textContent=paused?'▶':'Ⅱ';button.setAttribute('aria-label',paused?'播放背景动效':'暂停背景动效');button.title=button.getAttribute('aria-label');button.setAttribute('aria-pressed',String(paused));}
+  // Rain follows the section palette: green on the cover / pill screen,
+  // red inside commercial work, blue inside personal work.
+  const RAIN={'':['202,255,214','81,210,114'],red:['255,208,198','230,74,54'],blue:['208,230,255','70,146,238']};
   function paint(){
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
     const choosing=!choice.hidden;
+    const pal=RAIN[document.body.dataset.pal||'']||RAIN[''];
     const cell=choosing?(w<600?18:21):(w<600?20:24), rows=Math.ceil(h/cell)+24,loop=elapsed%24000/24000;
     ctx.font='13px monospace';ctx.textAlign='center';
     for(let col=0;col<Math.ceil(w/cell);col++){
@@ -156,29 +166,130 @@
       for(let j=0;j<20;j++){
         const y=((head-j+rows)%rows-10)*cell;
         const alpha=(1-j/20)*(col%4===0?.85:.45);
-        ctx.fillStyle=choosing?`rgba(40,245,91,${alpha*(j===0?1:.8)})`:(j===0?`rgba(202,255,214,${alpha})`:`rgba(81,210,114,${alpha})`);
+        ctx.fillStyle=choosing?`rgba(40,245,91,${alpha*(j===0?1:.8)})`:`rgba(${pal[j===0?0:1]},${alpha})`;
         const index=(col*13+j*7+Math.floor(loop*48))%chars.length;
         ctx.fillText(chars[index],col*cell+bend,y);
       }
     }
+  }
+  // ---- portrait layer: alpha mask for hover hit-testing + rim placement ----
+  function buildPersonMask(){
+    if(!person||!person.complete||!person.naturalWidth)return;
+    maskW=Math.min(190,person.naturalWidth);
+    maskH=Math.max(1,Math.round(maskW*person.naturalHeight/person.naturalWidth));
+    const c=document.createElement('canvas');c.width=maskW;c.height=maskH;
+    const g=c.getContext('2d',{willReadFrequently:true});if(!g)return;
+    g.drawImage(person,0,0,maskW,maskH);
+    try{maskData=g.getImageData(0,0,maskW,maskH).data;}catch(err){maskData=null;return;}
+    let x0=maskW,y0=maskH,x1=0,y1=0;
+    for(let y=0;y<maskH;y++)for(let x=0;x<maskW;x++){
+      if(maskData[(y*maskW+x)*4+3]>40){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
+    }
+    maskBox=x1>x0?[x0/maskW,y0/maskH,(x1-x0)/maskW,(y1-y0)/maskH]:null;
+  }
+  function personFit(){
+    const iw=(person&&person.naturalWidth)||1,ih=(person&&person.naturalHeight)||1;
+    const scale=Math.max(cw/iw,ch/ih);
+    const position=cw<=650?.64:cw<=900?.57:.5;
+    return {iw:iw,ih:ih,scale:scale,ox:(cw-iw*scale)*position,oy:(ch-ih*scale)*.5};
+  }
+  function placeRim(){
+    if(!rim||!person||!person.currentSrc)return;
+    const url='url("'+person.currentSrc+'")';
+    if(rim.dataset.src===url)return;
+    rim.dataset.src=url;rim.style.webkitMaskImage=url;rim.style.maskImage=url;
+  }
+  function onPerson(px,py){
+    if(!maskData)return false;
+    const f=personFit();
+    const u=(px-f.ox)/(f.iw*f.scale),v=(py-f.oy)/(f.ih*f.scale);
+    if(u<0||u>=1||v<0||v>=1)return false;
+    const x=Math.min(maskW-1,Math.floor(u*maskW)),y=Math.min(maskH-1,Math.floor(v*maskH));
+    return maskData[(y*maskW+x)*4+3]>60;
   }
   function tick(now){
     frame=0;if(document.hidden)return;
     const dt=Math.min(now-last,60);last=now;
     if(!paused)elapsed+=dt;
     mx+=(tx-mx)*.06;my+=(ty-my)*.06;
-    cover.style.setProperty('--matrix-x',mx*14+'px');cover.style.setProperty('--matrix-y',my*9+'px');
+    live+=(liveTarget-live)*.09;
+    cover.style.setProperty('--matrix-x',mx*6+'px');cover.style.setProperty('--matrix-y',my*4+'px');
+    if(visual){
+      const secs=elapsed/1000,idle=paused?0:1;
+      const bob=Math.sin(secs*.55)*idle,sway=Math.sin(secs*.31+1.1)*idle;
+      const px=mx*2,py=my*2,set=(k,v)=>visual.style.setProperty(k,v);
+      const amp=tilted?34:26,ampY=tilted?22:12;
+      set('--px',(px*amp+sway*2.6).toFixed(2)+'px');
+      set('--py',(py*ampY-bob*2.1).toFixed(2)+'px');
+      set('--sry',(px*3.1+sway*.24).toFixed(2)+'deg');
+      set('--srx',(-py*2+bob*-.18).toFixed(2)+'deg');
+      set('--live',live.toFixed(3));
+    }
     paint();paintHands();
     if(!cover.hidden)paintMonitors();
     if(!paused)frame=requestAnimationFrame(tick);
   }
   function start(){if(!frame&&!document.hidden){last=performance.now();frame=requestAnimationFrame(tick);}}
-  function resize(){w=innerWidth;h=innerHeight;dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);if(!cover.hidden){cw=visual.clientWidth;ch=visual.clientHeight;monitor.width=Math.round(cw*dpr);monitor.height=Math.round(ch*dpr);}resizeHands();paint();paintHands();paintMonitors();start();}
+  function resize(){w=innerWidth;h=innerHeight;dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);if(!cover.hidden){cw=visual.clientWidth;ch=visual.clientHeight;monitor.width=Math.round(cw*dpr);monitor.height=Math.round(ch*dpr);}resizeHands();paint();paintHands();paintMonitors();if(!maskData)buildPersonMask();placeRim();start();}
   button.addEventListener('click',()=>{paused=!paused;label();start();});
   reduced.addEventListener('change',()=>{paused=reduced.matches;label();start();});
   document.addEventListener('visibilitychange',()=>{cancelAnimationFrame(frame);frame=0;start();});
-  cover.addEventListener('pointermove',e=>{if(paused)return;const r=cover.getBoundingClientRect();tx=(e.clientX-r.left)/r.width-.5;ty=(e.clientY-r.top)/r.height-.5;},{passive:true});
-  cover.addEventListener('pointerleave',()=>{tx=ty=0;});
+  cover.addEventListener('pointermove',e=>{
+    if(paused)return;
+    const r=cover.getBoundingClientRect();
+    tx=(e.clientX-r.left)/r.width-.5;ty=(e.clientY-r.top)/r.height-.5;
+    if(!visual)return;
+    const v=visual.getBoundingClientRect();
+    liveTarget=onPerson(e.clientX-v.left,e.clientY-v.top)?1:0;
+    visual.classList.toggle('live-on',liveTarget===1);
+  },{passive:true});
+  cover.addEventListener('pointerleave',()=>{tx=ty=0;liveTarget=0;if(visual)visual.classList.remove('live-on');});
+  if(person){
+    person.addEventListener('load',()=>{buildPersonMask();placeRim();});
+    if(person.complete)buildPersonMask();
+  }
+  // touch devices have no pointer: tilt drives the planes.
+  // deviceorientation = gyroscope attitude, devicemotion = accelerometer (gravity vector).
+  (() => {
+    if(!matchMedia('(hover:none)').matches)return;
+    const DO=window.DeviceOrientationEvent,DM=window.DeviceMotionEvent;
+    if(!DO&&!DM)return;
+    let baseB=null,baseG=null,baseAX=null,baseAY=null,gotGyro=false;
+    const clamp=v=>Math.max(-.5,Math.min(.5,v));
+    const lerp=(a,b,k)=>a+(b-a)*k;
+    const gyro=e=>{
+      if(paused||e.beta==null&&e.gamma==null)return;
+      gotGyro=true;tilted=true;
+      const b=e.beta||0,g=e.gamma||0;
+      if(baseB===null){baseB=b;baseG=g;}
+      baseB=lerp(baseB,b,.0025);baseG=lerp(baseG,g,.0025);
+      tx=clamp((g-baseG)/26*.5);ty=clamp((b-baseB)/26*.5);
+    };
+    const accel=e=>{
+      if(paused||gotGyro)return;
+      const a=e.accelerationIncludingGravity;if(!a)return;
+      tilted=true;
+      if(baseAX===null){baseAX=a.x||0;baseAY=a.y||0;}
+      baseAX=lerp(baseAX,a.x||0,.0025);baseAY=lerp(baseAY,a.y||0,.0025);
+      tx=clamp(-((a.x||0)-baseAX)/5*.5);ty=clamp(((a.y||0)-baseAY)/5*.5);
+    };
+    const attach=()=>{
+      if(DO)addEventListener('deviceorientation',gyro,{passive:true});
+      if(DM)addEventListener('devicemotion',accel,{passive:true});
+      if(motionBtn)motionBtn.hidden=true;
+    };
+    const needsGesture=(DO&&typeof DO.requestPermission==='function')||(DM&&typeof DM.requestPermission==='function');
+    const ask=()=>{
+      const jobs=[];
+      if(DO&&typeof DO.requestPermission==='function')jobs.push(DO.requestPermission());
+      if(DM&&typeof DM.requestPermission==='function')jobs.push(DM.requestPermission());
+      Promise.all(jobs).then(r=>{if(r.every(v=>v==='granted'))attach();}).catch(()=>{});
+    };
+    if(needsGesture){
+      if(motionBtn){motionBtn.hidden=false;motionBtn.addEventListener('click',ask);}
+      cover.addEventListener('touchstart',ask,{once:true,passive:true});
+    }else attach();
+  })();
   portrait.addEventListener('load',resize);
   window.addEventListener('hashchange',resize);
   window.addEventListener('resize',resize);label();resize();

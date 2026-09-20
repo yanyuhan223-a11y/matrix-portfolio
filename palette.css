@@ -1,0 +1,63 @@
+/* ============================================================
+   Palette system — project pages only
+   The cover, the red/blue pill screen and both collection levels
+   (commercial list / personal list, including the one-piece code stages)
+   stay on the original Matrix green code tone.
+   Once you click into a project page the body carries
+   data-pal="red"  -> commercial work (ByteDance / BONDEE / Meitu)
+   data-pal="blue" -> personal work (Product & Coding / Moving Image / Fine Art)
+   so a case study never mixes red with green.
+   ============================================================ */
+
+body[data-pal="red"]{
+  --acc:#ff3b2e;          --acc-rgb:255,59,46;
+  --acc-hi:#ffe4de;       --acc-txt:#f0ded9;
+  --acc-mut:#b89b96;      --acc-dim:#8e7571;
+  --acc-line:rgba(255,120,104,.22);
+  --acc-line-2:rgba(255,120,104,.12);
+  --pal-bg:#070303;       --pal-panel:#150807;
+  --glow-rgb:255,58,44;
+  /* case-study tokens (index.html stylesheet) */
+  --red:#ff1414;          --red-2:#ff5548;   --red-rgb:255,20,20;
+  --acc2:#e0533c;         --acc2-rgb:224,83,60;
+  --acc-soft:#ff8478;     --acc-ink:#ffe0da;  --gold:#e8c37a;
+}
+body[data-pal="blue"]{
+  --acc:#3f97ff;          --acc-rgb:63,151,255;
+  --acc-hi:#e0ecff;       --acc-txt:#dae4f2;
+  --acc-mut:#97a8bd;      --acc-dim:#74839a;
+  --acc-line:rgba(104,160,255,.22);
+  --acc-line-2:rgba(104,160,255,.12);
+  --pal-bg:#03060c;       --pal-panel:#071021;
+  --glow-rgb:60,150,255;
+  --red:#3f97ff;          --red-2:#79b8ff;   --red-rgb:63,151,255;
+  --acc2:#4a9bec;         --acc2-rgb:74,155,236;
+  --acc-soft:#9ccbff;     --acc-ink:#dcebff;  --gold:#a8c7f0;
+}
+
+/* Green counterparts of the same tokens, so the levels that keep the Matrix
+   code tone never fall back to a stray red hairline. */
+body:not([data-pal]){
+  --red-rgb:158,234,175;
+  --acc2:#b5edc2;  --acc2-rgb:181,237,194;
+  --acc-soft:#c6f2d1; --acc-ink:#e9fff1; --gold:#cfe9d6;
+}
+
+/* ---------- page surface ---------- */
+body[data-pal]{
+  background:var(--pal-bg);color:var(--acc-txt);
+  --bg:var(--pal-bg);--mut:var(--acc-mut);--faint:var(--acc-dim);--hair:var(--acc-line-2)
+}
+body[data-pal] ::selection{background:var(--acc);color:#fff}
+body[data-pal] .matrix-rain{opacity:.085}
+
+/* ---------- app chrome on a project page ---------- */
+body[data-pal] .app-nav{background:color-mix(in srgb,var(--pal-bg) 92%,transparent);border-color:var(--acc-line-2)}
+body[data-pal] .app-brand{color:var(--acc-hi)}
+body[data-pal] .app-back,body[data-pal] .project-pagination{color:var(--acc)}
+body[data-pal] .app-back:hover,body[data-pal] .project-pagination a:hover{color:var(--acc-hi)}
+body[data-pal] .project-page{background:color-mix(in srgb,var(--pal-bg) 62%,transparent)}
+body[data-pal] .project-page>.deep{background:color-mix(in srgb,var(--pal-panel) 78%,transparent)}
+body[data-pal] .project-page .fx-meta div{background:var(--pal-panel)}
+body[data-pal] .motion-toggle{background:color-mix(in srgb,var(--pal-panel) 90%,transparent);border-color:var(--acc-line);color:var(--acc-hi)}
+body[data-pal] .motion-toggle:hover{border-color:var(--acc);color:var(--acc)}
